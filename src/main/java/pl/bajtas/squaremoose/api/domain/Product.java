@@ -1,56 +1,84 @@
 package pl.bajtas.squaremoose.api.domain;
 
+import java.util.Date;
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
+@Table(name = "btproduct")
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    private String productId;
-    private String description;
-    private String imageUrl;
-    private BigDecimal price;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    public String getDescription() {
-        return description;
-    }
+  @ManyToOne
+  @JoinColumn(name = "category")
+  private Category category;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  private String name;
 
-    public Integer getId() {
-        return id;
-    }
+  private float price;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  private String description;
 
-    public String getProductId() {
-        return productId;
-    }
+  private Date addedOn;
 
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
+  private Date lmod;
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+  public String getDescription() {
+    return description;
+  }
+
+  public void setAddedOn(Date addedOn) {
+    this.addedOn = addedOn;
+  }
+
+  public Date getAddedOn() {
+    return addedOn;
+  }
+
+  public void setLmod(Date lmod) {
+    this.lmod = lmod;
+  }
+
+  public Date getLmod() {
+    return lmod;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setPrice(float price) {
+    this.price = price;
+  }
+
+  public float getPrice() {
+    return price;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  public Category getCategory() {
+    return category;
+  }
+
 }

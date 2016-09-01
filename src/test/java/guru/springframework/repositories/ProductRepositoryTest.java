@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.math.BigDecimal;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -32,8 +30,8 @@ public class ProductRepositoryTest {
         //setup product
         Product product = new Product();
         product.setDescription("Spring Framework Guru Shirt");
-        product.setPrice(new BigDecimal("18.95"));
-        product.setProductId("1234");
+//        product.setPrice(new BigDecimal("18.95"));
+//        product.setProductId("1234");
 
         //save product, verify has ID value after save
         assertNull(product.getId()); //null before save
