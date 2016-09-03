@@ -1,6 +1,9 @@
 package pl.bajtas.squaremoose.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -11,9 +14,17 @@ public class Product {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "category")
+  @JsonManagedReference
   private Category category;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "btimage", joinColumns = {
+          @JoinColumn(name = "product_id", nullable = false) },
+          inverseJoinColumns = { @JoinColumn(name = "image_id", nullable = false) })
+  @JsonManagedReference
+  private List<ProductImage> images;
 
   private String name;
 
@@ -81,4 +92,11 @@ public class Product {
     return category;
   }
 
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
+    }
 }

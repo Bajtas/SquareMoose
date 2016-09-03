@@ -1,13 +1,10 @@
 package pl.bajtas.squaremoose.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "btcategory")
@@ -19,7 +16,8 @@ public class Category {
 
   private String name;
 
-  @OneToMany(mappedBy = "category")
+  @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+  @JsonBackReference
   private Set<Product> products;
 
   public String getName() {
