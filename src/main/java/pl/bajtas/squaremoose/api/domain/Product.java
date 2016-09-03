@@ -1,5 +1,6 @@
 package pl.bajtas.squaremoose.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Date;
@@ -18,6 +19,10 @@ public class Product {
   @JoinColumn(name = "category")
   @JsonManagedReference
   private Category category;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @JsonBackReference
+    private List<OrderItem> orderItems;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "btimage", joinColumns = {
@@ -98,5 +103,13 @@ public class Product {
 
     public void setImages(List<ProductImage> images) {
         this.images = images;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

@@ -2,6 +2,7 @@ package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Category {
 
   @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
   @JsonBackReference
-  private Set<Product> products;
+  private List<Product> products;
 
   public String getName() {
     return name;
@@ -36,11 +37,11 @@ public class Category {
     this.name = name;
   }
 
-  public void setProducts(Set<Product> products) {
+  public void setProducts(List<Product> products) {
     this.products = products;
   }
 
-  public Set<Product> getProducts() {
+  public List<Product> getProducts() {
     return products;
   }
 
