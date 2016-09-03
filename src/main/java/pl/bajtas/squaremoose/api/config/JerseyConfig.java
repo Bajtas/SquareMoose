@@ -22,14 +22,14 @@ public class JerseyConfig extends ResourceConfig {
         {ClassToRegisterEnum.CONTROLLER_CLASS_PACKAGE, ClassToRegisterEnum.SERVICE_CLASS_PACKAGE};
 
     for (ClassToRegisterEnum pack : packages) {
-      List<Object> classToRegister = new RestClasses().getClassesToRegister(pack);
+      List<String> classToRegister = new RestClasses().getClassesToRegister(pack);
 
       LOG.info("Registering class for package: " + pack.toString() + "*");
 
-      for (Object obj : classToRegister) {
+      for (String className : classToRegister) {
         try {
-          LOG.info("Class registered: " + obj.toString());
-          registerInstances(Class.forName(pack.toString() + "IndexController").newInstance());
+          LOG.info("Class registered: " + className + ".java");
+          registerInstances(Class.forName(pack.toString() + className).newInstance());
         } catch (Exception e) {
           LOG.error("Could not register class!", e);
         }

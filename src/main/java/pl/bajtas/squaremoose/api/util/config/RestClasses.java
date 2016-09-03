@@ -13,14 +13,16 @@ public class RestClasses {
 
   private static final Logger LOG = Logger.getLogger(RestClasses.class);
 
-  private static final String indexController = "IndexController";
+  private static final String productController = "ProductController";
+  private static final String categoryController = "CategoryController";
+  private static final String productImagesController = "ProductImagesController";
   
   private static String classToRegisterInfo = "";
 
-  public List<Object> getClassesToRegister(ClassToRegisterEnum classType) {
+  public List<String> getClassesToRegister(ClassToRegisterEnum classType) {
     LOG.info("Obtain classess from package: " + classType.toString());
 
-    List<Object> classesToRegister = getAllClasses(classType);
+    List<String> classesToRegister = getAllClasses(classType);
     if (classesToRegister != null)
       return classesToRegister;
 
@@ -30,10 +32,10 @@ public class RestClasses {
     return classesToRegister;
   }
 
-  private List<Object> getAllClasses(ClassToRegisterEnum classType) {
+  private List<String> getAllClasses(ClassToRegisterEnum classType) {
     showInfo(classType);
 
-    List<Object> classesToRegister = new ArrayList<Object>();
+    List<String> classesToRegister = new ArrayList<String>();
     List<Field> sortedFields = new ArrayList<Field>();
 
     try {
@@ -53,14 +55,11 @@ public class RestClasses {
 
       for (Field field : sortedFields) {
         String value = field.get(null).toString();
-        Object obj = Class.forName(classType.toString() + value).newInstance();
 
-        classesToRegister.add(obj.getClass());
+        classesToRegister.add(value);
       }
     } catch (SecurityException e) {
       LOG.error("Security excepction: ", e);
-    } catch (InstantiationException e) {
-      LOG.error("Instantiation exception: ", e);
     } catch (Exception e) {
       LOG.error("Exception: ", e);
     }
