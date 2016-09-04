@@ -20,6 +20,7 @@ public class RestClasses {
   private static final String orderItemController = "OrderItemController";
   private static final String orderController = "OrderController";
   private static final String paymentMethodController = "PaymentMethodController";
+  private static final String actualOrderStateController = "ActualOrderStateController";
 
   private static String classToRegisterInfo = "";
 
