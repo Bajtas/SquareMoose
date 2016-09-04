@@ -21,6 +21,9 @@ public class RestClasses {
   private static final String orderController = "OrderController";
   private static final String paymentMethodController = "PaymentMethodController";
   private static final String actualOrderStateController = "ActualOrderStateController";
+  private static final String orderStateHistoryController = "OrderStateHistoryController";
+  private static final String deliveryAdressController = "DeliveryAdressController";
+
 
   private static String classToRegisterInfo = "";
 

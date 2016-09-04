@@ -30,6 +30,13 @@ public class ActualOrderState {
     @PrimaryKeyJoinColumn
     private Order order;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "btorderhistoryrow", joinColumns = {
+            @JoinColumn(name = "actual_order_state_id", nullable = false) },
+            inverseJoinColumns = { @JoinColumn(name = "order_state_history_id", nullable = false) })
+    //@JsonManagedReference
+    private List<OrderStateHistory> orderStateHistories;
+
 
     public Integer getId() {
         return id;
@@ -69,5 +76,13 @@ public class ActualOrderState {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public List<OrderStateHistory> getOrderStateHistories() {
+        return orderStateHistories;
+    }
+
+    public void setOrderStateHistories(List<OrderStateHistory> orderStateHistories) {
+        this.orderStateHistories = orderStateHistories;
     }
 }

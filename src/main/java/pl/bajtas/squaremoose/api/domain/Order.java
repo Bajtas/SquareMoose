@@ -33,6 +33,14 @@ public class Order {
    // @JsonManagedReference
     private PaymentMethod paymentMethod;
 
+    private float fullPrice;
+
+    private int itemsAmount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "delivery_adress")
+    // @JsonManagedReference
+    private DeliveryAdress deliveryAdress;
 
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "order")
     private ActualOrderState actualOrderState;
@@ -83,5 +91,21 @@ public class Order {
 
     public void setActualOrderState(ActualOrderState actualOrderState) {
         this.actualOrderState = actualOrderState;
+    }
+
+    public float getFullPrice() {
+        return fullPrice;
+    }
+
+    public void setFullPrice(float fullPrice) {
+        this.fullPrice = fullPrice;
+    }
+
+    public int getItemsAmount() {
+        return itemsAmount;
+    }
+
+    public void setItemsAmount(int itemsAmount) {
+        this.itemsAmount = itemsAmount;
     }
 }
