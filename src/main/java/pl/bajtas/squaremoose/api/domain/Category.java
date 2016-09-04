@@ -1,6 +1,8 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.List;
 import java.util.Set;
@@ -8,6 +10,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "btcategory")
 public class Category {
 
@@ -18,7 +21,7 @@ public class Category {
   private String name;
 
   @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-  @JsonBackReference
+  //@JsonBackReference
   private List<Product> products;
 
   public String getName() {

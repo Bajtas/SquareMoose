@@ -30,6 +30,9 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     List<Product> findByImagesIsNull();
     List<Product> findByImages_ImageSrcContainsIgnoreCase(String imageSrc);
 
+    /* Find by Order items properties */
+    List<Product> findByOrderItems_Order_Id(int id);
+
     /* Category stats */
     long countByCategory_Id(int id);
     long countDistinctByCategory_Name(String name);

@@ -19,9 +19,12 @@ import java.util.List;
 public class CategoryService {
     private static final Logger LOG = Logger.getLogger(ProductService.class);
 
-    @Autowired  private CategoryRepository categoryRepository;
-    @Autowired  private ProductRepository productRepository;
-    @Autowired  private EntityManager entityManager;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     public CategoryRepository getRepository() {
         return categoryRepository;
@@ -55,5 +58,38 @@ public class CategoryService {
             results.add(stats);
         }
         return results;
+    }
+
+    public String addOrUpdate(Category category, boolean update) {
+        LOG.info("Trying to save category: " + category.getName() + category.getId());
+
+        update = category != null ? isUpdate(category.getId()) : false;
+
+        boolean error = false;
+        String info = "Object ";
+
+        if (update && (category == null || category.getId() == null)) {
+            info = "Error occured when saved:";
+            info += category == null ? " Category is null!" : "Category.Id is null!";
+            return info;
+        }
+
+        try {
+            getRepository().save(category);
+        } catch (Exception e) {
+            LOG.error("Error occured when saved: ", e);
+            info = "Error occured when saved: " + e.toString();
+            error = true;
+        }
+        if (!error) {
+            LOG.info("Object saved successfully!");
+            info += update ? "updated successfully!" : "saved successfully!";
+        }
+
+        return info;
+    }
+
+    private boolean isUpdate(Integer id) {
+        return getRepository().findOne(id) != null ? true : false;
     }
 }

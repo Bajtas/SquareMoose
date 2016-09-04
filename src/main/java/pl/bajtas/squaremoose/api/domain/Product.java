@@ -1,13 +1,16 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "btproduct")
 public class Product {
 
@@ -17,18 +20,18 @@ public class Product {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "category")
-  @JsonManagedReference
+//  @JsonManagedReference
   private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    @JsonBackReference
+   // @JsonBackReference
     private List<OrderItem> orderItems;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "btimage", joinColumns = {
           @JoinColumn(name = "product_id", nullable = false) },
           inverseJoinColumns = { @JoinColumn(name = "image_id", nullable = false) })
-  @JsonManagedReference
+  //@JsonManagedReference
   private List<ProductImage> images;
 
   private String name;

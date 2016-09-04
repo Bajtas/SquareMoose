@@ -1,7 +1,9 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "btorderitem")
 public class OrderItem {
     @Id
@@ -22,12 +25,12 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product")
-    @JsonManagedReference
+    //@JsonManagedReference
     private Product product;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order")
-    @JsonBackReference
+    //@JsonBackReference
     private Order order;
 
     public Integer getId() {

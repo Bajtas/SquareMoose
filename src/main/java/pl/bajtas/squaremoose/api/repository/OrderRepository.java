@@ -8,4 +8,5 @@ import pl.bajtas.squaremoose.api.domain.ProductImage;
  * Created by Bajtas on 04.09.2016.
  */
 public interface OrderRepository extends CrudRepository<Order, Integer> {
+
 }

@@ -1,7 +1,9 @@
 package pl.bajtas.squaremoose.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
  */
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "btproductimage")
 public class ProductImage {
 
@@ -21,7 +24,7 @@ public class ProductImage {
     private String imageSrc;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "images")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Product> products;
 
     public String getImageSrc() {

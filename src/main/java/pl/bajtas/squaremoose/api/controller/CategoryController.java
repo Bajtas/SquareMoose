@@ -3,9 +3,7 @@ package pl.bajtas.squaremoose.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.Category;
-import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.service.CategoryService;
-import pl.bajtas.squaremoose.api.service.ProductService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 
 import javax.validation.constraints.NotNull;
@@ -58,4 +56,20 @@ public class CategoryController {
     public List<CategoryStats> getCategoryStats(@QueryParam("byId") boolean byId, @QueryParam("byName") boolean byName) {
         return categoryService.getCategoryStats(byId, byName);
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/category/add")
+    public String addCategory(Category category) {
+        return categoryService.addOrUpdate(category, false);
+    }
+
+//    @PUT
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.TEXT_PLAIN)
+//    @Path("/category/update")
+//    public String updateCategory(Category category) {
+//        return categoryService.addOrUpdate(category, true);
+//    }
 }

@@ -124,6 +124,8 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     /* --------------------------------------------------------------------------------------------- */
+
+    // Search by Category properties
     public List<Product> getByCategoryIdOrName(Integer id, String name) throws Exception {
         if (id == null && name == null) {
             throw new Exception("Please specify Id or Name of Category for this request.");
@@ -139,8 +141,10 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         return null;
     }
 
-
-
+    /* --------------------------------------------------------------------------------------------- */
+    public List<Product> getByOrderId(Integer id) {
+        return getRepository().findByOrderItems_Order_Id(id);
+    }
 
 //    @Bean
 //    public SessionFactory<FTPFile> ftpSessionFactory() {

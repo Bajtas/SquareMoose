@@ -13,11 +13,13 @@ public class RestClasses {
 
   private static final Logger LOG = Logger.getLogger(RestClasses.class);
 
+  /* Controllers to register for Jersey */
   private static final String productController = "ProductController";
   private static final String categoryController = "CategoryController";
   private static final String productImagesController = "ProductImagesController";
   private static final String orderItemController = "OrderItemController";
   private static final String orderController = "OrderController";
+  private static final String paymentMethodController = "PaymentMethodController";
 
   private static String classToRegisterInfo = "";
 
