@@ -1,5 +1,7 @@
 package pl.bajtas.squaremoose.api.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -36,6 +38,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     /* Category stats */
     long countByCategory_Id(int id);
     long countDistinctByCategory_Name(String name);
+
+    Page<Product> findAll(Pageable pageable);
 
 //    @Query("from Product a where a.category.id=:categoryid")
 //    List<Product> findByCategoryId(@Param("categoryid") Integer categoryId);

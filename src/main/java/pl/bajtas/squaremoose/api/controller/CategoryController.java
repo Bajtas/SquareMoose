@@ -19,14 +19,15 @@ import java.util.List;
 @Path("/CategoryService")
 public class CategoryController {
 
-    @Autowired  CategoryService categoryService; // Product service bean for connection between controller and service layers
-    // Search by Product properties
+    @Autowired  CategoryService categoryService; // Category service bean for connection between controller and service layers
+
+    // Read
 
     //region Description
     /* Main method
     * Takes 0 parameters
     *
-    * Returns list of all products with and without categories
+    * Returns list of all categories
     * */
     //endregion
     @GET
@@ -36,6 +37,13 @@ public class CategoryController {
         return categoryService.getAll();
     }
 
+    //region Description
+    /* Search by Id
+    * Takes 1 parameter - Id
+    *
+    * Returns one Category related to this Id
+    * */
+    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/id/{id}")
@@ -43,6 +51,13 @@ public class CategoryController {
         return categoryService.getById(id);
     }
 
+    //region Description
+    /* Search by Name
+    * Takes 1 parameter - Name
+    *
+    * Returns one Category related to this Name
+    * */
+    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/name/{name}")
@@ -50,26 +65,75 @@ public class CategoryController {
         return categoryService.getByName(name);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/category/stats")
-    public List<CategoryStats> getCategoryStats(@QueryParam("byId") boolean byId, @QueryParam("byName") boolean byName) {
-        return categoryService.getCategoryStats(byId, byName);
-    }
+    // Add and Update
 
+    //region Description
+    /* Add new category to DB
+    * Takes 1 parameter - Category in JSON format
+    *
+    * Returns info
+    *
+    * If not succeed, returns info about error.
+    * */
+    //endregion
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/add")
     public String addCategory(Category category) {
-        return categoryService.addOrUpdate(category, false);
+        return categoryService.addOrUpdate(category, false); // true for add new
     }
 
-//    @PUT
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    @Path("/category/update")
-//    public String updateCategory(Category category) {
-//        return categoryService.addOrUpdate(category, true);
-//    }
+    //region Description
+    /* Update category in DB
+    * Takes 1 parameter - Category in JSON format
+    *
+    * Returns info
+    *
+    * If not succeed, returns info about error.
+    * */
+    //endregion
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/category/update")
+    public String updateCategory(Category category) {
+        return categoryService.addOrUpdate(category, true); // false for update old
+    }
+
+    // Delete
+
+    //region Description
+    /* Deletes category by Id or Name
+    * Takes 2 parameters
+    *
+    * Returns info
+    *
+    * If not succeed, returns info about error.
+    * */
+    //endregion
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/category/delete")
+    public String getCategoryStats(@QueryParam("id") Integer id, @QueryParam("name") String name) {
+        return categoryService.deleteByIdOrName(id, name);
+    }
+
+    // Other
+
+    //region Description
+    /* Show stats for all categories
+    * Takes 2 parameters
+    *
+    * Returns stats for every category
+    *
+    * If all parameters are null, method will Excepction
+    * */
+    //endregion
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/category/stats")
+    public List<CategoryStats> getCategoryStats(@QueryParam("byId") boolean byId, @QueryParam("byName") boolean byName) throws Exception {
+        return categoryService.getCategoryStats(byId, byName);
+    }
 }

@@ -32,6 +32,9 @@ public class DeliveryAdress {
     @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.EAGER)
     private List<Order> orders;
 
+//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "deliveryAdresses")
+//    private List<BUser> users;
+
     public Integer getId() {
         return id;
     }
@@ -95,4 +98,12 @@ public class DeliveryAdress {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+//    public List<BUser> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(List<BUser> users) {
+//        this.users = users;
+//    }
 }

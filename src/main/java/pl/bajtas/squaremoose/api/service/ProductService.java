@@ -2,6 +2,8 @@ package pl.bajtas.squaremoose.api.service;
 
 import org.hibernate.Hibernate;
 import org.hibernate.exception.SQLGrammarException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMessage;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
@@ -57,6 +59,13 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     // Search by Product properties
     public Iterable<Product> getAll() {
         return getRepository().findAll();
+    }
+
+    public Page<Product> getAll(Integer page, Integer size) {
+        if (page == null)
+            return getRepository().findAll(new PageRequest(1, 20));
+        if (size == null)
+        return getRepository().findAll(new PageRequest(page, size));
     }
 
     public List<Product> getAllWithCategory() {

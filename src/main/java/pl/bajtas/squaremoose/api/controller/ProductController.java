@@ -5,6 +5,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,22 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products")
-    public Iterable<Product> getAll() {
-        return productService.getAll();
+    public Iterable<Product> getAll(@QueryParam("page") Integer page) {
+        return productService.getAll(page);
+    }
+
+    //region Description
+    /* Main method
+    * Takes 1 parameter - Number of page
+    *
+    * Returns list of all products on this page
+    * */
+    //endregion
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/products/page/{number}")
+    public Page<Product> getPage(@PathParam("number") Integer page, @QueryParam("size") Integer size) {
+        return productService.getAll(page, size);
     }
 
     //region Description
