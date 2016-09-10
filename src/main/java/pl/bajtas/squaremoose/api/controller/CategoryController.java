@@ -115,7 +115,7 @@ public class CategoryController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/delete")
-    public String getCategoryStats(@QueryParam("id") Integer id, @QueryParam("name") String name) {
+    public String deleteByIdOrName(@QueryParam("id") Integer id, @QueryParam("name") String name) {
         return categoryService.deleteByIdOrName(id, name);
     }
 

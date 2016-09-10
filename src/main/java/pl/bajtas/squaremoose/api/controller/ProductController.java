@@ -6,7 +6,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
 
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.Product;
@@ -33,8 +32,8 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products")
-    public Iterable<Product> getAll(@QueryParam("page") Integer page) {
-        return productService.getAll(page);
+    public Iterable<Product> getAll() {
+        return productService.getAll();
     }
 
     //region Description

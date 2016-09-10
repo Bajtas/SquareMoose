@@ -45,12 +45,12 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         shirt.setPrice(5);
         shirt.setLmod(new Date());
         shirt.setName("koszulka");
-        
+
         //Category shit = new Category();
         //shit.setName("Lol");
 
 
-        
+
         //shirt.setCategory(shit);
         
         productRepository.save(shirt);
@@ -65,7 +65,8 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         if (page == null)
             return getRepository().findAll(new PageRequest(1, 20));
         if (size == null)
-        return getRepository().findAll(new PageRequest(page, size));
+            return getRepository().findAll(new PageRequest(page, size));
+        return null;
     }
 
     public List<Product> getAllWithCategory() {
