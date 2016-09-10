@@ -27,14 +27,12 @@ public class User {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_role")
-//  @JsonManagedReference
     private UserRole userRole;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "btdeliveryadressrow", joinColumns = {
             @JoinColumn(name = "user_id", nullable = false) },
             inverseJoinColumns = { @JoinColumn(name = "delivery_adress_id", nullable = false) })
-    //@JsonManagedReference
     private List<DeliveryAdress> deliveryAdresses;
 
     public Integer getId() {
@@ -99,5 +97,13 @@ public class User {
 
     public void setDeliveryAdresses(List<DeliveryAdress> deliveryAdresses) {
         this.deliveryAdresses = deliveryAdresses;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }

@@ -46,8 +46,11 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/page/{number}")
-    public Page<Product> getPage(@PathParam("number") Integer page, @QueryParam("size") Integer size) {
-        return productService.getAll(page, size);
+    public Page<Product> getPage(@PathParam("number") Integer page,
+                                 @QueryParam("size") Integer size,
+                                 @QueryParam("sortBy") String sortBy,
+                                 @QueryParam("dir") String direction) {
+        return productService.getAll(page, size, sortBy, direction);
     }
 
     //region Description

@@ -1,9 +1,11 @@
 package pl.bajtas.squaremoose.api.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpMessage;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
@@ -61,13 +63,30 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         return getRepository().findAll();
     }
 
-    public Page<Product> getAll(Integer page, Integer size) {
+    public Page<Product> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
+        boolean unsorted = false;
+        Sort.Direction direction;
+
         if (page == null)
-            return getRepository().findAll(new PageRequest(1, 20));
+            page = 0;
         if (size == null)
-            return getRepository().findAll(new PageRequest(page, size));
-        return null;
+            size = 20;
+        if (StringUtils.isEmpty(sortBy))
+            unsorted = true;
+
+        Page<Product> result;
+        if (!unsorted) {
+            direction = SearchUtil.determineSortDirection(sortDirection);
+
+            result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
+        }
+        else
+            result = getRepository().findAll(new PageRequest(page, size));
+
+        return result;
     }
+
+
 
     public List<Product> getAllWithCategory() {
         return getRepository().findByCategoryIsNotNull();
