@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
+import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import java.util.ArrayList;
@@ -116,9 +117,9 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             return getRepository().findByPriceBetween(price1, price2);
         }
         else if (price1 == null) {
-            return getRepository().findByPriceLessThan(price2);
+            return getRepository().findByPriceLessThanEqual(price2);
         } else if (price2 == null) {
-            return getRepository().findByPriceGreaterThan(price1);
+            return getRepository().findByPriceGreaterThanEqual(price1);
         }
 
         return null;
@@ -149,7 +150,8 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             results.add(getByCategoryIdOrName(null, name));
         }
 
-        return SearchUtil.combine(results);
+        Combiner<Product> combiner = new Combiner<>(results);
+        return combiner.combine();
     }
 
     /* --------------------------------------------------------------------------------------------- */

@@ -7,19 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.User;
-import pl.bajtas.squaremoose.api.repository.CategoryRepository;
-import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
+import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
-import javax.persistence.EntityManager;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,28 +22,39 @@ import java.util.List;
 public class UserService {
     private static final Logger LOG = Logger.getLogger(UserService.class);
 
-    @Autowired private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public UserRepository getRepository() {
         return userRepository;
     }
 
     public Iterable<User> getAll() {
-        return userRepository.findAll();
+        LOG.info("Getting all users from DB.");
+        Iterable<User> results = getRepository().findAll();
+        LOG.info("End of getAll() method of User Service");
+
+        return results;
     }
 
     public List<User> getAllWithRoleName(String name) {
-        if (StringUtils.isNotEmpty(name))
-            return userRepository.findByUserRole_NameContainsIgnoreCase(name);
-        else
+        LOG.info("Getting all users with role name: " + name);
+        if (StringUtils.isNotEmpty(name)) {
+            return getRepository().findByUserRole_NameContainsIgnoreCase(name);
+        }
+        else {
+            LOG.info("Name of role is not specified. Method getAllWithRoleName(...) will return null.");
             return null;
+        }
     }
 
     public User getById(int id) {
-        return userRepository.findOne(id);
+        LOG.info("Getting user assigned to id: " + id);
+        return getRepository().findOne(id);
     }
 
     public Page<User> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
+        LOG.info("Getting all users wrapped with pages.");
         boolean unsorted = false;
         Sort.Direction direction;
 
@@ -62,18 +65,23 @@ public class UserService {
         if (StringUtils.isEmpty(sortBy))
             unsorted = true;
 
+        LOG.info("Page number: " + page + " size of page: " + size);
+
+
         Page<User> result;
         if (!unsorted) {
             direction = SearchUtil.determineSortDirection(sortDirection);
 
+            LOG.info("Results will be sorted by: " + sortBy + " With sorting direction: " + sortDirection);
             result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
-        }
-        else
+        } else {
+            LOG.info("Unsorted results.");
             result = getRepository().findAll(new PageRequest(page, size));
+        }
 
+        LOG.info("Exiting getAll(...) of User Service");
         return result;
     }
-
 
     public List<User> searchUser(String login, String email, String role, Boolean online) {
         List<List<User>> results = new ArrayList<>();
@@ -87,6 +95,7 @@ public class UserService {
         if (online != null)
             results.add(getRepository().findByIsOnline(online));
 
-        return SearchUtil.combine4(results);
+        Combiner<User> combiner = new Combiner<>(results);
+        return combiner.combine();
     }
 }

@@ -8,6 +8,7 @@ import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
+import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.persistence.EntityManager;
@@ -62,7 +63,8 @@ public class ProductImagesService {
             results.add(getByProductsNameContains(productName));
         }
 
-        return SearchUtil.combine3(results);
+        Combiner<ProductImage> combiner = new Combiner<>(results);
+        return combiner.combine();
     }
 
     private List<ProductImage> getByProductsNameContains(String productName) {

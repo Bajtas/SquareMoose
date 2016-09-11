@@ -90,7 +90,7 @@ public class ProductController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/product/search")
+    @Path("/products/search")
     public List<Product> getByAllProperties (
             @QueryParam("name") String name,
             @QueryParam("description") String description,

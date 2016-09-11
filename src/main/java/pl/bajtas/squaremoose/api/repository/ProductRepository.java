@@ -2,10 +2,8 @@ package pl.bajtas.squaremoose.api.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import org.springframework.data.repository.query.Param;
 import pl.bajtas.squaremoose.api.domain.Product;
 
 import java.util.List;
@@ -18,8 +16,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     List<Product> findByDescriptionContainsIgnoreCase(String description);
     // Find by Product.Price
     List<Product> findByPriceBetween(float price1, float price2);
-    List<Product> findByPriceGreaterThan(float price1);
-    List<Product> findByPriceLessThan(float price2);
+    List<Product> findByPriceGreaterThanEqual(float price1);
+    List<Product> findByPriceLessThanEqual(float price2);
 
     /* Find by Category properties */
     List<Product> findByCategoryIsNotNull();
@@ -43,7 +41,4 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
 
 //    @Query("from Product a where a.category.id=:categoryid")
 //    List<Product> findByCategoryId(@Param("categoryid") Integer categoryId);
-
-
-
 }

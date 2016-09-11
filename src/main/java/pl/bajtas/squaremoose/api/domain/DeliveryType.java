@@ -68,4 +68,14 @@ public class DeliveryType {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof DeliveryType)) {
+            return false;
+        }
+
+        DeliveryType otherDeliveryType = (DeliveryType) other;
+        return id.equals(otherDeliveryType.getId());
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
+import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import java.util.ArrayList;
@@ -93,7 +94,8 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
             results.add(getByUsername(name));
         }
 
-        return SearchUtil.combine2(results);
+        Combiner<UserRole> combiner = new Combiner<>(results);
+        return combiner.combine();
     }
 
     private List<UserRole> getByUsername(String name) {

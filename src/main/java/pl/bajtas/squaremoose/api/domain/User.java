@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "btuser")
 public class User {
     @Id
@@ -31,8 +31,8 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "btdeliveryadressrow", joinColumns = {
-            @JoinColumn(name = "user_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "delivery_adress_id", nullable = false) })
+            @JoinColumn(name = "user_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "delivery_adress_id", nullable = false)})
     private List<DeliveryAdress> deliveryAdresses;
 
     public Integer getId() {
@@ -105,5 +105,15 @@ public class User {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof User)) {
+            return false;
+        }
+
+        User otherUser = (User) other;
+        return id.equals(otherUser.getId());
     }
 }

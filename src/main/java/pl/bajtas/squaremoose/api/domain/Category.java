@@ -1,51 +1,57 @@
 package pl.bajtas.squaremoose.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "btcategory")
 public class Category {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  private String name;
+    private String name;
 
-  @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-  //@JsonBackReference
-  private List<Product> products;
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    //@JsonBackReference
+    private List<Product> products;
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public void setProducts(List<Product> products) {
-    this.products = products;
-  }
+    public List<Product> getProducts() {
+        return products;
+    }
 
-  public List<Product> getProducts() {
-    return products;
-  }
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof Category)) {
+            return false;
+        }
+
+        Category otherCategory = (Category) other;
+        return id.equals(otherCategory.getId());
+    }
 }

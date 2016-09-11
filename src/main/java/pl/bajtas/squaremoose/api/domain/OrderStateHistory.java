@@ -66,4 +66,14 @@ public class OrderStateHistory {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof OrderStateHistory)) {
+            return false;
+        }
+
+        OrderStateHistory otherOrderStateHistory = (OrderStateHistory) other;
+        return id.equals(otherOrderStateHistory.getId());
+    }
 }

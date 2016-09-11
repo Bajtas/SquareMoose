@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "btdeliveryadress")
 public class DeliveryAdress {
     @Id
@@ -106,4 +106,14 @@ public class DeliveryAdress {
 //    public void setUsers(List<BUser> users) {
 //        this.users = users;
 //    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof DeliveryAdress)) {
+            return false;
+        }
+
+        DeliveryAdress otherDeliveryAdress = (DeliveryAdress) other;
+        return id.equals(otherDeliveryAdress.getId());
+    }
 }

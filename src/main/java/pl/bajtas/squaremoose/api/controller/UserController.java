@@ -3,7 +3,6 @@ package pl.bajtas.squaremoose.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.service.UserService;
 
@@ -28,13 +27,11 @@ public class UserController {
 
     // Search by Product properties
 
-    //region Description
     /* Main method
     * Takes 0 parameters
     *
     * Returns list of users
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/users")
@@ -42,8 +39,19 @@ public class UserController {
         return getService().getAll();
     }
 
-    //region Description
-    /* Main method
+    /* getByAllWithRoleName(name)
+    * Takes 1 parameter - Role Name
+    *
+    * Returns users related to Role Name or nothing
+    * */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/users/role/{name}")
+    public List<User> getByAllWithRoleName(@NotNull @PathParam("name") String name) {
+        return getService().getAllWithRoleName(name);
+    }
+
+    /* getPage(...)
     * Takes 1 path parameter - Number of page
     * Takes 3 path parameters:
     *       - size - number of elements in page
@@ -52,7 +60,6 @@ public class UserController {
     *
     * Returns list of all users on this page
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/users/page/{number}")
@@ -63,13 +70,11 @@ public class UserController {
         return getService().getAll(page, size, sortBy, direction);
     }
 
-    //region Description
-    /* Main method
+    /* getById(id)
     * Takes 1 parameter - Id
     *
     * Returns user related to id or nothing
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/id/{id}")
@@ -77,28 +82,23 @@ public class UserController {
         return getService().getById(id);
     }
 
-    //region Description
-    /* Main method
-    * Takes 1 parameter - Role Name
+    /* getByAllProperties(...)
+    * Takes 4 parameters:
+    *  - login
+    *  - email
+    *  - role
+    *  - online
     *
-    * Returns users related to Role Name or nothing
+    * Returns user related to this search properties or nothing
     * */
-    //endregion
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/users/role/{name}")
-    public List<User> getByAllWithRoleName(@NotNull @PathParam("name") String name) {
-        return getService().getAllWithRoleName(name);
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/users/search")
-    public List<User> getByAllProperties (
+    public List<User> getByAllProperties(
             @QueryParam("login") String login,
             @QueryParam("email") String email,
             @QueryParam("role") String role,
-            @QueryParam("online") Boolean online) throws Exception {
+            @QueryParam("online") Boolean online) {
         return getService().searchUser(login, email, role, online);
     }
 }

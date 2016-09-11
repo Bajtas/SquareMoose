@@ -50,4 +50,14 @@ public class ProductImage {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof ProductImage)) {
+            return false;
+        }
+
+        ProductImage otherProductImage = (ProductImage) other;
+        return id.equals(otherProductImage.getId());
+    }
 }

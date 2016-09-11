@@ -48,4 +48,14 @@ public class PaymentMethod {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof PaymentMethod)) {
+            return false;
+        }
+
+        PaymentMethod otherPaymentMethod = (PaymentMethod) other;
+        return id.equals(otherPaymentMethod.getId());
+    }
 }

@@ -66,4 +66,14 @@ public class UserRole {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof UserRole)) {
+            return false;
+        }
+
+        UserRole otherUserRole = (UserRole) other;
+        return id.equals(otherUserRole.getId());
+    }
 }

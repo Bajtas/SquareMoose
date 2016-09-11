@@ -108,4 +108,14 @@ public class Order {
     public void setItemsAmount(int itemsAmount) {
         this.itemsAmount = itemsAmount;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof Order)) {
+            return false;
+        }
+
+        Order otherOrder = (Order) other;
+        return id.equals(otherOrder.getId());
+    }
 }
