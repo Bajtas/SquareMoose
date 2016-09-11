@@ -3,13 +3,11 @@ package pl.bajtas.squaremoose.api.service;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.domain.UserRole;
@@ -18,7 +16,6 @@ import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
-import javax.annotation.security.PermitAll;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -33,9 +30,13 @@ public class UserService {
     private static final Logger LOG = Logger.getLogger(UserService.class);
     private static final String DEFAULT_USER_ROLE = "User";
 
-    @Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;
-    @Autowired private UserRepository userRepository;
-    @Autowired private UserRoleRepository userRoleRepository;
+    @Autowired
+    @Lazy
+    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     public UserRepository getRepository() {
         return userRepository;
@@ -110,7 +111,7 @@ public class UserService {
         return combiner.combine();
     }
 
-    public String register(User user) {
+    public String add(User user) {
         String login = user.getLogin();
         String email = user.getEmail();
         String password = user.getPassword();
@@ -152,50 +153,48 @@ public class UserService {
         }
     }
 
-    public String update(User user) {
-        String login = user.getLogin();
-        String email = user.getEmail();
-        String password = user.getPassword();
+    public String update(User newUser) {
+        String login = newUser.getLogin(); // get login to find user for update
+        String newEmail = newUser.getEmail();
+        String newPassword = newUser.getPassword();
 
-        if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(email)) {
-            User loginResult = getRepository().findByLogin(login);
-            User emailResult = getRepository().findByEmail(email);
+        if (StringUtils.isNotEmpty(login)) {
+            User old = getRepository().findByLogin(login);
 
-            if (loginResult == null || emailResult == null) {
-                return loginResult == null ? "User with specified login not found!" : "User with specified email not found!";
+            if (old == null) {
+                return "User with specified login not found!";
             }
 
-            Base64.Decoder decoder = Base64.getDecoder();
-            String decodedPassword = new String(decoder.decode(password), StandardCharsets.UTF_8);
+            if (StringUtils.isNotEmpty(newEmail)) {
+                if (getRepository().findByEmail(newEmail) != null) {
+                    return "This email is already taken!";
+                } else {
+                    old.setEmail(newEmail);
+                }
+            }
 
-            if (passwordEncoder.matches(decodedPassword, loginResult.getPassword())) {
+            if (StringUtils.isNotEmpty(newPassword)) {
+                Base64.Decoder decoder = Base64.getDecoder();
+                String decodedPassword = new String(decoder.decode(newPassword), StandardCharsets.UTF_8);
+
                 if (decodedPassword.length() >= 6) {
                     String hashedPassword = passwordEncoder.encode(decodedPassword);
-
-                    loginResult.setEmail(user.getEmail());
-                    loginResult.setPassword(hashedPassword);
-                    loginResult.setLmod(new Date());
-
-                    getRepository().save(user);
-                    return "Registered successfully!";
+                    old.setPassword(hashedPassword);
                 } else {
                     return "Password length is to small. Min. 6 characters.";
                 }
-            } else {
-                return "Old passwords doesn't matches.";
             }
 
+            old.setLmod(new Date());
+            getRepository().save(old);
 
-        } else if (StringUtils.isNotEmpty(login)) {
-            return "Email has been not specified!";
-        } else if (StringUtils.isNotEmpty(email)) {
-            return "Email has been not specified!";
+            return "Updated successfully.";
         } else {
-            return "Email and login has been not specified!";
+            return "Login has been not specified!";
         }
     }
 
-    public String delete(User user) {
+    public String delete(int id, User user) {
         String login = user.getLogin();
         String email = user.getEmail();
         String password = user.getPassword();

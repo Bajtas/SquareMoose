@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.Category;
+import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
@@ -87,11 +88,15 @@ public class CategoryService {
     public String addOrUpdate(Category category, boolean update) {
         LOG.info("Trying to save category: " + category.getName() + category.getId());
 
-        // If true check if there is obj related to this Id in DB
-        update = category != null ? isCategoryExists(category.getId()) : false;
+        if (category.getId() != null) {
+            // If true check if there is obj related to this Id in DB
+            update = category != null ? isCategoryExists(category.getId()) : false;
+        } else if (category.getId() == null && category.getName() == null) {
+            return "Category entity has been not parsed!";
+        }
 
         boolean error = false;
-        String info = "Object ";
+        String info = "Category ";
 
         // Error
         if (update && (category == null || category.getId() == null)) {
@@ -116,12 +121,57 @@ public class CategoryService {
         return info;
     }
 
+    public String update(int id, Category updatedCategory) {
+        LOG.info("Trying to save category with id: " + id);
+
+        try {
+            Category old = getRepository().findOne(id);
+            if (old != null) {
+                updatedCategory.setId(id);
+
+                getRepository().save(updatedCategory);
+                return "Category with id: " + id + " updated successfully!";
+            } else {
+                return "Category with given id: " + id + " not found!";
+            }
+        } catch (Exception e) {
+            LOG.error("Error occured when saved: ", e);
+            return "Error: " + e;
+        }
+    }
+
+    /* Deletes one Category assigned to given id */
+    public String delete(int id) {
+        LOG.info("Trying to delete Category.");
+        String info = "Deleted successfully!";
+
+        LOG.info("Category with id: " + id + " will be deleted.");
+
+        Category category = getRepository().findOne(id);
+        if (category != null) {
+            try {
+                List<Product> assignedProducts = category.getProducts();
+                for (Product product : assignedProducts) {
+                    product.setCategory(null);
+                    productRepository.save(product);
+                }
+                getRepository().delete(id);
+            } catch (Exception e) {
+                LOG.error("Category with id: " + id, e);
+                info = "Error occured!";
+            }
+        } else {
+            info = "Category with given id: " + id + " not found!";
+        }
+        return info;
+    }
+
     public String deleteByIdOrName(Integer id, String name) {
-        LOG.info("Trying to delete Category." );
+        LOG.info("Trying to delete Category.");
         String info = "Deleted successfully!";
 
         if (id == null && name == null) {
-            LOG.warn("Id and Name for Category to delete has not been specified!" );
+            LOG.warn("Id and Name for Category to delete has not been specified!");
 
             return "Please specify Id or Name of Category to delete it.";
         } else if (id != null) {
@@ -134,7 +184,7 @@ public class CategoryService {
                 info = "Error occured!";
             }
         } else if (name != null) {
-            LOG.info("Category with name: " + name + " will be deleted." );
+            LOG.info("Category with name: " + name + " will be deleted.");
 
             try {
                 getRepository().deleteByName(name);
@@ -151,4 +201,6 @@ public class CategoryService {
     private boolean isCategoryExists(Integer id) {
         return getRepository().findOne(id) != null ? true : false;
     }
+
+
 }

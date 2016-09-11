@@ -23,13 +23,11 @@ public class CategoryController {
 
     // Read
 
-    //region Description
     /* Main method
     * Takes 0 parameters
     *
     * Returns list of all categories
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/categories")
@@ -37,27 +35,23 @@ public class CategoryController {
         return categoryService.getAll();
     }
 
-    //region Description
     /* Search by Id
     * Takes 1 parameter - Id
     *
     * Returns one Category related to this Id
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/category/id/{id}")
+    @Path("/category/{id}")
     public Category getById(@NotNull @PathParam("id") Integer id) {
         return categoryService.getById(id);
     }
 
-    //region Description
     /* Search by Name
     * Takes 1 parameter - Name
     *
     * Returns one Category related to this Name
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/name/{name}")
@@ -67,7 +61,6 @@ public class CategoryController {
 
     // Add and Update
 
-    //region Description
     /* Add new category to DB
     * Takes 1 parameter - Category in JSON format
     *
@@ -75,7 +68,6 @@ public class CategoryController {
     *
     * If not succeed, returns info about error.
     * */
-    //endregion
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
@@ -84,7 +76,6 @@ public class CategoryController {
         return categoryService.addOrUpdate(category, false); // true for add new
     }
 
-    //region Description
     /* Update category in DB
     * Takes 1 parameter - Category in JSON format
     *
@@ -92,18 +83,16 @@ public class CategoryController {
     *
     * If not succeed, returns info about error.
     * */
-    //endregion
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/category/update")
-    public String updateCategory(Category category) {
-        return categoryService.addOrUpdate(category, true); // false for update old
+    @Path("/category/{id}/update")
+    public String updateCategory(@NotNull @PathParam("id") int id, Category updatedCategory) {
+        return categoryService.update(id, updatedCategory); // false for update old
     }
 
     // Delete
 
-    //region Description
     /* Deletes category by Id or Name
     * Takes 2 parameters
     *
@@ -111,17 +100,15 @@ public class CategoryController {
     *
     * If not succeed, returns info about error.
     * */
-    //endregion
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/category/delete")
-    public String deleteByIdOrName(@QueryParam("id") Integer id, @QueryParam("name") String name) {
-        return categoryService.deleteByIdOrName(id, name);
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/category/{id}/delete")
+    public String delete(@NotNull @PathParam("id") Integer id) {
+        return categoryService.delete(id);
     }
 
     // Other
 
-    //region Description
     /* Show stats for all categories
     * Takes 2 parameters
     *
@@ -129,7 +116,6 @@ public class CategoryController {
     *
     * If all parameters are null, method will Excepction
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/stats")

@@ -98,7 +98,7 @@ public class ProductImagesController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/image/add")
-    public String addCategory(ProductImage productImage) {
+    public String add(ProductImage productImage) {
         return productImagesService.addOrUpdate(productImage, false); // true for add new
     }
 
@@ -115,7 +115,7 @@ public class ProductImagesController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/image/update")
-    public String updateCategory(ProductImage productImage) {
+    public String update(ProductImage productImage) {
         return productImagesService.addOrUpdate(productImage, true); // false for update old
     }
 

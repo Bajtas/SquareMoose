@@ -22,13 +22,11 @@ public class ActualOrderStateController {
     ActualOrderStateService actualOrderStateService; // Product service bean for connection between controller and service layers
     // Search by Product properties
 
-    //region Description
     /* Main method
     * Takes 0 parameters
     *
     * Returns list of all products with and without categories
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates")

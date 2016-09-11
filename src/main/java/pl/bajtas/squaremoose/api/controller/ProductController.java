@@ -1,5 +1,6 @@
 package pl.bajtas.squaremoose.api.controller;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -62,7 +63,7 @@ public class ProductController {
     //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/product/id/{id}")
+    @Path("/product/{id}")
     public Product getById(@NotNull @PathParam("id") Integer id) {
         return productService.getById(id);
     }
@@ -125,4 +126,28 @@ public class ProductController {
         return productService.getAllWithoutCategory();
     }
     /* --------------------------------------------------------------------------------------------- */
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/products/add")
+    public String add(Product product) {
+        return productService.add(product);
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/product/{id}/update")
+    public String add(@NotNull @PathParam("id") int id, Product product) {
+        return productService.update(id, product);
+    }
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/product/{id}/delete")
+    public String add(@NotNull @PathParam("id") int id) {
+        return productService.delete(id);
+    }
 }

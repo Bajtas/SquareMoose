@@ -1,5 +1,6 @@
 package pl.bajtas.squaremoose.api.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -100,5 +101,41 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
 
     private List<UserRole> getByUsername(String name) {
         return getRepository().findByUsers_LoginContainsIgnoreCase(name);
+    }
+
+    public String add(UserRole newRole) {
+        String newRoleName = newRole.getName();
+
+        if (StringUtils.isNotEmpty(newRole.getName())) {
+            UserRole old = getRepository().findByName(newRoleName);
+            if (old != null) {
+                return "Role with given name already exist.";
+            } else {
+                newRole.setLmod(new Date());
+                getRepository().save(newRole);
+                return "New user role added successfully.";
+            }
+        }
+
+        return "Specified role name is empty.";
+    }
+
+    public String delete(int id) {
+        getRepository().delete(id);
+
+        return "Role with id: " + id + " deleted.";
+    }
+
+    public String update(int id, UserRole newRole) {
+        UserRole old = getRepository().findOne(id);
+        if (old != null) {
+            newRole.setId(id);
+            newRole.setLmod(new Date());
+
+            getRepository().save(newRole);
+            return "User role with id: " + id + "updated successfully!";
+        } else {
+            return "User role with id: " + id + " not found!";
+        }
     }
 }

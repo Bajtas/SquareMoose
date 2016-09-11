@@ -8,8 +8,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpMessage;
 import pl.bajtas.squaremoose.api.domain.Category;
+import pl.bajtas.squaremoose.api.domain.OrderItem;
 import pl.bajtas.squaremoose.api.domain.Product;
+import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
+import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 
 import org.apache.log4j.Logger;
@@ -31,7 +34,9 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
   
   private static final Logger LOG = Logger.getLogger(ProductService.class);
 
+    @Autowired  private ProductImagesRepository productImagesRepository;
     @Autowired  private ProductRepository productRepository;
+    @Autowired  private CategoryRepository categoryRepository;
     @Autowired  private EntityManager entityManager;
     
     public ProductRepository getRepository() {
@@ -86,8 +91,6 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
         return result;
     }
-
-
 
     public List<Product> getAllWithCategory() {
         return getRepository().findByCategoryIsNotNull();
@@ -170,6 +173,83 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         }
 
         return null;
+    }
+
+    /* --------------------------------------------------------------------------------------------- */
+
+    // Add new product to DB
+    public String add(Product product) {
+        Category category = product.getCategory();
+        List<ProductImage> productImages = product.getImages();
+
+        try {
+            if (category != null) {
+                categoryRepository.save(category);
+            }
+            for (ProductImage image : productImages) {
+                productImagesRepository.save(image);
+            }
+
+            product.setAddedOn(new Date());
+            product.setLmod(new Date());
+
+            productRepository.save(product);
+        } catch (Exception e) {
+            return "Error: " + e;
+        }
+
+        return "Product added successfully!";
+    }
+
+    public String update(int id, Product product) {
+        product.setId(id);
+
+        Category category = product.getCategory();
+        List<ProductImage> productImages = product.getImages();
+
+        try {
+            if (category != null) {
+                categoryRepository.save(category);
+            }
+            for (ProductImage image : productImages) {
+                productImagesRepository.save(image);
+            }
+
+            product.setLmod(new Date());
+
+            productRepository.save(product);
+        } catch (Exception e) {
+            return "Error: " + e;
+        }
+
+        return "Product updated!";
+    }
+
+    public String delete(int id) {
+        LOG.info("Trying to delete Product.");
+        String info = "Deleted successfully!";
+
+        LOG.info("Product with id: " + id + " will be deleted.");
+
+        Product product = getRepository().findOne(id);
+        if (product != null) {
+            try {
+                List<ProductImage> images = product.getImages();
+                for (ProductImage image : images) {
+                    productImagesRepository.delete(image);
+                }
+
+                product.setCategory(null);
+                getRepository().save(product);
+                getRepository().delete(id);
+            } catch (Exception e) {
+                LOG.error("Product with id: " + id, e);
+                info = "Error occured!";
+            }
+        } else {
+            info = "Product with given id: " + id + " not found!";
+        }
+        return info;
     }
 
     /* --------------------------------------------------------------------------------------------- */

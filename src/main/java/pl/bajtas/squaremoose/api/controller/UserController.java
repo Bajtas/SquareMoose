@@ -112,9 +112,9 @@ public class UserController {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/register")
-    public String register(User user) {
-        return getService().register(user);
+    @Path("/users/add")
+    public String add(User user) {
+        return getService().add(user);
     }
 
     /*  Add new User to DB
@@ -138,8 +138,8 @@ public class UserController {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/delete")
-    public String delete(User user) {
-        return getService().delete(user);
+    @Path("/user/{id}/delete")
+    public String delete(@NotNull @PathParam("id") int id,  User user) {
+        return getService().delete(id, user);
     }
 }
