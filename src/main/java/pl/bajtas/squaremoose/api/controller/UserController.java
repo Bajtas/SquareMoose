@@ -25,7 +25,7 @@ public class UserController {
         return userService;
     }
 
-    // Search by Product properties
+    // Search by User properties
 
     /* Main method
     * Takes 0 parameters
@@ -100,5 +100,46 @@ public class UserController {
             @QueryParam("role") String role,
             @QueryParam("online") Boolean online) {
         return getService().searchUser(login, email, role, online);
+    }
+
+    // Add new User
+
+    /*  Add new User to DB
+    * Takes 1 parameter : User object
+    *
+    * Returns info with error or success if registration is successful.
+    * */
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/register")
+    public String register(User user) {
+        return getService().register(user);
+    }
+
+    /*  Add new User to DB
+    * Takes 1 parameter : User object
+    *
+    * Returns info with error or success if remove is successful.
+    * */
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/update")
+    public String update(User user) {
+        return getService().update(user);
+    }
+
+    /*  Add new User to DB
+    * Takes 1 parameter : User object
+    *
+    * Returns info with error or success if remove is successful.
+    * */
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/delete")
+    public String delete(User user) {
+        return getService().delete(user);
     }
 }

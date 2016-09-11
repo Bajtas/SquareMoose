@@ -21,9 +21,11 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     Page<User> findAll(Pageable pageable);
 
     // Search by user login
+    User findByLogin(String login);
     List<User> findByLoginContainsIgnoreCase(String name); // %login%
     List<User> findByLoginStartingWithIgnoreCase(String login); // login%
     // Search by user email
+    User findByEmail(String email);
     List<User> findByEmailContainsIgnoreCase(String email); // %email%
     List<User> findByEmailStartingWithIgnoreCase(String login); // email%
     // Search by user role name
@@ -31,4 +33,6 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     List<User> findByUserRole_NameStartingWithIgnoreCase(String role); // rolename%
     // Search if user is currently online
     List<User> findByIsOnline(Boolean online);
+
+
 }

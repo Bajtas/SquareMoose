@@ -3,10 +3,6 @@ package pl.bajtas.squaremoose.api.util.search;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.data.domain.Sort;
-import pl.bajtas.squaremoose.api.domain.ProductImage;
-import pl.bajtas.squaremoose.api.domain.UserRole;
-
-import java.util.List;
 
 /**
  * Created by Bajtas on 03.09.2016.

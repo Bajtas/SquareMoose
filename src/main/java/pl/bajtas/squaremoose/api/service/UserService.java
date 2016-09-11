@@ -3,16 +3,26 @@ package pl.bajtas.squaremoose.api.service;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.User;
+import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
+import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
+import javax.annotation.security.PermitAll;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,9 +31,11 @@ import java.util.List;
 @Service
 public class UserService {
     private static final Logger LOG = Logger.getLogger(UserService.class);
+    private static final String DEFAULT_USER_ROLE = "User";
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;
+    @Autowired private UserRepository userRepository;
+    @Autowired private UserRoleRepository userRoleRepository;
 
     public UserRepository getRepository() {
         return userRepository;
@@ -41,8 +53,7 @@ public class UserService {
         LOG.info("Getting all users with role name: " + name);
         if (StringUtils.isNotEmpty(name)) {
             return getRepository().findByUserRole_NameContainsIgnoreCase(name);
-        }
-        else {
+        } else {
             LOG.info("Name of role is not specified. Method getAllWithRoleName(...) will return null.");
             return null;
         }
@@ -97,5 +108,123 @@ public class UserService {
 
         Combiner<User> combiner = new Combiner<>(results);
         return combiner.combine();
+    }
+
+    public String register(User user) {
+        String login = user.getLogin();
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(email)) {
+            User loginResult = getRepository().findByLogin(login);
+            User emailResult = getRepository().findByEmail(email);
+
+            if (loginResult != null) {
+                return "User with same login exist in system, please choose another login.";
+            } else if (emailResult != null) {
+                return "User with same email exist in system, please choose another email.";
+            }
+
+            Base64.Decoder decoder = Base64.getDecoder();
+            String decodedPassword = new String(decoder.decode(password), StandardCharsets.UTF_8);
+
+            if (decodedPassword.length() >= 6) {
+                String hashedPassword = passwordEncoder.encode(decodedPassword);
+
+                user.setAddedOn(new Date());
+                user.setLmod(new Date());
+                user.setPassword(hashedPassword);
+
+                UserRole roleForNewUser = userRoleRepository.findByName(DEFAULT_USER_ROLE);
+                user.setUserRole(roleForNewUser);
+
+                getRepository().save(user);
+                return "Registered successfully!";
+            } else {
+                return "Password length is to small. Min. 6 characters.";
+            }
+        } else if (StringUtils.isNotEmpty(login)) {
+            return "Email has been not specified!";
+        } else if (StringUtils.isNotEmpty(email)) {
+            return "Email has been not specified!";
+        } else {
+            return "Email and login has been not specified!";
+        }
+    }
+
+    public String update(User user) {
+        String login = user.getLogin();
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(email)) {
+            User loginResult = getRepository().findByLogin(login);
+            User emailResult = getRepository().findByEmail(email);
+
+            if (loginResult == null || emailResult == null) {
+                return loginResult == null ? "User with specified login not found!" : "User with specified email not found!";
+            }
+
+            Base64.Decoder decoder = Base64.getDecoder();
+            String decodedPassword = new String(decoder.decode(password), StandardCharsets.UTF_8);
+
+            if (passwordEncoder.matches(decodedPassword, loginResult.getPassword())) {
+                if (decodedPassword.length() >= 6) {
+                    String hashedPassword = passwordEncoder.encode(decodedPassword);
+
+                    loginResult.setEmail(user.getEmail());
+                    loginResult.setPassword(hashedPassword);
+                    loginResult.setLmod(new Date());
+
+                    getRepository().save(user);
+                    return "Registered successfully!";
+                } else {
+                    return "Password length is to small. Min. 6 characters.";
+                }
+            } else {
+                return "Old passwords doesn't matches.";
+            }
+
+
+        } else if (StringUtils.isNotEmpty(login)) {
+            return "Email has been not specified!";
+        } else if (StringUtils.isNotEmpty(email)) {
+            return "Email has been not specified!";
+        } else {
+            return "Email and login has been not specified!";
+        }
+    }
+
+    public String delete(User user) {
+        String login = user.getLogin();
+        String email = user.getEmail();
+        String password = user.getPassword();
+
+        if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(email)) {
+            User loginResult = getRepository().findByLogin(login);
+            User emailResult = getRepository().findByEmail(email);
+
+            if (loginResult == null) {
+                return "User with specified email does not exist in system.";
+            } else if (emailResult == null) {
+                return "User with specified login does not exist in system.";
+            }
+
+            Base64.Decoder decoder = Base64.getDecoder();
+            String decodedPassword = new String(decoder.decode(password), StandardCharsets.UTF_8);
+
+            if (passwordEncoder.matches(decodedPassword, loginResult.getPassword())) {
+                getRepository().delete(loginResult);
+                return "Removed successfully!";
+            } else {
+                return "Passwords doesn't matches.";
+            }
+        } else if (StringUtils.isNotEmpty(login)) {
+            return "Email has been not specified!";
+        } else if (StringUtils.isNotEmpty(email)) {
+            return "Email has been not specified!";
+        } else {
+            return "Email and login has been not specified!";
+        }
     }
 }
