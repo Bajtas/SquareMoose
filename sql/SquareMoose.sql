@@ -3,6 +3,16 @@ CREATE TABLE "btcategory" (
   "name" TEXT NOT NULL
 );
 
+CREATE TABLE "btdeliveryadress" (
+  "id" SERIAL PRIMARY KEY,
+  "adress" TEXT NOT NULL,
+  "town" TEXT NOT NULL,
+  "zip_code" TEXT NOT NULL,
+  "name" TEXT NOT NULL,
+  "surname" TEXT NOT NULL,
+  "contact_phone" TEXT NOT NULL
+);
+
 CREATE TABLE "btdeliverytype" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT NOT NULL,
@@ -29,12 +39,17 @@ CREATE TABLE "btorder" (
   "addedon" TIMESTAMP NOT NULL,
   "lmod" TIMESTAMP NOT NULL,
   "full_price" DOUBLE PRECISION NOT NULL,
-  "items_amount" INTEGER NOT NULL
+  "items_amount" INTEGER NOT NULL,
+  "delivery_adress" INTEGER
 );
+
+CREATE INDEX "idx_btorder__delivery_adress" ON "btorder" ("delivery_adress");
 
 CREATE INDEX "idx_btorder__delivery_type" ON "btorder" ("delivery_type");
 
 CREATE INDEX "idx_btorder__payment_method" ON "btorder" ("payment_method");
+
+ALTER TABLE "btorder" ADD CONSTRAINT "fk_btorder__delivery_adress" FOREIGN KEY ("delivery_adress") REFERENCES "btdeliveryadress" ("id");
 
 ALTER TABLE "btorder" ADD CONSTRAINT "fk_btorder__delivery_type" FOREIGN KEY ("delivery_type") REFERENCES "btdeliverytype" ("id");
 
@@ -108,4 +123,40 @@ CREATE INDEX "idx_btimage__image_id" ON "btimage" ("image_id");
 
 ALTER TABLE "btimage" ADD CONSTRAINT "fk_btimage__image_id" FOREIGN KEY ("image_id") REFERENCES "btproductimage" ("id");
 
-ALTER TABLE "btimage" ADD CONSTRAINT "fk_btimage__product_id" FOREIGN KEY ("product_id") REFERENCES "btproduct" ("id")
+ALTER TABLE "btimage" ADD CONSTRAINT "fk_btimage__product_id" FOREIGN KEY ("product_id") REFERENCES "btproduct" ("id");
+
+CREATE TABLE "btuserrole" (
+  "id" SERIAL PRIMARY KEY,
+  "name" TEXT NOT NULL,
+  "lmod" TIMESTAMP NOT NULL
+);
+
+CREATE TABLE "btuser" (
+  "id" SERIAL PRIMARY KEY,
+  "login" TEXT NOT NULL,
+  "email" TEXT NOT NULL,
+  "password" TEXT NOT NULL,
+  "added_on" TIMESTAMP NOT NULL,
+  "is_online" BOOLEAN NOT NULL,
+  "lmod" TIMESTAMP NOT NULL,
+  "user_role" INTEGER NOT NULL
+);
+
+CREATE INDEX "idx_btuser__user_role" ON "btuser" ("user_role");
+
+ALTER TABLE "btuser" ADD CONSTRAINT "fk_btuser__user_role" FOREIGN KEY ("user_role") REFERENCES "btuserrole" ("id");
+
+CREATE TABLE "btdeliveryadressrow" (
+  "id" INTEGER NOT NULL,
+  "user_id" INTEGER,
+  "delivery_adress_id" INTEGER NOT NULL,
+  PRIMARY KEY ("id", "delivery_adress_id")
+);
+
+CREATE INDEX "idx_btdeliveryadressrow__delivery_adress_id" ON "btdeliveryadressrow" ("delivery_adress_id");
+
+CREATE INDEX "idx_btdeliveryadressrow__user_id" ON "btdeliveryadressrow" ("user_id");
+
+ALTER TABLE "btdeliveryadressrow" ADD CONSTRAINT "fk_btdeliveryadressrow__delivery_adress_id" FOREIGN KEY ("delivery_adress_id") REFERENCES "btdeliveryadress" ("id");
+
+ALTER TABLE "btdeliveryadressrow" ADD CONSTRAINT "fk_btdeliveryadressrow__user_id" FOREIGN KEY ("user_id") REFERENCES "btuser" ("id")
