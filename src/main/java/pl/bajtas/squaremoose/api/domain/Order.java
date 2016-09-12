@@ -15,35 +15,32 @@ import java.util.List;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name = "btorder")
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    //@JsonManagedReference
     private List<OrderItem> orderItems;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "delivery_type")
-   // @JsonManagedReference
     private DeliveryType deliveryType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_method")
-   // @JsonManagedReference
     private PaymentMethod paymentMethod;
-
-    private float fullPrice;
-
-    private int itemsAmount;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "delivery_adress")
-    // @JsonManagedReference
     private DeliveryAdress deliveryAdress;
 
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "order")
     private ActualOrderState actualOrderState;
+
+    private float fullPrice;
+
+    private int itemsAmount;
 
     public Integer getId() {
         return id;
@@ -60,14 +57,6 @@ public class Order {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
-
-//    public ActualOrderState getActualOrderState() {
-//        return actualOrderState;
-//    }
-//
-//    public void setActualOrderState(ActualOrderState actualOrderState) {
-//        this.actualOrderState = actualOrderState;
-//    }
 
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;
@@ -107,6 +96,14 @@ public class Order {
 
     public void setItemsAmount(int itemsAmount) {
         this.itemsAmount = itemsAmount;
+    }
+
+    public DeliveryAdress getDeliveryAdress() {
+        return deliveryAdress;
+    }
+
+    public void setDeliveryAdress(DeliveryAdress deliveryAdress) {
+        this.deliveryAdress = deliveryAdress;
     }
 
     @Override

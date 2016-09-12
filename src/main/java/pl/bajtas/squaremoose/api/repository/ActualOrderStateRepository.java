@@ -19,5 +19,8 @@ public interface ActualOrderStateRepository  extends CrudRepository<ActualOrderS
     List<ActualOrderState> findByNameContainsIgnoreCase(String name);
     List<ActualOrderState> findByDescriptionContainsIgnoreCase(String description);
     Page<ActualOrderState> findAll(Pageable pageable);
+
+    /* Find by Order properties */
     ActualOrderState findByOrder_Id(int id);
+    ActualOrderState findByOrder_Name(String name);
 }
