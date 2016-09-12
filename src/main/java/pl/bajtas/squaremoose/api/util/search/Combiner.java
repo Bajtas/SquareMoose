@@ -31,8 +31,10 @@ public class Combiner<T> {
         int listsSize = listsToCombine.size();
         List<T> result = new ArrayList<T>();
 
+        result = listsToCombine.get(0);
+
         for (int i=1; i<listsSize;i++) {
-            result = ListUtils.intersection(listsToCombine.get(i-1), listsToCombine.get(i));
+            result = ListUtils.intersection(result, listsToCombine.get(i));
         }
 
         LOG.info("Result list size: " + result.size());

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
-import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,17 +17,24 @@ import java.util.List;
 /**
  * Created by Bajtas on 04.09.2016.
  */
+
 @Service
 public class UserRoleService implements ApplicationListener<ContextRefreshedEvent> {
-    private static final Logger LOG = Logger.getLogger(UserService.class);
+
+    private static final Logger LOG = Logger.getLogger(UserRoleService.class);
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    public UserRoleRepository getRepository() {
+        return userRoleRepository;
+    }
 
     // Events
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // Insert default roles to DB if they does not exist.
+        LOG.info("Check if there are proper roles defined in DB.");
         String roleNames[] = {"Admin", "Moderator", "User", "Guest"};
         for (String name : roleNames) {
             if (getRepository().findByName(name) == null) {
@@ -41,10 +47,7 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
         }
     }
 
-    public UserRoleRepository getRepository() {
-        return userRoleRepository;
-    }
-
+    // Search by User Role properties
     public Iterable<UserRole> getAll() {
         return getRepository().findAll();
     }
@@ -68,9 +71,9 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
         }
     }
 
-    public List<UserRole> getByNameContains(String name) {
+    public List<UserRole> getByNameContainsIgnoreCase(String name) {
         if (name != null) {
-            return getRepository().findByNameContainsIgnoreCase(name); // findByNameContainsIgnoreCase
+            return getRepository().findByNameContainsIgnoreCase(name);
         } else {
             LOG.warn("Search has not been performed - Name is null!");
             return null;
@@ -88,7 +91,7 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
         List<List<UserRole>> results = new ArrayList<>();
 
         if (name != null) {
-            results.add(getByNameContains(name));
+            results.add(getByNameContainsIgnoreCase(name));
         }
 
         if (username != null) {
@@ -99,10 +102,16 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
         return combiner.combine();
     }
 
+    /* --------------------------------------------------------------------------------------------- */
+
+    // Search by User properties
     private List<UserRole> getByUsername(String name) {
         return getRepository().findByUsers_LoginContainsIgnoreCase(name);
     }
 
+    /* --------------------------------------------------------------------------------------------- */
+
+    // Add new role to DB
     public String add(UserRole newRole) {
         String newRoleName = newRole.getName();
 
@@ -120,12 +129,7 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
         return "Specified role name is empty.";
     }
 
-    public String delete(int id) {
-        getRepository().delete(id);
-
-        return "Role with id: " + id + " deleted.";
-    }
-
+    // Update existing
     public String update(int id, UserRole newRole) {
         UserRole old = getRepository().findOne(id);
         if (old != null) {
@@ -138,4 +142,12 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
             return "User role with id: " + id + " not found!";
         }
     }
+
+    // Delete
+    public String delete(int id) {
+        getRepository().delete(id);
+
+        return "Role with id: " + id + " deleted.";
+    }
+
 }

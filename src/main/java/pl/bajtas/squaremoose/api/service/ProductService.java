@@ -1,14 +1,10 @@
 package pl.bajtas.squaremoose.api.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Hibernate;
-import org.hibernate.exception.SQLGrammarException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpMessage;
 import pl.bajtas.squaremoose.api.domain.Category;
-import pl.bajtas.squaremoose.api.domain.OrderItem;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
@@ -27,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
+/**
+ * Created by Bajtas on 04.09.2016.
+ */
 
 @Service
 public class ProductService implements ApplicationListener<ContextRefreshedEvent> {
@@ -37,7 +35,6 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     @Autowired  private ProductImagesRepository productImagesRepository;
     @Autowired  private ProductRepository productRepository;
     @Autowired  private CategoryRepository categoryRepository;
-    @Autowired  private EntityManager entityManager;
     
     public ProductRepository getRepository() {
       return productRepository;
@@ -53,13 +50,6 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         shirt.setPrice(5);
         shirt.setLmod(new Date());
         shirt.setName("koszulka");
-
-        //Category shit = new Category();
-        //shit.setName("Lol");
-
-
-
-        //shirt.setCategory(shit);
         
         productRepository.save(shirt);
     }
@@ -201,6 +191,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         return "Product added successfully!";
     }
 
+    // Update existing
     public String update(int id, Product product) {
         product.setId(id);
 
@@ -225,6 +216,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         return "Product updated!";
     }
 
+    // Delete
     public String delete(int id) {
         LOG.info("Trying to delete Product.");
         String info = "Deleted successfully!";
@@ -253,6 +245,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     /* --------------------------------------------------------------------------------------------- */
+
     public List<Product> getByOrderId(Integer id) {
         return getRepository().findByOrderItems_Order_Id(id);
     }

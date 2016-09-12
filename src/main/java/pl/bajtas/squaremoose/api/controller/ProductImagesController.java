@@ -83,8 +83,7 @@ public class ProductImagesController {
         return productImagesService.searchProductImage(productId, productName);
     }
 
-    // Add and Update
-
+    // Add
     //region Description
     /* Add new ProductImage to DB
     * Takes 1 parameter - ProductImage in JSON format
@@ -97,7 +96,7 @@ public class ProductImagesController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/image/add")
+    @Path("/images/add")
     public String add(ProductImage productImage) {
         return productImagesService.addOrUpdate(productImage, false); // true for add new
     }
@@ -114,9 +113,9 @@ public class ProductImagesController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/image/update")
-    public String update(ProductImage productImage) {
-        return productImagesService.addOrUpdate(productImage, true); // false for update old
+    @Path("/image/{id}/update")
+    public String update(@NotNull @PathParam("id") int id, ProductImage productImage) {
+        return productImagesService.update(id, productImage);
     }
 
     @GET

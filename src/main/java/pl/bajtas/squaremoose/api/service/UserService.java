@@ -3,7 +3,9 @@ package pl.bajtas.squaremoose.api.service;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,23 +27,30 @@ import java.util.List;
 /**
  * Created by Bajtas on 04.09.2016.
  */
+
 @Service
-public class UserService {
+public class UserService implements ApplicationListener<ContextRefreshedEvent> {
+
     private static final Logger LOG = Logger.getLogger(UserService.class);
+
     private static final String DEFAULT_USER_ROLE = "User";
 
-    @Autowired
-    @Lazy
-    private BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserRoleRepository userRoleRepository;
+    // Needs to be lazy, configuration needs to be done first
+    @Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;
+    @Autowired private UserRepository userRepository;
+    @Autowired private UserRoleRepository userRoleRepository;
 
     public UserRepository getRepository() {
         return userRepository;
     }
 
+    // Events
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+
+    }
+
+    // Search by User properties
     public Iterable<User> getAll() {
         LOG.info("Getting all users from DB.");
         Iterable<User> results = getRepository().findAll();
@@ -111,6 +120,9 @@ public class UserService {
         return combiner.combine();
     }
 
+     /* --------------------------------------------------------------------------------------------- */
+
+    // Add new
     public String add(User user) {
         String login = user.getLogin();
         String email = user.getEmail();
@@ -153,6 +165,7 @@ public class UserService {
         }
     }
 
+    // Update existing
     public String update(User newUser) {
         String login = newUser.getLogin(); // get login to find user for update
         String newEmail = newUser.getEmail();
@@ -194,6 +207,8 @@ public class UserService {
         }
     }
 
+    // Delete
+    /* TO DO: REMOVE SECOND PARAMETER, CREDENTIALS NEEDS TO BE CHECK THROUGH SPRING SECURITY */
     public String delete(int id, User user) {
         String login = user.getLogin();
         String email = user.getEmail();
@@ -226,4 +241,5 @@ public class UserService {
             return "Email and login has been not specified!";
         }
     }
+
 }

@@ -2,39 +2,44 @@ package pl.bajtas.squaremoose.api.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
+import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
-import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
-import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Bajtas on 03.09.2016.
  */
 @Service
-public class ProductImagesService {
+public class ProductImagesService implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger LOG = Logger.getLogger(ProductImagesService.class);
 
-    @Autowired  private ProductImagesRepository productImagesRepository;
+    @Autowired private ProductImagesRepository productImagesRepository;
+    @Autowired private ProductRepository productRepository;
 
     public ProductImagesRepository getRepository() {
         return productImagesRepository;
     }
 
-    public Iterable<ProductImage> getAll() {
-        return productImagesRepository.findAll();
+    // Events
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+
     }
 
-    public String getStats() {
-        return "All images in system: " +  productImagesRepository.count();
+    // Search by Product Image properties
+    public Iterable<ProductImage> getAll() {
+        return productImagesRepository.findAll();
     }
 
     public ProductImage getById(int id) {
@@ -67,6 +72,13 @@ public class ProductImagesService {
         return combiner.combine();
     }
 
+    public String getStats() {
+        return "All images in system: " + productImagesRepository.count();
+    }
+
+    /* --------------------------------------------------------------------------------------------- */
+
+    // Search by Product properties
     private List<ProductImage> getByProductsNameContains(String productName) {
         return getRepository().getByProducts_NameContainsIgnoreCase(productName);
     }
@@ -75,39 +87,61 @@ public class ProductImagesService {
         return getRepository().getByProducts_Id(productId);
     }
 
+    /* --------------------------------------------------------------------------------------------- */
 
-    public String addOrUpdate(ProductImage productImage, boolean update) {
-        LOG.info("Trying to save product image: " + productImage.getImageSrc());
-
-        // If true check if there is obj related to this Id in DB
-        update = productImage != null ? isImageExists(productImage.getId()) : false;
-
-        boolean error = false;
-        String info = "Object ";
-
-        // Error
-        if (update && (productImage == null || productImage.getId() == null)) {
-            info = "Error occured when saved:";
-            info += productImage == null ? " ProductImage is null!" : "ProductImage.Id is null!";
-            return info;
+    // Add new image to DB
+    public String add(ProductImage images) {
+        try {
+            getRepository().save(images);
+        } catch (Exception e) {
+            return "Error: " + e;
         }
+
+        return "Product Image added successfully!";
+    }
+
+    // Update existing
+    public String update(int id, ProductImage productImage) {
+        productImage.setId(id);
 
         try {
-            getRepository().save(productImage);
+            productImagesRepository.save(productImage);
         } catch (Exception e) {
-            LOG.error("Error occured when saved: ", e);
-            info = "Error occured when saved: " + e.toString();
-            error = true;
-        }
-        // Success
-        if (!error) {
-            LOG.info("Object saved successfully!");
-            info += update ? "updated successfully!" : "saved successfully!";
+            return "Error: " + e;
         }
 
+        return "Product Image updated!";
+    }
+
+    // Delete
+    public String delete(int id) {
+        LOG.info("Trying to delete ProductImage.");
+        String info = "Deleted successfully!";
+
+        LOG.info("ProductImage with id: " + id + " will be deleted.");
+
+        ProductImage image = getRepository().findOne(id);
+        if (image != null) {
+            try {
+                List<Product> products = image.getProducts();
+                for (Product product : products)
+                    product.setImages(null);
+
+                productRepository.save(products);
+                getRepository().delete(id);
+            } catch (Exception e) {
+                LOG.error("ProductImage with id: " + id, e);
+                info = "Error occured!";
+            }
+        } else {
+            info = "ProductImage with given id: " + id + " not found!";
+        }
         return info;
     }
 
+    /* --------------------------------------------------------------------------------------------- */
+
+    // Other
     private boolean isImageExists(Integer id) {
         return getRepository().findOne(id) != null ? true : false;
     }
