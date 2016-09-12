@@ -18,10 +18,7 @@ public class PaymentMethodService {
 
     private static final Logger LOG = Logger.getLogger(PaymentMethodService.class);
 
-    @Autowired
-    private PaymentMethodRepository paymentMethodRepository;
-    //@Autowired  private ProductRepository productRepository;
-    @Autowired  private EntityManager entityManager;
+    @Autowired  private PaymentMethodRepository paymentMethodRepository;
 
     public Iterable<PaymentMethod> getAll() {
         return paymentMethodRepository.findAll();

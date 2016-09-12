@@ -22,8 +22,6 @@ public class ActualOrderStateService {
     private ActualOrderStateRepository actualOrderStateRepository;
 //    @Autowired
 //    private ProductRepository productRepository;
-//    @Autowired
-//    private EntityManager entityManager;
 
     public ActualOrderStateRepository getRepository() {
         return actualOrderStateRepository;

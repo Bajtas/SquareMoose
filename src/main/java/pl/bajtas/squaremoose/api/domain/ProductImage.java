@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +23,8 @@ public class ProductImage {
     private Integer id;
 
     private String imageSrc;
+
+    private Date addedOn;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "images")
     //@JsonIgnore
@@ -51,6 +54,14 @@ public class ProductImage {
         this.products = products;
     }
 
+    public Date getAddedOn() {
+        return addedOn;
+    }
+
+    public void setAddedOn(Date addedOn) {
+        this.addedOn = addedOn;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null || !(other instanceof ProductImage)) {
@@ -60,4 +71,5 @@ public class ProductImage {
         ProductImage otherProductImage = (ProductImage) other;
         return id.equals(otherProductImage.getId());
     }
+
 }

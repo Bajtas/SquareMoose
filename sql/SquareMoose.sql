@@ -110,7 +110,8 @@ ALTER TABLE "btorderitem" ADD CONSTRAINT "fk_btorderitem__product" FOREIGN KEY (
 
 CREATE TABLE "btproductimage" (
   "id" SERIAL PRIMARY KEY,
-  "image_src" TEXT NOT NULL
+  "image_src" TEXT NOT NULL,
+  "added_on" TIMESTAMP NOT NULL
 );
 
 CREATE TABLE "btimage" (
