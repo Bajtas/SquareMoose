@@ -1,6 +1,5 @@
 package pl.bajtas.squaremoose.api.controller;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -23,13 +22,11 @@ public class ProductController {
 
     // Search by Product properties
 
-    //region Description
     /* Main method
     * Takes 0 parameters
     *
     * Returns list of all products with and without categories
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products")
@@ -37,13 +34,11 @@ public class ProductController {
         return productService.getAll();
     }
 
-    //region Description
     /* Main method
-    * Takes 1 parameter - Number of page
+    * Takes 4 parameters:
     *
     * Returns list of all products on this page
     * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/page/{number}")
@@ -72,7 +67,7 @@ public class ProductController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/name/{name}")
     public List<Product> getByNameContains(@NotNull @PathParam("name") String name) {
-        return productService.getByNameContains(name);
+        return productService.getByNameContainsIgnoreCase(name);
     }
 
     @GET

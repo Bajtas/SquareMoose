@@ -98,7 +98,7 @@ public class ProductImagesController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/images/add")
     public String add(ProductImage productImage) {
-        return productImagesService.addOrUpdate(productImage, false); // true for add new
+        return productImagesService.add(productImage); // true for add new
     }
 
     //region Description

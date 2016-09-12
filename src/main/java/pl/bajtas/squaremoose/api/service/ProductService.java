@@ -94,7 +94,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         return getRepository().findOne(id);
     }
 
-    public List<Product> getByNameContains(String name) {
+    public List<Product> getByNameContainsIgnoreCase(String name) {
         return getRepository().findByNameContainsIgnoreCase(name);
     }
 
@@ -128,7 +128,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         List<List<Product>> results = new ArrayList<>();
 
         if (name != null) {
-            results.add(getByNameContains(name));
+            results.add(getByNameContainsIgnoreCase(name));
         }
 
         if (description != null) {

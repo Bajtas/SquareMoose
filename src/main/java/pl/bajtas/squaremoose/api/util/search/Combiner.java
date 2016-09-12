@@ -29,9 +29,7 @@ public class Combiner<T> {
         removeEmptyLists();
 
         int listsSize = listsToCombine.size();
-        List<T> result = new ArrayList<T>();
-
-        result = listsToCombine.get(0);
+        List<T>  result = listsToCombine.get(0);
 
         for (int i=1; i<listsSize;i++) {
             result = ListUtils.intersection(result, listsToCombine.get(i));
