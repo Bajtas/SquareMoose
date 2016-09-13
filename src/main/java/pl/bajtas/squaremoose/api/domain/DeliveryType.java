@@ -19,15 +19,14 @@ public class DeliveryType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToMany(mappedBy = "deliveryType", fetch = FetchType.EAGER)
+    private List<Order> orders;
+
     private String name;
 
     private float price;
 
     private String time;
-
-    @OneToMany(mappedBy = "deliveryType", fetch = FetchType.EAGER)
-    //@JsonBackReference
-    private List<Order> orders;
 
     public Integer getId() {
         return id;

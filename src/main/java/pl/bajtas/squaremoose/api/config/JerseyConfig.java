@@ -6,14 +6,13 @@ import org.apache.log4j.Logger;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
 
-import pl.bajtas.squaremoose.api.init.SpringBootWebApplication;
 import pl.bajtas.squaremoose.api.util.config.ClassToRegisterEnum;
 import pl.bajtas.squaremoose.api.util.config.RestClasses;
 
 @Component
 public class JerseyConfig extends ResourceConfig {
 
-  private static final Logger LOG = Logger.getLogger(SpringBootWebApplication.class);
+  private static final Logger LOG = Logger.getLogger(JerseyConfig.class);
 
   public JerseyConfig() {
     LOG.info("Jersey initializization.");

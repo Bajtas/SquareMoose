@@ -25,16 +25,14 @@ public class ActualOrderState {
     private String description;
 
     @OneToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "order")
-    //@JsonManagedReference
     @PrimaryKeyJoinColumn
+    //@JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "btorderhistoryrow", joinColumns = {
             @JoinColumn(name = "actual_order_state_id", nullable = false) },
             inverseJoinColumns = { @JoinColumn(name = "order_state_history_id", nullable = false) })
-    //@JsonManagedReference
     private List<OrderStateHistory> orderStateHistories;
 
 

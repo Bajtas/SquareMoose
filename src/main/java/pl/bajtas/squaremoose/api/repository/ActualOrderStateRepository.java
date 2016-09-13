@@ -22,5 +22,4 @@ public interface ActualOrderStateRepository  extends CrudRepository<ActualOrderS
 
     /* Find by Order properties */
     ActualOrderState findByOrder_Id(int id);
-    ActualOrderState findByOrder_Name(String name);
 }

@@ -88,13 +88,10 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
         return getRepository().findByOrder_Id(id);
     }
 
-    public ActualOrderState getByOrderName(String name) {
-        return getRepository().findByOrder_Name(name);
-    }
-
     // Search by User properties /* TO DO */
     public List<ActualOrderState> getByUserId(int id) {
         //orderRepository.
+        return null;
     }
 
     /* --------------------------------------------------------------------------------------------- */

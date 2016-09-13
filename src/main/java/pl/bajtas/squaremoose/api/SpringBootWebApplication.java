@@ -1,4 +1,4 @@
-package pl.bajtas.squaremoose.api.init;
+package pl.bajtas.squaremoose.api;
 
 import java.util.Arrays;
 

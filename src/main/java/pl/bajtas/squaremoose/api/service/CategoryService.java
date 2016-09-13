@@ -46,7 +46,7 @@ public class CategoryService {
     }
 
     /* Returns one Category by Name - Ignores case */
-    public List<Category> getByName(String name) {
+    public List<Category> getByNameContainsIgnoreCase(String name) {
         LOG.info("Returns Category related to Name: " + name + " | Ignores case");
 
         return getRepository().findByNameContainsIgnoreCase(name);
