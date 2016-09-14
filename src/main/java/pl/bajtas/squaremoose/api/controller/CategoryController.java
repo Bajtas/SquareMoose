@@ -9,6 +9,7 @@ import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -73,7 +74,7 @@ public class CategoryController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/add")
     public String addCategory(Category category) {
-        return categoryService.addOrUpdate(category, false); // true for add new
+        return categoryService.add(category);
     }
 
     /* Update category in DB
@@ -87,7 +88,7 @@ public class CategoryController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/{id}/update")
-    public String updateCategory(@NotNull @PathParam("id") int id, Category updatedCategory) {
+    public Response updateCategory(@NotNull @PathParam("id") int id, Category updatedCategory) {
         return categoryService.update(id, updatedCategory); // false for update old
     }
 
@@ -103,7 +104,7 @@ public class CategoryController {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/{id}/delete")
-    public String delete(@NotNull @PathParam("id") Integer id) {
+    public Response delete(@NotNull @PathParam("id") Integer id) {
         return categoryService.delete(id);
     }
 

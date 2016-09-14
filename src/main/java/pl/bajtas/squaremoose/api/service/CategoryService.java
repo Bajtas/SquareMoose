@@ -10,6 +10,7 @@ import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 
 import javax.persistence.EntityManager;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +68,8 @@ public class CategoryService {
                 stats.setCount(productRepository.countByCategory_Id(category.getId()));
             } else if (byName) {
                 stats.setCount(productRepository.countDistinctByCategory_Name(category.getName()));
+            } else {
+                return null;
             }
 
             // Add this stat to results
@@ -85,43 +88,25 @@ public class CategoryService {
     }
 
     /* Returns info about saving or updating Category */
-    public String addOrUpdate(Category category, boolean update) {
+    public String add(Category category) {
         LOG.info("Trying to save category: " + category.getName() + category.getId());
 
-        if (category.getId() != null) {
-            // If true check if there is obj related to this Id in DB
-            update = category != null ? isCategoryExists(category.getId()) : false;
-        } else if (category.getId() == null && category.getName() == null) {
-            return "Category entity has been not parsed!";
-        }
-
-        boolean error = false;
-        String info = "Category ";
-
-        // Error
-        if (update && (category == null || category.getId() == null)) {
-            info = "Error occured when saved:";
-            info += category == null ? " Category is null!" : "Category.Id is null!";
-            return info;
+        if (isCategoryExists(category.getId())) {
+            return "Error: Category with id: " + category.getId() + " already exist.";
         }
 
         try {
             getRepository().save(category);
         } catch (Exception e) {
             LOG.error("Error occured when saved: ", e);
-            info = "Error occured when saved: " + e.toString();
-            error = true;
-        }
-        // Success
-        if (!error) {
-            LOG.info("Object saved successfully!");
-            info += update ? "updated successfully!" : "saved successfully!";
+            return "Error occured when saved: " + e.toString();
         }
 
-        return info;
+        LOG.info("Object saved successfully!");
+        return "Category saved successfully!";
     }
 
-    public String update(int id, Category updatedCategory) {
+    public Response update(int id, Category updatedCategory) {
         LOG.info("Trying to save category with id: " + id);
 
         try {
@@ -130,18 +115,18 @@ public class CategoryService {
                 updatedCategory.setId(id);
 
                 getRepository().save(updatedCategory);
-                return "Category with id: " + id + " updated successfully!";
+                return Response.status(Response.Status.OK).entity("Category with id: " + id + " updated successfully!").build();
             } else {
-                return "Category with given id: " + id + " not found!";
+                return Response.status(Response.Status.BAD_REQUEST).entity("Category with given id: " + id + " not found!").build();
             }
         } catch (Exception e) {
             LOG.error("Error occured when saved: ", e);
-            return "Error: " + e;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
     }
 
     /* Deletes one Category assigned to given id */
-    public String delete(int id) {
+    public Response delete(int id) {
         LOG.info("Trying to delete Category.");
         String info = "Deleted successfully!";
 
@@ -156,14 +141,15 @@ public class CategoryService {
                     productRepository.save(product);
                 }
                 getRepository().delete(id);
+
+                return Response.status(Response.Status.OK).entity("Category with id: " + id + " deleted successfully!").build();
             } catch (Exception e) {
                 LOG.error("Category with id: " + id, e);
-                info = "Error occured!";
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
             }
         } else {
-            info = "Category with given id: " + id + " not found!";
+            return Response.status(Response.Status.BAD_REQUEST).entity("Category with given id: " + id + " not found!").build();
         }
-        return info;
     }
 
     public String deleteByIdOrName(Integer id, String name) {
@@ -199,7 +185,11 @@ public class CategoryService {
 
     /* Util method, to check if Category with given Id exist. */
     private boolean isCategoryExists(Integer id) {
-        return getRepository().findOne(id) != null ? true : false;
+        if (id != null) {
+            return getRepository().findOne(id) != null ? true : false;
+        } else {
+            return false;
+        }
     }
 
 
