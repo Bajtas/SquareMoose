@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 public class SearchUtil {
 
     private static final Logger LOG = Logger.getLogger(SearchUtil.class);
+    private static final int DEFAULT_PAGE_SIZE = 20;
 
     public static Sort.Direction determineSortDirection(String sortDirection) {
         Sort.Direction direction = Sort.Direction.ASC;
@@ -28,5 +29,9 @@ public class SearchUtil {
         }
 
         return direction;
+    }
+
+    public static int getDefaultPageSize() {
+        return DEFAULT_PAGE_SIZE;
     }
 }

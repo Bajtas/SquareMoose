@@ -88,22 +88,22 @@ public class CategoryService {
     }
 
     /* Returns info about saving or updating Category */
-    public String add(Category category) {
+    public Response add(Category category) {
         LOG.info("Trying to save category: " + category.getName() + category.getId());
 
         if (isCategoryExists(category.getId())) {
-            return "Error: Category with id: " + category.getId() + " already exist.";
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category with id: " + category.getId() + " already exist.").build();
         }
 
         try {
             getRepository().save(category);
         } catch (Exception e) {
             LOG.error("Error occured when saved: ", e);
-            return "Error occured when saved: " + e.toString();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error occured when saved: " + e.toString()).build();
         }
 
         LOG.info("Object saved successfully!");
-        return "Category saved successfully!";
+        return Response.status(Response.Status.OK).entity("Category saved successfully!").build();
     }
 
     public Response update(int id, Category updatedCategory) {

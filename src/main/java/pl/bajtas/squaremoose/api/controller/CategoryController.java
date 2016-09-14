@@ -73,7 +73,7 @@ public class CategoryController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/add")
-    public String addCategory(Category category) {
+    public Response addCategory(Category category) {
         return categoryService.add(category);
     }
 
