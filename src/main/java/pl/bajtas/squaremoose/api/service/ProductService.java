@@ -1,9 +1,12 @@
 package pl.bajtas.squaremoose.api.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
@@ -32,6 +35,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
   
   private static final Logger LOG = Logger.getLogger(ProductService.class);
 
+    @Autowired  private SessionFactory sessionFactory;
     @Autowired  private ProductImagesRepository productImagesRepository;
     @Autowired  private ProductRepository productRepository;
     @Autowired  private CategoryRepository categoryRepository;
@@ -39,7 +43,11 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     public ProductRepository getRepository() {
       return productRepository;
     }
-    
+
+    protected Session getSession() {
+        return  sessionFactory.getCurrentSession();
+    }
+
     // Events
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -55,10 +63,12 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     // Search by Product properties
+    @Transactional
     public Iterable<Product> getAll() {
         return getRepository().findAll();
     }
 
+    @Transactional
     public Page<Product> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
         boolean unsorted = false;
         Sort.Direction direction;
@@ -82,26 +92,32 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         return result;
     }
 
+    @Transactional
     public List<Product> getAllWithCategory() {
         return getRepository().findByCategoryIsNotNull();
     }
 
+    @Transactional
     public List<Product> getAllWithoutCategory() {
         return getRepository().findByCategoryIsNull();
     }
 
+    @Transactional
     public Product getById(int id) {
         return getRepository().findOne(id);
     }
 
+    @Transactional
     public List<Product> getByNameContainsIgnoreCase(String name) {
         return getRepository().findByNameContainsIgnoreCase(name);
     }
 
+    @Transactional
     public List<Product> getByDescriptionContains(String description) {
         return getRepository().findByDescriptionContainsIgnoreCase(description);
     }
 
+    @Transactional
     public List<Product> getByPrice(Float price1, Float price2) throws Exception{
         if (price1 == null && price2 == null) {
             throw new Exception("Please specify price1 or price2 of Product for this request.");
@@ -118,6 +134,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         return null;
     }
 
+    @Transactional
     public List<Product> searchProduct(String name, String description, Float price1, Float price2, String categoryMame) throws Exception {
         if (name == null && description == null && price1 == null && price2 == null && categoryMame == null)  {
             Iterable<Product> source = getAll();
@@ -150,6 +167,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     /* --------------------------------------------------------------------------------------------- */
 
     // Search by Category properties
+    @Transactional
     public List<Product> getByCategoryIdOrName(Integer id, String name) throws Exception {
         if (id == null && name == null) {
             throw new Exception("Please specify Id or Name of Category for this request.");
@@ -168,6 +186,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     /* --------------------------------------------------------------------------------------------- */
 
     // Add new product to DB
+    @Transactional
     public String add(Product product) {
         Category category = product.getCategory();
         List<ProductImage> productImages = product.getImages();
@@ -192,6 +211,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     // Update existing
+    @Transactional
     public String update(int id, Product product) {
         product.setId(id);
 
@@ -217,6 +237,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     // Delete
+    @Transactional
     public String delete(int id) {
         LOG.info("Trying to delete Product.");
         String info = "Deleted successfully!";

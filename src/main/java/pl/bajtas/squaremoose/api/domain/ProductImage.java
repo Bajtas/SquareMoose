@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope = ProductImage.class)
 @Table(name = "btproductimage")
 public class ProductImage {
 

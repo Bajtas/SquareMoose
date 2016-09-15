@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @EntityScan(basePackages = {"pl.bajtas.squaremoose.api.domain"})
 @EnableJpaRepositories(basePackages = {"pl.bajtas.squaremoose.api.repository", "pl.bajtas.squaremoose.api.dao"})

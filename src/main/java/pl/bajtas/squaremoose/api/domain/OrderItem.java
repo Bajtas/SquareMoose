@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope = OrderItem.class)
 @Table(name = "btorderitem")
 public class OrderItem {
     @Id

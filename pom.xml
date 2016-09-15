@@ -5,7 +5,7 @@
 
 	<groupId>pl.bajtas</groupId>
 	<artifactId>squaremoose.api</artifactId>
-	<version>0.0.3</version>
+	<version>0.2.0</version>
 	<packaging>war</packaging>
 
 	<name>SquareMoose</name>

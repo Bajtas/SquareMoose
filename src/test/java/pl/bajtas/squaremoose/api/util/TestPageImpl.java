@@ -1,5 +1,6 @@
 package pl.bajtas.squaremoose.api.util;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -120,6 +121,7 @@ public class TestPageImpl<T> extends PageImpl<T> {
         return sort;
     }
 
+    @JsonDeserialize(using=CustomSortDeserializer.class)
     public void setSort(Sort sort) {
         this.sort = sort;
     }

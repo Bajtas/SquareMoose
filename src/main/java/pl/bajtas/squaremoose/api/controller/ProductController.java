@@ -95,6 +95,7 @@ public class ProductController {
             @QueryParam("categoryName") String categoryMame) throws Exception {
         return productService.searchProduct(name, description, price1, price2, categoryMame);
     }
+
     /* --------------------------------------------------------------------------------------------- */
 
     /* Find Product by Category properties */
