@@ -36,6 +36,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     /* Category stats */
     long countByCategory_Id(int id);
     long countDistinctByCategory_Name(String name);
+    long countDistinctByCategoryIsNotNull();
+    long countDistinctByCategoryIsNull();
 
     Page<Product> findAll(Pageable pageable);
 

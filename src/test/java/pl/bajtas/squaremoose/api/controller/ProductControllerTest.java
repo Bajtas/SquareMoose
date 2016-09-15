@@ -39,6 +39,8 @@ public class ProductControllerTest {
     private static final String GET_ALL_PRODUCTS_URL = CONTROLLER_URL + "/products";
     private static final String GET_ALL_PRODUCTS_PAGE_URL = CONTROLLER_URL + "/products/page/{number}";
     private static final String GET_ALL_PRODUCTS_PAGE_WITH_SIZE_URL = GET_ALL_PRODUCTS_PAGE_URL + "?size={size}";
+    private static final String GET_ALL_PRODUCTS_WITH_CATEGORY = GET_ALL_PRODUCTS_URL + "/categorized";
+    private static final String GET_ALL_PRODUCTS_WITHOUT_CATEGORY = GET_ALL_PRODUCTS_URL + "/uncategorized";
 
     @Autowired CategoryRepository categoryRepository;
     @Autowired ProductRepository productRepository;
@@ -205,5 +207,43 @@ public class ProductControllerTest {
         }
 
         assertEquals(object.getTotalElements(), productRepository.count());
+    }
+
+    @Test
+    public void getAllWithCategory() {
+        long responseCounter = productRepository.countDistinctByCategoryIsNotNull();
+
+        ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_ALL_PRODUCTS_WITH_CATEGORY, Product[].class);
+        Product[] objects = responseEntity.getBody();
+
+        MediaType contentType = responseEntity.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        assertEquals(statusCode, HttpStatus.OK);
+
+        assertEquals(responseCounter, objects.length);
+
+        for (Product product : objects)
+            assertNotNull(product.getCategory());
+    }
+
+    @Test
+    public void getAllWithoutCategory() {
+        long responseCounter = productRepository.countDistinctByCategoryIsNull();
+
+        ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_ALL_PRODUCTS_WITHOUT_CATEGORY, Product[].class);
+        Product[] objects = responseEntity.getBody();
+
+        MediaType contentType = responseEntity.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        assertEquals(statusCode, HttpStatus.OK);
+
+        assertEquals(responseCounter, objects.length);
+
+        for (Product product : objects)
+            assertNull(product.getCategory());
     }
 }

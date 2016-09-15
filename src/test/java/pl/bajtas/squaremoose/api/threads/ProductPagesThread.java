@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.util.TestPageImpl;
-import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import java.util.List;
 
