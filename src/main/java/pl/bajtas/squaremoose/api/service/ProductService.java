@@ -113,7 +113,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public List<Product> getByDescriptionContains(String description) {
+    public List<Product> getByDescriptionContainsIgnoreCase(String description) {
         return getRepository().findByDescriptionContainsIgnoreCase(description);
     }
 
@@ -149,7 +149,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         }
 
         if (description != null) {
-            results.add(getByDescriptionContains(name));
+            results.add(getByDescriptionContainsIgnoreCase(name));
         }
 
         if (price1 != null || price2 != null) {

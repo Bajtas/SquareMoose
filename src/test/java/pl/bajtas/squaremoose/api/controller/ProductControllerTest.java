@@ -8,7 +8,10 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
-import org.springframework.http.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import pl.bajtas.squaremoose.api.SpringBootWebApplication;
@@ -20,6 +23,7 @@ import pl.bajtas.squaremoose.api.util.TestPageImpl;
 import pl.bajtas.squaremoose.api.util.TestUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,6 +45,13 @@ public class ProductControllerTest {
     private static final String GET_ALL_PRODUCTS_PAGE_WITH_SIZE_URL = GET_ALL_PRODUCTS_PAGE_URL + "?size={size}";
     private static final String GET_ALL_PRODUCTS_WITH_CATEGORY = GET_ALL_PRODUCTS_URL + "/categorized";
     private static final String GET_ALL_PRODUCTS_WITHOUT_CATEGORY = GET_ALL_PRODUCTS_URL + "/uncategorized";
+    private static final String GET_BY_ID = CONTROLLER_URL + "/product/{id}";
+    private static final String GET_BY_NAME = CONTROLLER_URL + "/product/name/{name}";
+    private static final String GET_BY_DESCRIPTION = CONTROLLER_URL + "/product/description/{description}";
+    private static final String GET_BY_PRICE_BETWEEN = CONTROLLER_URL + "/product/price?price1={price1}&price2={price2}";
+    private static final String GET_BY_PRICE_GREATER = CONTROLLER_URL + "/product/price?price1={price1}";
+    private static final String GET_BY_PRICE_LESS = CONTROLLER_URL + "/product/price?price2={price2}";
+    private static final String SEARCH_PRODUCT = CONTROLLER_URL + "/products/search?name={name}&description={description}&price1={price1}&price2={price2}&categoryName={categoryName}";
 
     @Autowired CategoryRepository categoryRepository;
     @Autowired ProductRepository productRepository;
@@ -210,7 +221,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getAllWithCategory() {
+    public void getAllWithCategoryTest() {
         long responseCounter = productRepository.countDistinctByCategoryIsNotNull();
 
         ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_ALL_PRODUCTS_WITH_CATEGORY, Product[].class);
@@ -229,7 +240,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getAllWithoutCategory() {
+    public void getAllWithoutCategoryTest() {
         long responseCounter = productRepository.countDistinctByCategoryIsNull();
 
         ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_ALL_PRODUCTS_WITHOUT_CATEGORY, Product[].class);
@@ -245,5 +256,275 @@ public class ProductControllerTest {
 
         for (Product product : objects)
             assertNull(product.getCategory());
+    }
+
+    @Test
+    public void getByIdTest() {
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            Product product = productRepository.findOne(randomId);
+            if (product != null) {
+                ResponseEntity<Product> responseEntity = restTemplate.getForEntity(GET_BY_ID, Product.class, randomId);
+                Product productFromRest = responseEntity.getBody();
+
+                MediaType contentType = responseEntity.getHeaders().getContentType();
+                assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+                HttpStatus statusCode = responseEntity.getStatusCode();
+                assertEquals(statusCode, HttpStatus.OK);
+
+                assertEquals(product, productFromRest);
+            }
+        }
+    }
+
+    @Test
+    public void getByNameContainsIgnoreCaseTest() {
+        List<String> names = new ArrayList<>();
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            Product product = productRepository.findOne(randomId);
+            if (product != null) {
+                names.add(product.getName());
+            }
+        }
+
+        for (String name : names) {
+            ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_BY_NAME, Product[].class, name);
+            Product[] productFromRest = responseEntity.getBody();
+
+            MediaType contentType = responseEntity.getHeaders().getContentType();
+            assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+            HttpStatus statusCode = responseEntity.getStatusCode();
+            assertEquals(statusCode, HttpStatus.OK);
+
+            for (Product product : productFromRest)
+            {
+                boolean result = name.toLowerCase().contains(product.getName().toLowerCase());
+                assertTrue(result);
+            }
+        }
+    }
+
+    @Test
+    public void getByDescriptionContainsIgnoreCaseTest() {
+        List<String> descriptions = new ArrayList<>();
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            Product product = productRepository.findOne(randomId);
+            if (product != null) {
+                descriptions.add(product.getDescription());
+            }
+        }
+
+        for (String description : descriptions) {
+            ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_BY_DESCRIPTION, Product[].class, description);
+            Product[] productFromRest = responseEntity.getBody();
+
+            MediaType contentType = responseEntity.getHeaders().getContentType();
+            assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+            HttpStatus statusCode = responseEntity.getStatusCode();
+            assertEquals(statusCode, HttpStatus.OK);
+
+            for (Product product : productFromRest)
+            {
+                boolean result = description.toLowerCase().contains(product.getDescription().toLowerCase());
+                assertTrue(result);
+            }
+        }
+    }
+
+    @Test
+    public void getByPriceBetweenTest() {
+        List<Float> prices1 = new ArrayList<>();
+        List<Float> prices2 = new ArrayList<>();
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            float randomPrice1 = random.nextFloat() + random.nextInt(150);
+            float randomPrice2 = random.nextFloat() + random.nextInt(150);
+
+            if (randomPrice1 >= randomPrice2) {
+                prices1.add(randomPrice1);
+                prices2.add(randomPrice2);
+            } else {
+                prices1.add(randomPrice2);
+                prices2.add(randomPrice1);
+            }
+        }
+
+        int size = prices1.size();
+        for (int i=0;i<size;i++) {
+            ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_BY_PRICE_BETWEEN, Product[].class, prices2.get(i), prices1.get(i));
+            Product[] productFromRest = responseEntity.getBody();
+
+            MediaType contentType = responseEntity.getHeaders().getContentType();
+            assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+            HttpStatus statusCode = responseEntity.getStatusCode();
+            assertEquals(statusCode, HttpStatus.OK);
+
+            for (Product product : productFromRest)
+            {
+                boolean result = false;
+                if (prices2.get(i) <= product.getPrice() && product.getPrice() <= prices1.get(i))
+                    result = true;
+                assertTrue(result);
+            }
+        }
+    }
+
+    @Test
+    public void getByPriceGreaterTest() {
+        List<Float> prices1 = new ArrayList<>();
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            float randomPrice1 = random.nextFloat() + random.nextInt(150);
+
+            prices1.add(randomPrice1);
+        }
+
+        int size = prices1.size();
+        for (int i=0;i<size;i++) {
+            ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_BY_PRICE_GREATER, Product[].class, prices1.get(i) );
+            Product[] productFromRest = responseEntity.getBody();
+
+            MediaType contentType = responseEntity.getHeaders().getContentType();
+            assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+            HttpStatus statusCode = responseEntity.getStatusCode();
+            assertEquals(statusCode, HttpStatus.OK);
+
+            for (Product product : productFromRest)
+            {
+                boolean result = false;
+                if (prices1.get(i) <= product.getPrice())
+                    result = true;
+                assertTrue(result);
+            }
+        }
+    }
+
+    @Test
+    public void getByPriceLessTest() {
+        List<Float> prices1 = new ArrayList<>();
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            float randomPrice1 = random.nextFloat() + random.nextInt(150);
+
+            prices1.add(randomPrice1);
+        }
+
+        int size = prices1.size();
+        for (int i=0;i<size;i++) {
+            ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_BY_PRICE_LESS, Product[].class, prices1.get(i));
+            Product[] productFromRest = responseEntity.getBody();
+
+            MediaType contentType = responseEntity.getHeaders().getContentType();
+            assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+            HttpStatus statusCode = responseEntity.getStatusCode();
+            assertEquals(statusCode, HttpStatus.OK);
+
+            for (Product product : productFromRest)
+            {
+                boolean result = false;
+                if (prices1.get(i) >= product.getPrice())
+                    result = true;
+                assertTrue(result);
+            }
+        }
+    }
+
+    @Test
+    public void searchProductTest() {
+        List<String> descriptions = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        List<Float> prices1 = new ArrayList<>();
+        List<Float> prices2 = new ArrayList<>();
+
+        List<String> categoryName = new ArrayList<>();
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            Product product = productRepository.findOne(randomId);
+            if (product != null) {
+                names.add(product.getName());
+                descriptions.add(product.getDescription());
+                if (product.getCategory() != null)
+                    categoryName.add(product.getCategory().getName());
+
+                float price1 = 0;
+                float price2 = 0;
+                if (randomId > 50 && randomId < 100) {
+                    float randomPrice1 = random.nextFloat() + random.nextInt(150);
+                    float randomPrice2 = random.nextFloat() + random.nextInt(150);
+
+                    if (randomPrice1 >= randomPrice2) {
+                        prices1.add(randomPrice1);
+                        prices2.add(randomPrice2);
+                    } else {
+                        prices1.add(randomPrice2);
+                        prices2.add(randomPrice1);
+                    }
+                } else if (randomId > 150) {
+                    float randomPrice1 = random.nextFloat() + random.nextInt(150);
+                    prices1.add(randomPrice1);
+                    prices2.add(new Float(0));
+                } else {
+                    float randomPrice1 = random.nextFloat() + random.nextInt(150);
+                    prices2.add(randomPrice1);
+                    prices1.add(new Float(0));
+                }
+            }
+        }
+        
+        int size = prices1.size();
+        for (int i=0;i<size;i++) {
+            ResponseEntity<Product[]> responseEntity;
+            if (i >= categoryName.size()) {
+                responseEntity = restTemplate.getForEntity(SEARCH_PRODUCT, Product[].class, names.get(i), descriptions.get(i), prices2.get(i), prices1.get(i), null);
+            } else {
+                responseEntity = restTemplate.getForEntity(SEARCH_PRODUCT, Product[].class, names.get(i), descriptions.get(i), prices2.get(i), prices1.get(i), categoryName.get(i));
+            }
+            Product[] productFromRest = responseEntity.getBody();
+
+            MediaType contentType = responseEntity.getHeaders().getContentType();
+            assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+            HttpStatus statusCode = responseEntity.getStatusCode();
+            assertEquals(statusCode, HttpStatus.OK);
+
+            for (Product product : productFromRest)
+            {
+                boolean result = names.get(i).toLowerCase().contains(product.getName().toLowerCase());
+                assertTrue(result);
+
+                result = descriptions.get(i).toLowerCase().contains(product.getDescription().toLowerCase());
+                assertTrue(result);
+
+                result = false;
+                if (prices1.get(i) == 0)
+                {
+                    if (prices1.get(i) <= product.getPrice())
+                        result = true;
+                } else if (prices2.get(i) == 0)
+                {
+                    if (prices2.get(i) >= product.getPrice())
+                        result = true;
+                }
+                else if (prices2.get(i) <= product.getPrice() && product.getPrice() <= prices1.get(i))
+                    result = true;
+                assertTrue(result);
+            }
+        }
     }
 }

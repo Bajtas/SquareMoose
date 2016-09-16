@@ -66,15 +66,15 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/name/{name}")
-    public List<Product> getByNameContains(@NotNull @PathParam("name") String name) {
+    public List<Product> getByNameContainsIgnoreCase(@NotNull @PathParam("name") String name) {
         return productService.getByNameContainsIgnoreCase(name);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/description/{description}")
-    public List<Product> getByDescriptionContains(@NotNull @PathParam("description") String description) {
-        return productService.getByDescriptionContains(description);
+    public List<Product> getByDescriptionContainsIgnoreCase(@NotNull @PathParam("description") String description) {
+        return productService.getByDescriptionContainsIgnoreCase(description);
     }
 
     @GET
