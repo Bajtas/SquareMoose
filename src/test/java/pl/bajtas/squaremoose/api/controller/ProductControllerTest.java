@@ -8,22 +8,22 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import pl.bajtas.squaremoose.api.SpringBootWebApplication;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
+import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
+import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.threads.ProductPagesThread;
 import pl.bajtas.squaremoose.api.util.TestPageImpl;
 import pl.bajtas.squaremoose.api.util.TestUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
+import javax.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -55,9 +55,11 @@ public class ProductControllerTest {
     private static final String SEARCH_PRODUCT = CONTROLLER_URL + "/products/search?name={name}&description={description}&price1={price1}&price2={price2}&categoryName={categoryName}";
     private static final String GET_BY_CATEGORY_ID = CONTROLLER_URL + "/products/category?id={id}";
     private static final String GET_BY_CATEGORY_NAME = CONTROLLER_URL + "/products/category?name={name}";
+    private static final String ADD_PRODUCT_URL = CONTROLLER_URL + "/product/add";
 
     @Autowired CategoryRepository categoryRepository;
     @Autowired ProductRepository productRepository;
+    @Autowired ProductImagesRepository productImagesRepository;
 
     private TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -585,5 +587,94 @@ public class ProductControllerTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void addOneWithoutCategoryAndImagesTest() {
+        Product product = new Product("testPRODUCT", "testDESCRIPTION", 42.1);
+
+       long allProductsCounterBefore = productRepository.count();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(product,headers);
+
+        ResponseEntity<String> out = restTemplate.exchange(ADD_PRODUCT_URL, HttpMethod.POST, entity, String.class);
+        HttpStatus statusCode = out.getStatusCode();
+        assertEquals(statusCode, HttpStatus.OK);
+
+        MediaType contentType = out.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+        assertEquals(out.getBody(), "Product added successfully!");
+
+        long allProductCounterAfter = productRepository.count();
+
+        assertEquals(allProductsCounterBefore+1, allProductCounterAfter);
+    }
+
+    @Test
+    public void addOneWithCategoryTest() {
+        Category category = new Category("testCategory");
+        Product product = new Product("testPRODUCT", "testDESCRIPTION", 42.1);
+        product.setCategory(category);
+
+        long allProductsCounterBefore = productRepository.count();
+        long allCategoriesCounterBefore = productRepository.count();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(product,headers);
+
+        ResponseEntity<String> out = restTemplate.exchange(ADD_PRODUCT_URL, HttpMethod.POST, entity, String.class);
+        HttpStatus statusCode = out.getStatusCode();
+        assertEquals(statusCode, HttpStatus.OK);
+
+        MediaType contentType = out.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+        assertEquals(out.getBody(), "Product added successfully!");
+
+        long allProductCounterAfter = productRepository.count();
+        long allCategoriesCounterAfter = productRepository.count();
+
+        assertEquals(allProductsCounterBefore+1, allProductCounterAfter);
+        assertEquals(allCategoriesCounterBefore+1, allCategoriesCounterAfter);
+    }
+
+    @Test
+    public void addOneWithCategoryAndImageTest() {
+        List<ProductImage> images = new ArrayList<>();
+        Category category = new Category("testCategory");
+        ProductImage image = new ProductImage("some src");
+        images.add(image);
+        Product product = new Product("testPRODUCT", "testDESCRIPTION", 42.1);
+        product.setCategory(category);
+        product.setImages(images);
+
+        long allProductsCounterBefore = productRepository.count();
+        long allCategoriesCounterBefore = productRepository.count();
+        long allImagesCounterBefore = productImagesRepository.count();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(product,headers);
+
+        ResponseEntity<String> out = restTemplate.exchange(ADD_PRODUCT_URL, HttpMethod.POST, entity, String.class);
+        HttpStatus statusCode = out.getStatusCode();
+        assertEquals(statusCode, HttpStatus.OK);
+
+        MediaType contentType = out.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+        assertEquals(out.getBody(), "Product added successfully!");
+
+        long allProductCounterAfter = productRepository.count();
+        long allCategoriesCounterAfter = productRepository.count();
+        long allImagesCounterAfter = productImagesRepository.count();
+
+        assertEquals(allProductsCounterBefore+1, allProductCounterAfter);
+        assertEquals(allCategoriesCounterBefore+1, allCategoriesCounterAfter);
+        assertEquals(allImagesCounterBefore+1, allImagesCounterAfter);
     }
 }

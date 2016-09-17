@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -187,7 +188,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
     // Add new product to DB
     @Transactional
-    public String add(Product product) {
+    public Response add(Product product) {
         Category category = product.getCategory();
         List<ProductImage> productImages = product.getImages();
 
@@ -195,19 +196,18 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             if (category != null) {
                 categoryRepository.save(category);
             }
-            for (ProductImage image : productImages) {
-                productImagesRepository.save(image);
+            if (productImages != null) {
+                for (ProductImage image : productImages) {
+                    productImagesRepository.save(image);
+                }
             }
-
-            product.setAddedOn(new Date());
-            product.setLmod(new Date());
 
             productRepository.save(product);
         } catch (Exception e) {
-            return "Error: " + e;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
 
-        return "Product added successfully!";
+        return Response.status(Response.Status.OK).entity("Product added successfully!").build();
     }
 
     // Update existing

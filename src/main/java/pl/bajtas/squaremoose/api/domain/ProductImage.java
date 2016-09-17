@@ -21,29 +21,49 @@ public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String imageSrc;
-
     private Date addedOn;
-
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "images")
-    //@JsonIgnore
     private List<Product> products;
 
-    public String getImageSrc() {
-        return imageSrc;
+    public ProductImage(String imageSrc, Date addedOn, List<Product> products) {
+        this.imageSrc = imageSrc;
+        this.addedOn = addedOn;
+        this.products = products;
     }
 
-    public void setImageSrc(String imageSrc) {
+    public ProductImage(String imageSrc, Date addedOn) {
         this.imageSrc = imageSrc;
+        this.addedOn = addedOn;
+    }
+
+    public ProductImage(String imageSrc) {
+        this.imageSrc = imageSrc;
+        this.addedOn = new Date();
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setAddedOn(Date addedOn) {
+        this.addedOn = addedOn;
+    }
+
+    public Date getAddedOn() {
+        return addedOn;
     }
 
     public List<Product> getProducts() {
@@ -52,14 +72,6 @@ public class ProductImage {
 
     public void setProducts(List<Product> products) {
         this.products = products;
-    }
-
-    public Date getAddedOn() {
-        return addedOn;
-    }
-
-    public void setAddedOn(Date addedOn) {
-        this.addedOn = addedOn;
     }
 
     @Override

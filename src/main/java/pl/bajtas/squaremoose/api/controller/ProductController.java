@@ -3,6 +3,7 @@ package pl.bajtas.squaremoose.api.controller;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -126,8 +127,8 @@ public class ProductController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/products/add")
-    public String add(Product product) {
+    @Path("/product/add")
+    public Response add(Product product) {
         return productService.add(product);
     }
 

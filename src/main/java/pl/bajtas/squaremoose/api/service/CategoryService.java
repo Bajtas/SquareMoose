@@ -102,8 +102,8 @@ public class CategoryService {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error occured when saved: " + e.toString()).build();
         }
 
-        LOG.info("Object saved successfully!");
-        return Response.status(Response.Status.OK).entity("Category saved successfully!").build();
+        LOG.info("Object added successfully!");
+        return Response.status(Response.Status.OK).entity("Category added successfully!").build();
     }
 
     public Response update(int id, Category updatedCategory) {

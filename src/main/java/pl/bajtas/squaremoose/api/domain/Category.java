@@ -14,16 +14,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
-
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-    //@JsonBackReference
     private List<Product> products;
-
-    public Category() {
-
-    }
 
     public Category(int id, String name, List<Product> products) {
         this.id = id;
@@ -36,28 +29,36 @@ public class Category {
         this.products = products;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public Category() {
+
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
     @Override
