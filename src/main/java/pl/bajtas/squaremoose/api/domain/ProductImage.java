@@ -42,6 +42,10 @@ public class ProductImage {
         this.addedOn = new Date();
     }
 
+    public ProductImage() {
+
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

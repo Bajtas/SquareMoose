@@ -222,8 +222,10 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             if (category != null) {
                 categoryRepository.save(category);
             }
-            for (ProductImage image : productImages) {
-                productImagesRepository.save(image);
+            if (productImages != null) {
+                for (ProductImage image : productImages) {
+                    productImagesRepository.save(image);
+                }
             }
 
             product.setLmod(new Date());
@@ -233,7 +235,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             return "Error: " + e;
         }
 
-        return "Product updated!";
+        return "Product with id: " + id + " updated successfully!";
     }
 
     // Delete
