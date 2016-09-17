@@ -520,9 +520,11 @@ public class ProductControllerTest {
                 {
                     if (prices2.get(i) >= product.getPrice())
                         result = true;
+                } else if (prices1.get(i) != 0 && prices2.get(i) != 0)
+                {
+                    if (prices1.get(i) >= product.getPrice() && prices2.get(i) <= product.getPrice())
+                        result = true;
                 }
-                else if (prices2.get(i) <= product.getPrice() && product.getPrice() <= prices1.get(i))
-                    result = true;
                 assertTrue(result);
             }
         }
