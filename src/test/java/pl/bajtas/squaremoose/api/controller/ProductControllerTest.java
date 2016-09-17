@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import pl.bajtas.squaremoose.api.SpringBootWebApplication;
+import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
@@ -52,6 +53,8 @@ public class ProductControllerTest {
     private static final String GET_BY_PRICE_GREATER = CONTROLLER_URL + "/product/price?price1={price1}";
     private static final String GET_BY_PRICE_LESS = CONTROLLER_URL + "/product/price?price2={price2}";
     private static final String SEARCH_PRODUCT = CONTROLLER_URL + "/products/search?name={name}&description={description}&price1={price1}&price2={price2}&categoryName={categoryName}";
+    private static final String GET_BY_CATEGORY_ID = CONTROLLER_URL + "/products/category?id={id}";
+    private static final String GET_BY_CATEGORY_NAME = CONTROLLER_URL + "/products/category?name={name}";
 
     @Autowired CategoryRepository categoryRepository;
     @Autowired ProductRepository productRepository;
@@ -526,6 +529,60 @@ public class ProductControllerTest {
                         result = true;
                 }
                 assertTrue(result);
+            }
+        }
+    }
+
+    @Test
+    public void getByCategoryIdTest() {
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            Category category = categoryRepository.findOne(randomId);
+            if (category != null) {
+                ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_BY_CATEGORY_ID, Product[].class, randomId);
+                Product productFromRest[] = responseEntity.getBody();
+
+                MediaType contentType = responseEntity.getHeaders().getContentType();
+                assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+                HttpStatus statusCode = responseEntity.getStatusCode();
+                assertEquals(statusCode, HttpStatus.OK);
+
+                for (Product obj : productFromRest) {
+                    assertEquals(category, obj.getCategory());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void getByCategoryNameTest() {
+        String categoryName;
+        for (int i=0;i<20;i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            Category category = categoryRepository.findOne(randomId);
+            if (category != null) {
+                categoryName = category.getName().toLowerCase();
+
+                ResponseEntity<Product[]> responseEntity = restTemplate.getForEntity(GET_BY_CATEGORY_NAME, Product[].class, category.getName());
+                Product productFromRest[] = responseEntity.getBody();
+
+                MediaType contentType = responseEntity.getHeaders().getContentType();
+                assertEquals(contentType, MediaType.APPLICATION_JSON);
+
+                HttpStatus statusCode = responseEntity.getStatusCode();
+                assertEquals(statusCode, HttpStatus.OK);
+
+                for (Product obj : productFromRest) {
+                    Category restCategory = obj.getCategory();
+                    String restCategoryName = restCategory.getName().toLowerCase();
+                    boolean result = categoryName.contains(restCategoryName);
+                    assertTrue(result);
+                }
             }
         }
     }
