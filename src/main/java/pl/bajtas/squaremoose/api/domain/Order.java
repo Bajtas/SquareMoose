@@ -35,6 +35,10 @@ public class Order {
     @JoinColumn(name = "delivery_adress")
     private DeliveryAdress deliveryAdress;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "order")
     private ActualOrderState actualOrderState;
 
@@ -114,5 +118,13 @@ public class Order {
 
         Order otherOrder = (Order) other;
         return id.equals(otherOrder.getId());
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,6 +1,7 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -34,6 +35,10 @@ public class User {
             @JoinColumn(name = "user_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "delivery_adress_id", nullable = false)})
     private List<DeliveryAdress> deliveryAdresses;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Order> orders;
 
     public Integer getId() {
         return id;
@@ -115,5 +120,13 @@ public class User {
 
         User otherUser = (User) other;
         return id.equals(otherUser.getId());
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
