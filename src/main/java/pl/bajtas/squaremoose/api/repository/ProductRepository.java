@@ -15,13 +15,13 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     List<Product> findByNameContainsIgnoreCase(String name);
     List<Product> findByDescriptionContainsIgnoreCase(String description);
     // Find by Product.Price
-    List<Product> findByPriceBetween(float price1, float price2);
-    List<Product> findByPriceGreaterThanEqual(float price1);
-    List<Product> findByPriceLessThanEqual(float price2);
+    List<Product> findByPriceBetween(double price1, double price2);
+    List<Product> findByPriceGreaterThanEqual(double price1);
+    List<Product> findByPriceLessThanEqual(double price2);
 
     /* Find by Category properties */
-    List<Product> findByCategoryIsNotNull();
-    List<Product> findByCategoryIsNull();
+    Iterable<Product> findByCategoryIsNotNull();
+    Iterable<Product> findByCategoryIsNull();
     List<Product> findByCategory_NameContainsIgnoreCase(String name);
     List<Product> findByCategory_Id(int id);
 

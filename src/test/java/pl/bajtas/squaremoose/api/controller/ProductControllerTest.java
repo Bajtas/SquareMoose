@@ -350,12 +350,12 @@ public class ProductControllerTest {
 
     @Test
     public void getByPriceBetweenTest() {
-        List<Float> prices1 = new ArrayList<>();
-        List<Float> prices2 = new ArrayList<>();
+        List<Double> prices1 = new ArrayList<>();
+        List<Double> prices2 = new ArrayList<>();
         for (int i=0;i<20;i++) {
             Random random = new Random();
-            float randomPrice1 = random.nextFloat() + random.nextInt(150);
-            float randomPrice2 = random.nextFloat() + random.nextInt(150);
+            double randomPrice1 = random.nextFloat() + random.nextInt(150);
+            double randomPrice2 = random.nextFloat() + random.nextInt(150);
 
             if (randomPrice1 >= randomPrice2) {
                 prices1.add(randomPrice1);
@@ -389,10 +389,10 @@ public class ProductControllerTest {
 
     @Test
     public void getByPriceGreaterTest() {
-        List<Float> prices1 = new ArrayList<>();
+        List<Double> prices1 = new ArrayList<>();
         for (int i=0;i<20;i++) {
             Random random = new Random();
-            float randomPrice1 = random.nextFloat() + random.nextInt(150);
+            double randomPrice1 = random.nextFloat() + random.nextInt(150);
 
             prices1.add(randomPrice1);
         }
@@ -420,10 +420,10 @@ public class ProductControllerTest {
 
     @Test
     public void getByPriceLessTest() {
-        List<Float> prices1 = new ArrayList<>();
+        List<Double> prices1 = new ArrayList<>();
         for (int i=0;i<20;i++) {
             Random random = new Random();
-            float randomPrice1 = random.nextFloat() + random.nextInt(150);
+            double randomPrice1 = random.nextFloat() + random.nextInt(150);
 
             prices1.add(randomPrice1);
         }
@@ -686,59 +686,61 @@ public class ProductControllerTest {
             int randomId = random.nextInt(150);
 
             Product product = productRepository.findOne(randomId);
-            if (product.getCategory() == null || product.getImages() == null) {
-                boolean categoryAdded = product.getCategory() == null ? true : false;
-                boolean imageAdded = product.getImages().size() == 0 ? true : false;
+            if (product != null) {
+                if (product.getCategory() == null || product.getImages() == null) {
+                    boolean categoryAdded = product.getCategory() == null ? true : false;
+                    boolean imageAdded = product.getImages().size() == 0 ? true : false;
 
-                Product updatedProduct = new Product("updatedProduct", "updatedDescription", 60.10);
+                    Product updatedProduct = new Product("updatedProduct", "updatedDescription", 60.10);
 
-                if (categoryAdded) {
-                    Category category = new Category("updateCategoryTest");
-                    updatedProduct.setCategory(category);
+                    if (categoryAdded) {
+                        Category category = new Category("updateCategoryTest");
+                        updatedProduct.setCategory(category);
+                    }
+
+                    if (imageAdded) {
+                        ProductImage image = new ProductImage("updated src");
+                        List<ProductImage> images = new ArrayList<>();
+                        images.add(image);
+
+                        updatedProduct.setImages(images);
+                    }
+
+                    long allProductsCounterBefore = productRepository.count();
+                    long allCategoriesCounterBefore = categoryRepository.count();
+                    long allImagesCounterBefore = productImagesRepository.count();
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+
+                    HttpEntity entity = new HttpEntity(updatedProduct, headers);
+
+                    ResponseEntity<String> out = restTemplate.exchange(UPDATE_PRODUCT_URL, HttpMethod.PUT, entity, String.class, randomId);
+
+                    HttpStatus statusCode = out.getStatusCode();
+                    assertEquals(statusCode, HttpStatus.OK);
+
+                    MediaType contentType = out.getHeaders().getContentType();
+                    assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+                    product = productRepository.findOne(randomId);
+                    assertEquals(product.getName(), "updatedProduct");
+                    assertEquals(product.getDescription(), "updatedDescription");
+                    boolean result = product.getPrice() == 60.10 ? true : false;
+                    assertTrue(result);
+
+                    assertEquals(out.getBody(), "Product with id: " + randomId + " updated successfully!");
+
+                    long allProductCounterAfter = productRepository.count();
+                    long allCategoriesCounterAfter = categoryRepository.count();
+                    long allImagesCounterAfter = productImagesRepository.count();
+
+                    assertEquals(allProductsCounterBefore, allProductCounterAfter);
+                    if (categoryAdded)
+                        assertEquals(allCategoriesCounterBefore + 1, allCategoriesCounterAfter);
+                    if (imageAdded)
+                        assertEquals(allImagesCounterBefore + 1, allImagesCounterAfter);
                 }
-
-                if (imageAdded) {
-                    ProductImage image = new ProductImage("updated src");
-                    List<ProductImage> images = new ArrayList<>();
-                    images.add(image);
-
-                    updatedProduct.setImages(images);
-                }
-
-                long allProductsCounterBefore = productRepository.count();
-                long allCategoriesCounterBefore = categoryRepository.count();
-                long allImagesCounterBefore = productImagesRepository.count();
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                HttpEntity entity = new HttpEntity(updatedProduct, headers);
-
-                ResponseEntity<String> out = restTemplate.exchange(UPDATE_PRODUCT_URL, HttpMethod.PUT, entity, String.class, randomId);
-
-                HttpStatus statusCode = out.getStatusCode();
-                assertEquals(statusCode, HttpStatus.OK);
-
-                MediaType contentType = out.getHeaders().getContentType();
-                assertEquals(contentType, MediaType.TEXT_PLAIN);
-
-                product = productRepository.findOne(randomId);
-                assertEquals(product.getName(), "updatedProduct");
-                assertEquals(product.getDescription(), "updatedDescription");
-                boolean result = product.getPrice() == 60.10 ? true : false;
-                assertTrue(result);
-
-                assertEquals(out.getBody(), "Product with id: " + randomId + " updated successfully!");
-
-                long allProductCounterAfter = productRepository.count();
-                long allCategoriesCounterAfter = categoryRepository.count();
-                long allImagesCounterAfter = productImagesRepository.count();
-
-                assertEquals(allProductsCounterBefore, allProductCounterAfter);
-                if (categoryAdded)
-                    assertEquals(allCategoriesCounterBefore+1, allCategoriesCounterAfter);
-                if (imageAdded)
-                    assertEquals(allImagesCounterBefore+1, allImagesCounterAfter);
             }
         }
     }

@@ -94,12 +94,12 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public List<Product> getAllWithCategory() {
+    public Iterable<Product> getAllWithCategory() {
         return getRepository().findByCategoryIsNotNull();
     }
 
     @Transactional
-    public List<Product> getAllWithoutCategory() {
+    public Iterable<Product> getAllWithoutCategory() {
         return getRepository().findByCategoryIsNull();
     }
 
@@ -119,7 +119,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public List<Product> getByPrice(Float price1, Float price2) throws Exception{
+    public List<Product> getByPrice(Double price1, Double price2) throws Exception{
         if (price1 == null && price2 == null) {
             throw new Exception("Please specify price1 or price2 of Product for this request.");
         }
@@ -136,7 +136,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public List<Product> searchProduct(String name, String description, Float price1, Float price2, String categoryMame) throws Exception {
+    public List<Product> searchProduct(String name, String description, Double price1, Double price2, String categoryMame) throws Exception {
         if (name == null && description == null && price1 == null && price2 == null && categoryMame == null)  {
             Iterable<Product> source = getAll();
             List<Product> allProducts = new ArrayList<>();

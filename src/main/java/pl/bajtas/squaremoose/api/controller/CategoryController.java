@@ -56,7 +56,7 @@ public class CategoryController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/name/{name}")
-    public List<Category> getByName(@NotNull @PathParam("name") String name) {
+    public Iterable<Category> getByName(@NotNull @PathParam("name") String name) {
         return categoryService.getByNameContainsIgnoreCase(name);
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 public interface CategoryRepository extends CrudRepository<Category, Integer>{
     /* Find by Product properties */
     // First method, by id is not needed
-    List<Category> findByNameContainsIgnoreCase(String name);
+    Iterable<Category> findByNameContainsIgnoreCase(String name);
 
     Long deleteByName(String name);
 }

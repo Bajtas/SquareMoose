@@ -81,7 +81,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/price")
-    public List<Product> getByNamePriceBetweenOrGreaterOrLess(@QueryParam("price1") Float price1, @QueryParam("price2") Float price2) throws Exception {
+    public List<Product> getByNamePriceBetweenOrGreaterOrLess(@QueryParam("price1") Double price1, @QueryParam("price2") Double price2) throws Exception {
         return productService.getByPrice(price1, price2);
     }
 
@@ -91,8 +91,8 @@ public class ProductController {
     public List<Product> getByAllProperties (
             @QueryParam("name") String name,
             @QueryParam("description") String description,
-            @QueryParam("price1") Float price1,
-            @QueryParam("price2") Float price2,
+            @QueryParam("price1") Double price1,
+            @QueryParam("price2") Double price2,
             @QueryParam("categoryName") String categoryMame) throws Exception {
         return productService.searchProduct(name, description, price1, price2, categoryMame);
     }
@@ -112,14 +112,14 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/categorized")
-    public List<Product> getAllWithCategoryNotNull() {
+    public Iterable<Product> getAllWithCategoryNotNull() {
         return productService.getAllWithCategory();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/uncategorized")
-    public List<Product> getAllWithCategoryNull() {
+    public Iterable<Product> getAllWithCategoryNull() {
         return productService.getAllWithoutCategory();
     }
     /* --------------------------------------------------------------------------------------------- */

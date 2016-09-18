@@ -193,7 +193,7 @@ public class CategoryControllerTest {
         MediaType contentType = out.getHeaders().getContentType();
         assertEquals(contentType, MediaType.TEXT_PLAIN);
 
-        assertEquals(out.getBody(), "Category saved successfully!");
+        assertEquals(out.getBody(), "Category added successfully!");
 
         long allCategoryCounterAfter = categoryRepository.count();
 
