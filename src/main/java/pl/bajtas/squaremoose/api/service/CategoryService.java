@@ -2,11 +2,17 @@ package pl.bajtas.squaremoose.api.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
+import pl.bajtas.squaremoose.api.repository.ActualOrderStateRepository;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
+import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 
 import javax.persistence.EntityManager;
@@ -18,28 +24,36 @@ import java.util.List;
  * Created by Bajtas on 03.09.2016.
  */
 @Service
-public class CategoryService {
-    private static final Logger LOG = Logger.getLogger(ProductService.class);
+public class CategoryService implements GenericService<Category, CategoryRepository>, ApplicationListener<ContextRefreshedEvent> {
+    private static final Logger LOG = Logger.getLogger(CategoryService.class);
 
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private EntityManager entityManager;
+    @Autowired private CategoryRepository categoryRepository;
+    @Autowired private ProductRepository productRepository;
 
     public CategoryRepository getRepository() {
         return categoryRepository;
     }
 
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+
+    }
+
     /* Returns all Categories */
+    @Override
     public Iterable<Category> getAll() {
         LOG.info("Returns all categories.");
 
         return getRepository().findAll();
     }
 
+    @Override
+    public Page<Category> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
+        return null;
+    }
+
     /* Returns one Category by Id */
+    @Override
     public Category getById(int id) {
         LOG.info("Returns Category related to id: " + id);
 
@@ -88,6 +102,7 @@ public class CategoryService {
     }
 
     /* Returns info about saving or updating Category */
+    @Override
     public Response add(Category category) {
         LOG.info("Trying to save category: " + category.getName() + category.getId());
 
@@ -106,6 +121,7 @@ public class CategoryService {
         return Response.status(Response.Status.OK).entity("Category added successfully!").build();
     }
 
+    @Override
     public Response update(int id, Category updatedCategory) {
         LOG.info("Trying to save category with id: " + id);
 
@@ -126,6 +142,7 @@ public class CategoryService {
     }
 
     /* Deletes one Category assigned to given id */
+    @Override
     public Response delete(int id) {
         LOG.info("Trying to delete Category.");
         String info = "Deleted successfully!";
@@ -191,6 +208,4 @@ public class CategoryService {
             return false;
         }
     }
-
-
 }

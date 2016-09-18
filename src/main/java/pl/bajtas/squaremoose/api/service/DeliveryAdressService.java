@@ -3,11 +3,14 @@ package pl.bajtas.squaremoose.api.service;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.*;
+import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.DeliveryAdressRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
@@ -21,13 +24,18 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Service
-public class DeliveryAdressService implements GenericService<DeliveryAdress, DeliveryAdressRepository> {
+public class DeliveryAdressService implements GenericService<DeliveryAdress, DeliveryAdressRepository>, ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger LOG = Logger.getLogger(DeliveryAdressService.class);
 
     @Autowired  private DeliveryAdressRepository deliveryAdressRepository;
     @Autowired  private ProductRepository productRepository;
     @Autowired  private UserRepository userRepository;
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+
+    }
 
     @Override
     public DeliveryAdressRepository getRepository() {
@@ -154,6 +162,7 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
         return getRepository().findByUsers_Email(email);
     }
 
+    @Override
     public Response add(DeliveryAdress deliveryAdress) {
         List<Order> orders = deliveryAdress.getOrders();
         List<User> users = deliveryAdress.getUsers();
@@ -172,6 +181,7 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
         return Response.status(Response.Status.OK).entity("Product added successfully!").build();
     }
 
+    @Override
     public Response update(int id, DeliveryAdress deliveryAdress) {
         LOG.info("Trying to save delivery adress with id: " + id);
 
@@ -188,6 +198,34 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
         } catch (Exception e) {
             LOG.error("Error occured when saved: ", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
+        }
+    }
+
+    @Override
+    public Response delete(int id) {
+        LOG.info("Trying to delete DeliveryAdress.");
+        String info = "Deleted successfully!";
+
+        LOG.info("Category with id: " + id + " will be deleted.");
+
+        DeliveryAdress deliveryAdress = getRepository().findOne(id);
+        if (deliveryAdress != null) {
+            try {
+                List<User> users = deliveryAdress.getUsers();
+                if (users.size() != 0) {
+                    for (User user : users) {
+                        List<DeliveryAdress> deliveryAdressess = user.getDeliveryAdresses();
+                        deliveryAdressess.remove(deliveryAdress);
+                    }
+                }
+
+                return Response.status(Response.Status.OK).entity("DeliveryAdress with id: " + id + " deleted successfully!").build();
+            } catch (Exception e) {
+                LOG.error("DeliveryAdress with id: " + id, e);
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
+            }
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).entity("DeliveryAdress with given id: " + id + " not found!").build();
         }
     }
 

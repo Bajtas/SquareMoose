@@ -19,41 +19,44 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @NotNull
     private Integer amount;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product")
-    //@JsonManagedReference
     private Product product;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order")
-    //@JsonBackReference
     private Order order;
-
-    public Integer getId() {
-        return id;
-    }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getAmount() {
-        return amount;
+    public Integer getId() {
+        return id;
     }
 
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
-    public Product getProduct() {
-        return product;
+    public Integer getAmount() {
+        return amount;
     }
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 }

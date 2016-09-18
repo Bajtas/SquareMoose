@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.*;
 import pl.bajtas.squaremoose.api.repository.*;
+import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.persistence.EntityManager;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Service
-public class ActualOrderStateService implements ApplicationListener<ContextRefreshedEvent> {
+public class ActualOrderStateService implements GenericService<ActualOrderState, ActualOrderStateRepository>, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = Logger.getLogger(ActualOrderStateService.class);
 
     @Autowired private ActualOrderStateRepository actualOrderStateRepository;
@@ -32,22 +33,24 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
     @Autowired private OrderStateHistoryRepository orderStateHistoryRepository;
     @Autowired private OrderStateRepository orderStateRepository;
 
-    public ActualOrderStateRepository getRepository() {
-        return actualOrderStateRepository;
-    }
-
     // Events
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
     }
 
-    // Search by ActualOrderState properties
+    @Override
+    public ActualOrderStateRepository getRepository() {
+        return actualOrderStateRepository;
+    }
+
+    @Override
     public Iterable<ActualOrderState> getAll() {
         LOG.info("Getting all ActualOrderStates.");
         return getRepository().findAll();
     }
 
+    @Override
     public Page<ActualOrderState> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
         boolean unsorted = false;
         Sort.Direction direction;
@@ -71,6 +74,7 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
         return result;
     }
 
+    @Override
     public ActualOrderState getById(int id) {
         return getRepository().findOne(id);
     }
@@ -99,6 +103,7 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
     /* --------------------------------------------------------------------------------------------- */
 
     // Add new ActualOrderState to DB
+    @Override
     public Response add(ActualOrderState actualOrderState) {
         List<OrderStateHistory> orderStateHistories = actualOrderState.getOrderStateHistories();
         OrderState state = actualOrderState.getOrderState();
@@ -129,6 +134,7 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
     }
 
     // Update existing
+    @Override
     public Response update(int id, ActualOrderState actualOrderState) {
         actualOrderState.setId(id);
 
@@ -154,6 +160,7 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
     }
 
     // Delete
+    @Override
     public Response delete(int id) {
         LOG.info("Trying to delete ActualOrderState.");
 
