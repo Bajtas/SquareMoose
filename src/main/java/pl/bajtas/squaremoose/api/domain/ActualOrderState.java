@@ -42,11 +42,22 @@ public class ActualOrderState {
         this.orderStateHistories = orderStateHistories;
     }
 
-    public ActualOrderState(String name, String description, Date lmod, Order order)
+    public ActualOrderState(String name, String description, Date lmod, Order order, OrderState orderState, List<OrderStateHistory> orderStateHistories)
     {
         this.name = name;
         this.description = description;
         this.lmod = lmod;
+        this.order = order;
+        this.orderState = orderState;
+        this.orderStateHistories = orderStateHistories;
+    }
+
+    public ActualOrderState(String name, String description, Date lmod, OrderState orderState, Order order)
+    {
+        this.name = name;
+        this.description = description;
+        this.lmod = lmod;
+        this.orderState = orderState;
         this.order = order;
     }
 

@@ -17,6 +17,7 @@ import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.persistence.EntityManager;
+import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 
@@ -98,14 +99,14 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
     /* --------------------------------------------------------------------------------------------- */
 
     // Add new ActualOrderState to DB
-    public String add(ActualOrderState actualOrderState) {
+    public Response add(ActualOrderState actualOrderState) {
         try {
             getRepository().save(actualOrderState);
         } catch (Exception e) {
-            return "Error: " + e;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
 
-        return "ActualOrderState added successfully! Id: " + actualOrderState.getId();
+        return Response.status(Response.Status.OK).entity("ActualOrderState added successfully!").build();
     }
 
     // Update existing

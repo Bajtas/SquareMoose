@@ -10,6 +10,7 @@ import pl.bajtas.squaremoose.api.service.ActualOrderStateService;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -78,7 +79,7 @@ public class ActualOrderStateController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/actualstate/add")
-    public String add(ActualOrderState actualOrderState) {
+    public Response add(ActualOrderState actualOrderState) {
         return getService().add(actualOrderState);
     }
 

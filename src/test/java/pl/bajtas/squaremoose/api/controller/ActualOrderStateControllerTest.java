@@ -48,7 +48,7 @@ public class ActualOrderStateControllerTest {
 //    private static final String SEARCH_PRODUCT = CONTROLLER_URL + "/products/search?name={name}&description={description}&price1={price1}&price2={price2}&categoryName={categoryName}";
 //    private static final String GET_BY_CATEGORY_ID = CONTROLLER_URL + "/products/category?id={id}";
 //    private static final String GET_BY_CATEGORY_NAME = CONTROLLER_URL + "/products/category?name={name}";
-//    private static final String ADD_PRODUCT_URL = CONTROLLER_URL + "/product/add";
+    private static final String ADD_ACTUAL_STATE_URL = CONTROLLER_URL + "/actualstate/add";
 //    private static final String UPDATE_PRODUCT_URL = CONTROLLER_URL + "/product/{id}/update";
 
     @Autowired private ActualOrderStateRepository actualOrderStateRepository;
@@ -356,29 +356,29 @@ public class ActualOrderStateControllerTest {
         }
     }
 
-//    @Test
-//    public void addOneWithoutHistoryTest() {
-//        ActualOrderState state = new ActualOrderState();
-//
-//        long allProductsCounterBefore = productRepository.count();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity entity = new HttpEntity(product,headers);
-//
-//        ResponseEntity<String> out = restTemplate.exchange(ADD_STATE_URL, HttpMethod.POST, entity, String.class);
-//        HttpStatus statusCode = out.getStatusCode();
-//        assertEquals(statusCode, HttpStatus.OK);
-//
-//        MediaType contentType = out.getHeaders().getContentType();
-//        assertEquals(contentType, MediaType.TEXT_PLAIN);
-//
-//        assertEquals(out.getBody(), "Product added successfully!");
-//
-//        long allProductCounterAfter = productRepository.count();
-//
-//        assertEquals(allProductsCounterBefore+1, allProductCounterAfter);
-//    }
+    @Test
+    public void addOneWithoutHistoryAndOrderStateTest() {
+        ActualOrderState state = new ActualOrderState("test", "test desc");
+
+        long allActualStatesCounterBefore = actualOrderStateRepository.count();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(state,headers);
+
+        ResponseEntity<String> out = restTemplate.exchange(ADD_ACTUAL_STATE_URL, HttpMethod.POST, entity, String.class);
+        HttpStatus statusCode = out.getStatusCode();
+        assertEquals(statusCode, HttpStatus.OK);
+
+        MediaType contentType = out.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+        assertEquals(out.getBody(), "ActualOrderState added successfully!");
+
+        long allActualStatesCounterAfter = actualOrderStateRepository.count();
+
+        assertEquals(allActualStatesCounterBefore+1, allActualStatesCounterAfter);
+    }
 
 //    @Test
 //    public void addOneWithCategoryTest() {
