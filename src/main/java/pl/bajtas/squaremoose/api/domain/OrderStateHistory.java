@@ -17,15 +17,50 @@ public class OrderStateHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private Date lmod;
-
     private String name;
-
     private String description;
-
+    private Date lmod;
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "orderStateHistories")
     private List<ActualOrderState> actualOrderStates;
+
+    public OrderStateHistory(String name, String description, Date lmod, List<ActualOrderState> actualOrderStates) {
+        this.name = name;
+        this.description = description;
+        this.lmod = lmod;
+        this.actualOrderStates = actualOrderStates;
+    }
+
+    public OrderStateHistory(String name, String description, Date lmod) {
+        this.name = name;
+        this.description = description;
+        this.lmod = lmod;
+    }
+
+    public OrderStateHistory(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.lmod = new Date();
+    }
+
+    public OrderStateHistory() {
+
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public String getDescription() {
         return description;
@@ -35,36 +70,20 @@ public class OrderStateHistory {
         this.description = description;
     }
 
-    public List<ActualOrderState> getActualOrderStates() {
-        return actualOrderStates;
-    }
-
     public void setActualOrderStates(List<ActualOrderState> actualOrderStates) {
         this.actualOrderStates = actualOrderStates;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getLmod() {
-        return lmod;
+    public List<ActualOrderState> getActualOrderStates() {
+        return actualOrderStates;
     }
 
     public void setLmod(Date lmod) {
         this.lmod = lmod;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public Date getLmod() {
+        return lmod;
     }
 
     @Override

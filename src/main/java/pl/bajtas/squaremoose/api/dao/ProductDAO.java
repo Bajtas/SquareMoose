@@ -24,10 +24,6 @@ public class ProductDAO implements ApplicationListener<ContextRefreshedEvent> {
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-    
-    
-    
-    
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {

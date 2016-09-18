@@ -19,7 +19,22 @@ public class OrderState {
     private String name;
     private String description;
     @OneToMany(mappedBy = "orderState", fetch = FetchType.EAGER)
-    private List<ActualOrderState> states;
+    private List<ActualOrderState> actualOrderStates;
+
+    public OrderState(String name, String description, List<ActualOrderState> actualOrderStates) {
+        this.name = name;
+        this.description = description;
+        this.actualOrderStates = actualOrderStates;
+    }
+
+    public OrderState(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public OrderState() {
+
+    }
 
     public Integer getId() {
         return id;
@@ -45,11 +60,11 @@ public class OrderState {
         this.description = description;
     }
 
-    public List<ActualOrderState> getStates() {
-        return states;
+    public List<ActualOrderState> getActualOrderStates() {
+        return actualOrderStates;
     }
 
-    public void setStates(List<ActualOrderState> states) {
-        this.states = states;
+    public void setActualOrderStates(List<ActualOrderState> states) {
+        this.actualOrderStates = states;
     }
 }

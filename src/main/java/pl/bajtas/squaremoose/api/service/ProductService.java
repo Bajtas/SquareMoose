@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import pl.bajtas.squaremoose.api.domain.Category;
+import pl.bajtas.squaremoose.api.domain.DeliveryAdress;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
@@ -212,30 +213,36 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
     // Update existing
     @Transactional
-    public String update(int id, Product product) {
-        product.setId(id);
+    public Response update(int id, Product product) {
+        LOG.info("Trying to save product with id: " + id);
 
         Category category = product.getCategory();
         List<ProductImage> productImages = product.getImages();
 
         try {
-            if (category != null) {
-                categoryRepository.save(category);
-            }
-            if (productImages != null) {
-                for (ProductImage image : productImages) {
-                    productImagesRepository.save(image);
+            Product old = getRepository().findOne(id);
+            if (old != null) {
+                product.setId(id);
+                if (category != null) {
+                    categoryRepository.save(category);
                 }
+                if (productImages != null) {
+                    for (ProductImage image : productImages) {
+                        productImagesRepository.save(image);
+                    }
+                }
+
+                product.setLmod(new Date());
+
+                productRepository.save(product);
+                return Response.status(Response.Status.OK).entity("Category with id: " + id + " updated successfully!").build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Category with given id: " + id + " not found!").build();
             }
-
-            product.setLmod(new Date());
-
-            productRepository.save(product);
         } catch (Exception e) {
-            return "Error: " + e;
+            LOG.error("Error occured when saved: ", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
-
-        return "Product with id: " + id + " updated successfully!";
     }
 
     // Delete

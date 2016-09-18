@@ -88,7 +88,7 @@ public class ActualOrderStateController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/actualstate/{id}/update")
-    public String add(@NotNull @PathParam("id") int id, ActualOrderState actualOrderState) {
+    public Response update(@NotNull @PathParam("id") int id, ActualOrderState actualOrderState) {
         return getService().update(id, actualOrderState);
     }
 
@@ -97,7 +97,7 @@ public class ActualOrderStateController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/actualstate/{id}/delete")
-    public String add(@NotNull @PathParam("id") int id) {
+    public Response add(@NotNull @PathParam("id") int id) {
         return getService().delete(id);
     }
 

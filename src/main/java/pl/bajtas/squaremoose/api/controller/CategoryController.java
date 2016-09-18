@@ -20,8 +20,11 @@ import java.util.List;
 @Path("/CategoryService")
 public class CategoryController {
 
-    @Autowired  CategoryService categoryService; // Category service bean for connection between controller and service layers
+    @Autowired private CategoryService categoryService; // Category service bean for connection between controller and service layers
 
+    private CategoryService getService() {
+        return categoryService;
+    }
     // Read
 
     /* Main method
@@ -33,7 +36,7 @@ public class CategoryController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/categories")
     public Iterable<Category> getAll() {
-        return categoryService.getAll();
+        return getService().getAll();
     }
 
     /* Search by Id
@@ -45,7 +48,7 @@ public class CategoryController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/{id}")
     public Category getById(@NotNull @PathParam("id") Integer id) {
-        return categoryService.getById(id);
+        return getService().getById(id);
     }
 
     /* Search by Name
@@ -57,7 +60,7 @@ public class CategoryController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/name/{name}")
     public Iterable<Category> getByName(@NotNull @PathParam("name") String name) {
-        return categoryService.getByNameContainsIgnoreCase(name);
+        return getService().getByNameContainsIgnoreCase(name);
     }
 
     // Add and Update
@@ -74,7 +77,7 @@ public class CategoryController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/add")
     public Response addCategory(Category category) {
-        return categoryService.add(category);
+        return getService().add(category);
     }
 
     /* Update category in DB
@@ -89,7 +92,7 @@ public class CategoryController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/{id}/update")
     public Response updateCategory(@NotNull @PathParam("id") int id, Category updatedCategory) {
-        return categoryService.update(id, updatedCategory); // false for update old
+        return getService().update(id, updatedCategory); // false for update old
     }
 
     // Delete
@@ -105,7 +108,7 @@ public class CategoryController {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/{id}/delete")
     public Response delete(@NotNull @PathParam("id") Integer id) {
-        return categoryService.delete(id);
+        return getService().delete(id);
     }
 
     // Other
@@ -121,6 +124,6 @@ public class CategoryController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/stats")
     public List<CategoryStats> getCategoryStats(@QueryParam("byId") boolean byId, @QueryParam("byName") boolean byName) throws Exception {
-        return categoryService.getCategoryStats(byId, byName);
+        return getService().getCategoryStats(byId, byName);
     }
 }

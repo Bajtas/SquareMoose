@@ -10,14 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.*;
-import pl.bajtas.squaremoose.api.repository.ActualOrderStateRepository;
-import pl.bajtas.squaremoose.api.repository.CategoryRepository;
-import pl.bajtas.squaremoose.api.repository.OrderRepository;
-import pl.bajtas.squaremoose.api.repository.ProductRepository;
+import pl.bajtas.squaremoose.api.repository.*;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +29,8 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
     @Autowired private ActualOrderStateRepository actualOrderStateRepository;
     @Autowired private ProductRepository productRepository;
     @Autowired private OrderRepository orderRepository;
+    @Autowired private OrderStateHistoryRepository orderStateHistoryRepository;
+    @Autowired private OrderStateRepository orderStateRepository;
 
     public ActualOrderStateRepository getRepository() {
         return actualOrderStateRepository;
@@ -100,7 +100,26 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
 
     // Add new ActualOrderState to DB
     public Response add(ActualOrderState actualOrderState) {
+        List<OrderStateHistory> orderStateHistories = actualOrderState.getOrderStateHistories();
+        OrderState state = actualOrderState.getOrderState();
         try {
+            if (orderStateHistories != null) {
+                for (OrderStateHistory history : orderStateHistories) {
+                    List<ActualOrderState> actualOrderStates = history.getActualOrderStates();
+                    if (actualOrderStates != null) {
+                        actualOrderStates.add(actualOrderState);
+                        history.setActualOrderStates(actualOrderStates);
+                    } else {
+                        actualOrderStates = new ArrayList<>();
+                        actualOrderStates.add(actualOrderState);
+                        history.setActualOrderStates(actualOrderStates);
+                    }
+                    orderStateHistoryRepository.save(history);
+                }
+            }
+            if (state != null) {
+                orderStateRepository.save(state);
+            }
             getRepository().save(actualOrderState);
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
@@ -110,30 +129,39 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
     }
 
     // Update existing
-    public String update(int id, ActualOrderState actualOrderState) {
+    public Response update(int id, ActualOrderState actualOrderState) {
         actualOrderState.setId(id);
 
         try {
             if (actualOrderState.getOrder() != null) {
                 orderRepository.save(actualOrderState.getOrder());
             }
+            if (actualOrderState.getOrderState() != null) {
+                orderStateRepository.save(actualOrderState.getOrderState());
+            }
+            if (actualOrderState.getOrderStateHistories() != null) {
+                List<OrderStateHistory> histories = actualOrderState.getOrderStateHistories();
+                for (OrderStateHistory history : histories)
+                    orderStateHistoryRepository.save(history);
+            }
 
             getRepository().save(actualOrderState);
         } catch (Exception e) {
-            return "Error: " + e;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
 
-        return "ActualOrderState updated!";
+        return Response.status(Response.Status.OK).entity("ActualOrderState with id: " + id + " updated successfully!").build();
     }
 
     // Delete
-    public String delete(int id) {
+    public Response delete(int id) {
         LOG.info("Trying to delete ActualOrderState.");
-        String info = "Deleted successfully!";
 
         LOG.info("ActualOrderState with id: " + id + " will be deleted.");
 
         ActualOrderState actualOrderState = getRepository().findOne(id);
+        OrderState state = actualOrderState.getOrderState();
+        List<OrderStateHistory> histories = actualOrderState.getOrderStateHistories();
         if (actualOrderState != null) {
             try {
                 Order order = actualOrderState.getOrder();
@@ -142,15 +170,25 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
                     order.setActualOrderState(null);
                     orderRepository.save(order);
                 }
+                if (state != null) {
+                    List<ActualOrderState> actualOrderStates = new ArrayList<>();
+                    actualOrderStates.remove(actualOrderStates);
+                    state.setActualOrderStates(actualOrderStates);
+                    orderStateRepository.save(state);
+                }
                 getRepository().delete(id);
+                if (histories.size() != 0) {
+                    for (OrderStateHistory history : histories)
+                        orderStateHistoryRepository.delete(history.getId());
+                }
+                return Response.status(Response.Status.OK).entity("ActualOrderState with id: " + id + " deleted successfully!").build();
             } catch (Exception e) {
                 LOG.error("ActualOrderState with id: " + id, e);
-                info = "Error occured!";
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
             }
         } else {
-            info = "ActualOrderState with given id: " + id + " not found!";
+            return Response.status(Response.Status.BAD_REQUEST).entity("ActualOrderState with given id: " + id + " not found!").build();
         }
-        return info;
     }
 
     /* --------------------------------------------------------------------------------------------- */

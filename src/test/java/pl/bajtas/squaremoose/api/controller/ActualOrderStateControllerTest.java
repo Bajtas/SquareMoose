@@ -14,18 +14,18 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import pl.bajtas.squaremoose.api.SpringBootWebApplication;
 import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.Order;
+import pl.bajtas.squaremoose.api.domain.OrderState;
+import pl.bajtas.squaremoose.api.domain.OrderStateHistory;
 import pl.bajtas.squaremoose.api.repository.*;
 import pl.bajtas.squaremoose.api.util.TestPageImpl;
 import pl.bajtas.squaremoose.api.util.TestUtil;
 
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Bajtas on 18.09.2016.
@@ -43,24 +43,27 @@ public class ActualOrderStateControllerTest {
     private static final String GET_BY_NAME = CONTROLLER_URL + "/actualstates/name/{name}";
     private static final String GET_BY_DESCRIPTION = CONTROLLER_URL + "/actualstates/description/{description}";
     private static final String GET_BY_ORDER_ID = CONTROLLER_URL + "/actualstate/order/{id}";
-//    private static final String GET_BY_PRICE_GREATER = CONTROLLER_URL + "/product/price?price1={price1}";
-//    private static final String GET_BY_PRICE_LESS = CONTROLLER_URL + "/product/price?price2={price2}";
-//    private static final String SEARCH_PRODUCT = CONTROLLER_URL + "/products/search?name={name}&description={description}&price1={price1}&price2={price2}&categoryName={categoryName}";
-//    private static final String GET_BY_CATEGORY_ID = CONTROLLER_URL + "/products/category?id={id}";
-//    private static final String GET_BY_CATEGORY_NAME = CONTROLLER_URL + "/products/category?name={name}";
     private static final String ADD_ACTUAL_STATE_URL = CONTROLLER_URL + "/actualstate/add";
-//    private static final String UPDATE_PRODUCT_URL = CONTROLLER_URL + "/product/{id}/update";
+    private static final String UPDATE_ACTUAL_STATE_URL = CONTROLLER_URL + "/actualstate/{id}/update";
+    private static final String DELETE_ACTUAL_STATE_URL = CONTROLLER_URL + "/actualstate/{id}/delete";
 
-    @Autowired private ActualOrderStateRepository actualOrderStateRepository;
-    @Autowired private CategoryRepository categoryRepository;
-    @Autowired private ProductRepository productRepository;
-    @Autowired private ProductImagesRepository productImagesRepository;
-    @Autowired private OrderRepository orderRepository;
+    @Autowired
+    private ActualOrderStateRepository actualOrderStateRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private ProductImagesRepository productImagesRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private OrderStateHistoryRepository orderStateHistoryRepository;
+    @Autowired
+    private OrderStateRepository orderStateRepository;
 
     private TestRestTemplate restTemplate = new TestRestTemplate();
 
-
-    // GET TESTS
     @Test
     public void getAllTest() {
         long responseCounter = actualOrderStateRepository.count();
@@ -80,7 +83,8 @@ public class ActualOrderStateControllerTest {
     @Test
     public void getAllPagesDefaultSettingsTest() {
         // first page
-        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_URL, HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>(){}, 0);
+        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_URL, HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
+        }, 0);
 
         Page<ActualOrderState> object = pageActualOrderState.getBody();
         MediaType contentType = pageActualOrderState.getHeaders().getContentType();
@@ -92,7 +96,7 @@ public class ActualOrderStateControllerTest {
 
         int totalPages = object.getTotalPages();
 
-        for (int i=0; i<totalPages;i++) {
+        for (int i = 0; i < totalPages; i++) {
             pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL, HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
             }, i, null);
 
@@ -119,7 +123,8 @@ public class ActualOrderStateControllerTest {
         // first page
         Random rand = new Random();
         int randomSize = rand.nextInt(500);
-        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL, HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>(){}, 0, randomSize);
+        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL, HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
+        }, 0, randomSize);
 
         Page<ActualOrderState> object = pageActualOrderState.getBody();
         MediaType contentType = pageActualOrderState.getHeaders().getContentType();
@@ -131,7 +136,7 @@ public class ActualOrderStateControllerTest {
 
         int totalPages = object.getTotalPages();
 
-        for (int i=0; i<totalPages;i++) {
+        for (int i = 0; i < totalPages; i++) {
             pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL, HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
             }, i, randomSize);
 
@@ -147,7 +152,7 @@ public class ActualOrderStateControllerTest {
             for (ActualOrderState state : states)
                 assertNotNull(state.getId());
 
-            assertEquals(object.getSize(), 20);
+            assertEquals(randomSize, object.getSize());
             assertNull(object.getSort());
         }
 
@@ -159,7 +164,8 @@ public class ActualOrderStateControllerTest {
         // first page
         Random rand = new Random();
         int randomSize = rand.nextInt(500);
-        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>(){}, 0, randomSize, "name");
+        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
+        }, 0, randomSize, "name");
 
         TestPageImpl<ActualOrderState> object = pageActualOrderState.getBody();
         MediaType contentType = pageActualOrderState.getHeaders().getContentType();
@@ -171,8 +177,9 @@ public class ActualOrderStateControllerTest {
 
         int totalPages = object.getTotalPages();
 
-        for (int i=0; i<totalPages;i++) {
-            pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {}, i, randomSize, "name");
+        for (int i = 0; i < totalPages; i++) {
+            pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
+            }, i, randomSize, "name");
 
             object = pageActualOrderState.getBody();
             contentType = pageActualOrderState.getHeaders().getContentType();
@@ -197,7 +204,8 @@ public class ActualOrderStateControllerTest {
         // first page
         Random rand = new Random();
         int randomSize = rand.nextInt(500);
-        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}&dir={dir}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>(){}, 0, randomSize, "name", "desc");
+        ResponseEntity<TestPageImpl<ActualOrderState>> pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}&dir={dir}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
+        }, 0, randomSize, "name", "desc");
 
         Page<ActualOrderState> object = pageActualOrderState.getBody();
         MediaType contentType = pageActualOrderState.getHeaders().getContentType();
@@ -209,8 +217,9 @@ public class ActualOrderStateControllerTest {
 
         int totalPages = object.getTotalPages();
 
-        for (int i=0; i<totalPages;i++) {
-            pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}&dir={dir}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {}, i, randomSize, "name", "asc");
+        for (int i = 0; i < totalPages; i++) {
+            pageActualOrderState = restTemplate.exchange(GET_ALL_STATES_PAGE_WITH_SIZE_URL + "&sortBy={sortBy}&dir={dir}", HttpMethod.GET, null, new ParameterizedTypeReference<TestPageImpl<ActualOrderState>>() {
+            }, i, randomSize, "name", "asc");
 
             object = pageActualOrderState.getBody();
             contentType = pageActualOrderState.getHeaders().getContentType();
@@ -228,10 +237,10 @@ public class ActualOrderStateControllerTest {
 
             String name1 = object.getContent().get(i).getName();
             String name2 = "";
-            if ((i+1) == totalPages)
-                name2 = object.getContent().get(i+1).getName();
+            if ((i + 1) == totalPages)
+                name2 = object.getContent().get(i + 1).getName();
 
-            if (name1.compareToIgnoreCase(name2) == 0){
+            if (name1.compareToIgnoreCase(name2) == 0) {
                 assertEquals(name1, name2);
             } else {
                 boolean compareResult = name1.compareToIgnoreCase(name2) > 0 ? true : false;
@@ -244,7 +253,7 @@ public class ActualOrderStateControllerTest {
 
     @Test
     public void getByIdTest() {
-        for (int i=0;i<20;i++) {
+        for (int i = 0; i < 20; i++) {
             Random random = new Random();
             int randomId = random.nextInt(150);
 
@@ -267,7 +276,7 @@ public class ActualOrderStateControllerTest {
     @Test
     public void getByNameContainsIgnoreCaseTest() {
         List<String> names = new ArrayList<>();
-        for (int i=0;i<20;i++) {
+        for (int i = 0; i < 20; i++) {
             Random random = new Random();
             int randomId = random.nextInt(150);
 
@@ -287,8 +296,7 @@ public class ActualOrderStateControllerTest {
             HttpStatus statusCode = responseEntity.getStatusCode();
             assertEquals(statusCode, HttpStatus.OK);
 
-            for (ActualOrderState state : actualOrderStatesFromRest)
-            {
+            for (ActualOrderState state : actualOrderStatesFromRest) {
                 boolean result = name.toLowerCase().contains(state.getName().toLowerCase());
                 assertTrue(result);
             }
@@ -298,7 +306,7 @@ public class ActualOrderStateControllerTest {
     @Test
     public void getByDescriptionContainsIgnoreCaseTest() {
         List<String> descriptions = new ArrayList<>();
-        for (int i=0;i<20;i++) {
+        for (int i = 0; i < 20; i++) {
             Random random = new Random();
             int randomId = random.nextInt(150);
 
@@ -318,8 +326,7 @@ public class ActualOrderStateControllerTest {
             HttpStatus statusCode = responseEntity.getStatusCode();
             assertEquals(statusCode, HttpStatus.OK);
 
-            for (ActualOrderState state : states)
-            {
+            for (ActualOrderState state : states) {
                 boolean result = description.toLowerCase().contains(state.getDescription().toLowerCase());
                 assertTrue(result);
             }
@@ -329,7 +336,7 @@ public class ActualOrderStateControllerTest {
     @Test
     public void getByOrderIdTest() {
         List<Integer> ids = new ArrayList<>();
-        for (int i=0;i<20;i++) {
+        for (int i = 0; i < 20; i++) {
             Random random = new Random();
             int randomId = random.nextInt(150);
 
@@ -364,7 +371,40 @@ public class ActualOrderStateControllerTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity entity = new HttpEntity(state,headers);
+        HttpEntity entity = new HttpEntity(state, headers);
+
+        ResponseEntity<String> out = restTemplate.exchange(ADD_ACTUAL_STATE_URL, HttpMethod.POST, entity, String.class);
+        HttpStatus statusCode = out.getStatusCode();
+        assertEquals(HttpStatus.OK, statusCode);
+
+        MediaType contentType = out.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+        assertEquals(out.getBody(), "ActualOrderState added successfully!");
+
+        long allActualStatesCounterAfter = actualOrderStateRepository.count();
+
+        assertEquals(allActualStatesCounterBefore + 1, allActualStatesCounterAfter);
+    }
+
+    @Test
+    public void addOneWithHistoryAndWithoutOrderStateTest() {
+        ActualOrderState state = new ActualOrderState("test", "test desc");
+
+        List<OrderStateHistory> histories = new ArrayList<>();
+        OrderStateHistory history = new OrderStateHistory();
+        history.setName("history name");
+        history.setDescription("history description");
+        history.setLmod(new Date());
+        histories.add(history);
+
+        state.setOrderStateHistories(histories);
+        long allActualStatesCounterBefore = actualOrderStateRepository.count();
+        long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(state, headers);
 
         ResponseEntity<String> out = restTemplate.exchange(ADD_ACTUAL_STATE_URL, HttpMethod.POST, entity, String.class);
         HttpStatus statusCode = out.getStatusCode();
@@ -376,138 +416,166 @@ public class ActualOrderStateControllerTest {
         assertEquals(out.getBody(), "ActualOrderState added successfully!");
 
         long allActualStatesCounterAfter = actualOrderStateRepository.count();
+        long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
 
-        assertEquals(allActualStatesCounterBefore+1, allActualStatesCounterAfter);
+        assertEquals(allActualStatesCounterBefore + 1, allActualStatesCounterAfter);
+        assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
     }
 
-//    @Test
-//    public void addOneWithCategoryTest() {
-//        Category category = new Category("testCategory");
-//        Product product = new Product("testPRODUCT", "testDESCRIPTION", 42.1);
-//        product.setCategory(category);
-//
-//        long allProductsCounterBefore = productRepository.count();
-//        long allCategoriesCounterBefore = productRepository.count();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity entity = new HttpEntity(product,headers);
-//
-//        ResponseEntity<String> out = restTemplate.exchange(ADD_PRODUCT_URL, HttpMethod.POST, entity, String.class);
-//        HttpStatus statusCode = out.getStatusCode();
-//        assertEquals(statusCode, HttpStatus.OK);
-//
-//        MediaType contentType = out.getHeaders().getContentType();
-//        assertEquals(contentType, MediaType.TEXT_PLAIN);
-//
-//        assertEquals(out.getBody(), "Product added successfully!");
-//
-//        long allProductCounterAfter = productRepository.count();
-//        long allCategoriesCounterAfter = productRepository.count();
-//
-//        assertEquals(allProductsCounterBefore+1, allProductCounterAfter);
-//        assertEquals(allCategoriesCounterBefore+1, allCategoriesCounterAfter);
-//    }
-//
-//    @Test
-//    public void addOneWithCategoryAndImageTest() {
-//        List<ProductImage> images = new ArrayList<>();
-//        Category category = new Category("testCategory");
-//        ProductImage image = new ProductImage("some src");
-//        images.add(image);
-//        Product product = new Product("testPRODUCT", "testDESCRIPTION", 42.1);
-//        product.setCategory(category);
-//        product.setImages(images);
-//
-//        long allProductsCounterBefore = productRepository.count();
-//        long allCategoriesCounterBefore = productRepository.count();
-//        long allImagesCounterBefore = productImagesRepository.count();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity entity = new HttpEntity(product,headers);
-//
-//        ResponseEntity<String> out = restTemplate.exchange(ADD_PRODUCT_URL, HttpMethod.POST, entity, String.class);
-//        HttpStatus statusCode = out.getStatusCode();
-//        assertEquals(statusCode, HttpStatus.OK);
-//
-//        MediaType contentType = out.getHeaders().getContentType();
-//        assertEquals(contentType, MediaType.TEXT_PLAIN);
-//
-//        assertEquals(out.getBody(), "Product added successfully!");
-//
-//        long allProductCounterAfter = productRepository.count();
-//        long allCategoriesCounterAfter = productRepository.count();
-//        long allImagesCounterAfter = productImagesRepository.count();
-//
-//        assertEquals(allProductsCounterBefore+1, allProductCounterAfter);
-//        assertEquals(allCategoriesCounterBefore+1, allCategoriesCounterAfter);
-//        assertEquals(allImagesCounterBefore+1, allImagesCounterAfter);
-//    }
-//
-//    @Test
-//    public void updateOneWithCategoryAndImageTest() {
-//        for (int i=0;i<20;i++) {
-//            Random random = new Random();
-//            int randomId = random.nextInt(150);
-//
-//            Product product = productRepository.findOne(randomId);
-//            if (product != null) {
-//                if (product.getCategory() == null || product.getImages() == null) {
-//                    boolean categoryAdded = product.getCategory() == null ? true : false;
-//                    boolean imageAdded = product.getImages().size() == 0 ? true : false;
-//
-//                    Product updatedProduct = new Product("updatedProduct", "updatedDescription", 60.10);
-//
-//                    if (categoryAdded) {
-//                        Category category = new Category("updateCategoryTest");
-//                        updatedProduct.setCategory(category);
-//                    }
-//
-//                    if (imageAdded) {
-//                        ProductImage image = new ProductImage("updated src");
-//                        List<ProductImage> images = new ArrayList<>();
-//                        images.add(image);
-//
-//                        updatedProduct.setImages(images);
-//                    }
-//
-//                    long allProductsCounterBefore = productRepository.count();
-//                    long allCategoriesCounterBefore = categoryRepository.count();
-//                    long allImagesCounterBefore = productImagesRepository.count();
-//
-//                    HttpHeaders headers = new HttpHeaders();
-//                    headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//                    HttpEntity entity = new HttpEntity(updatedProduct, headers);
-//
-//                    ResponseEntity<String> out = restTemplate.exchange(UPDATE_PRODUCT_URL, HttpMethod.PUT, entity, String.class, randomId);
-//
-//                    HttpStatus statusCode = out.getStatusCode();
-//                    assertEquals(statusCode, HttpStatus.OK);
-//
-//                    MediaType contentType = out.getHeaders().getContentType();
-//                    assertEquals(contentType, MediaType.TEXT_PLAIN);
-//
-//                    product = productRepository.findOne(randomId);
-//                    assertEquals(product.getName(), "updatedProduct");
-//                    assertEquals(product.getDescription(), "updatedDescription");
-//                    boolean result = product.getPrice() == 60.10 ? true : false;
-//                    assertTrue(result);
-//
-//                    assertEquals(out.getBody(), "Product with id: " + randomId + " updated successfully!");
-//
-//                    long allProductCounterAfter = productRepository.count();
-//                    long allCategoriesCounterAfter = categoryRepository.count();
-//                    long allImagesCounterAfter = productImagesRepository.count();
-//
-//                    assertEquals(allProductsCounterBefore, allProductCounterAfter);
-//                    if (categoryAdded)
-//                        assertEquals(allCategoriesCounterBefore + 1, allCategoriesCounterAfter);
-//                    if (imageAdded)
-//                        assertEquals(allImagesCounterBefore + 1, allImagesCounterAfter);
-//                }
-//            }
-//        }
-//    }
+    @Test
+    public void addOneWithHistoryAndWithOrderStateTest() {
+        OrderState state = new OrderState("some state", "some description for state");
+
+        ActualOrderState actualState = new ActualOrderState("test", "test desc");
+
+        actualState.setOrderState(state);
+
+        List<OrderStateHistory> histories = new ArrayList<>();
+        OrderStateHistory history = new OrderStateHistory();
+        history.setName("history name");
+        history.setDescription("history description");
+        history.setLmod(new Date());
+        histories.add(history);
+
+        actualState.setOrderStateHistories(histories);
+        long allActualStatesCounterBefore = actualOrderStateRepository.count();
+        long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
+        long allorderStateCounterBefore = orderStateRepository.count();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(actualState, headers);
+
+        ResponseEntity<String> out = restTemplate.exchange(ADD_ACTUAL_STATE_URL, HttpMethod.POST, entity, String.class);
+        HttpStatus statusCode = out.getStatusCode();
+        assertEquals(statusCode, HttpStatus.OK);
+
+        MediaType contentType = out.getHeaders().getContentType();
+        assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+        assertEquals(out.getBody(), "ActualOrderState added successfully!");
+
+        long allActualStatesCounterAfter = actualOrderStateRepository.count();
+        long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
+        long allorderStateCounterAfter = orderStateRepository.count();
+
+        assertEquals(allActualStatesCounterBefore + 1, allActualStatesCounterAfter);
+        assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
+        assertEquals(allorderStateCounterBefore + 1, allorderStateCounterAfter);
+    }
+
+    @Test
+    public void updateOneWithHistoryAndOrderStateTest() {
+        for (int i = 0; i < 20; i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            ActualOrderState actualOrderState = actualOrderStateRepository.findOne(randomId);
+            if (actualOrderState != null) {
+                if (actualOrderState.getOrderState() == null || actualOrderState.getOrderStateHistories().size() == 0) {
+                    boolean orderStateAdded = actualOrderState.getOrderState() == null ? true : false;
+                    boolean historyAdded = actualOrderState.getOrderStateHistories().size() == 0 ? true : false;
+
+                    ActualOrderState updatedActualOrderState = new ActualOrderState("updatedActualState", "updatedDescription");
+
+                    if (orderStateAdded) {
+                        OrderState state = new OrderState("updateOrderState", "updatedOrderStateDescription");
+                        updatedActualOrderState.setOrderState(state);
+                    }
+
+                    if (historyAdded) {
+                        OrderStateHistory history = new OrderStateHistory("updated history name", "updated history desc");
+                        List<OrderStateHistory> histories = new ArrayList<>();
+                        histories.add(history);
+
+                        updatedActualOrderState.setOrderStateHistories(histories);
+                    }
+
+                    long allActualStatesCounterBefore = actualOrderStateRepository.count();
+                    long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
+                    long allorderStateCounterBefore = orderStateRepository.count();
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+
+                    HttpEntity entity = new HttpEntity(updatedActualOrderState, headers);
+
+                    ResponseEntity<String> out = restTemplate.exchange(UPDATE_ACTUAL_STATE_URL, HttpMethod.PUT, entity, String.class, randomId);
+
+                    HttpStatus statusCode = out.getStatusCode();
+                    assertEquals(statusCode, HttpStatus.OK);
+
+                    MediaType contentType = out.getHeaders().getContentType();
+                    assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+                    ActualOrderState actualState = actualOrderStateRepository.findOne(randomId);
+                    assertEquals(actualState.getName(), "updatedActualState");
+                    assertEquals(actualState.getDescription(), "updatedDescription");
+
+                    assertEquals(out.getBody(), "ActualOrderState with id: " + randomId + " updated successfully!");
+
+                    long allActualStatesCounterAfter = actualOrderStateRepository.count();
+                    long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
+                    long allorderStateCounterAfter = orderStateRepository.count();
+
+                    assertEquals(allActualStatesCounterBefore, allActualStatesCounterAfter);
+                    if (orderStateAdded)
+                        assertEquals(allorderStateCounterBefore + 1, allorderStateCounterAfter);
+                    if (historyAdded)
+                        assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void deleteOneTest() {
+        for (int i = 0; i < 20; i++) {
+            Random random = new Random();
+            int randomId = random.nextInt(150);
+
+            ActualOrderState actualOrderState = actualOrderStateRepository.findOne(randomId);
+            if (actualOrderState != null) {
+                long allActualStatesCounterBefore = actualOrderStateRepository.count();
+                long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
+                long allorderStateCounterBefore = orderStateRepository.count();
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                boolean hasOrderState = false;
+                boolean hasOrderStateHistories = false;
+                int orderHistoriesSize = 0;
+                if (actualOrderState.getOrderState() != null)
+                    hasOrderState = true;
+                if (actualOrderState.getOrderStateHistories().size() != 0) {
+                    hasOrderStateHistories = true;
+                    orderHistoriesSize = actualOrderState.getOrderStateHistories().size();
+                }
+
+                ResponseEntity<String> out = restTemplate.exchange(DELETE_ACTUAL_STATE_URL, HttpMethod.DELETE, null, String.class, randomId);
+
+                HttpStatus statusCode = out.getStatusCode();
+                assertEquals(statusCode, HttpStatus.OK);
+
+                MediaType contentType = out.getHeaders().getContentType();
+                assertEquals(contentType, MediaType.TEXT_PLAIN);
+
+                ActualOrderState actualState = actualOrderStateRepository.findOne(randomId);
+                assertNull(actualState);
+
+                assertEquals(out.getBody(), "ActualOrderState with id: " + randomId + " deleted successfully!");
+
+                long allActualStatesCounterAfter = actualOrderStateRepository.count();
+                long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
+                long allorderStateCounterAfter = orderStateRepository.count();
+
+                assertEquals(allActualStatesCounterBefore - 1, allActualStatesCounterAfter);
+                if (hasOrderState)
+                    assertEquals(allorderStateCounterBefore, allorderStateCounterAfter);
+                if (hasOrderStateHistories)
+                    assertEquals(allstatesHistoriesCounterBefore - orderHistoriesSize, allStatesHistoriesCounterAfter);
+            }
+        }
+    }
 }

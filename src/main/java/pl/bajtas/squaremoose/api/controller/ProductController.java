@@ -23,11 +23,6 @@ public class ProductController {
 
     // Search by Product properties
 
-    /* Main method
-    * Takes 0 parameters
-    *
-    * Returns list of all products with and without categories
-    * */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products")
@@ -35,11 +30,6 @@ public class ProductController {
         return productService.getAll();
     }
 
-    /* Main method
-    * Takes 4 parameters:
-    *
-    * Returns list of all products on this page
-    * */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/page/{number}")
@@ -50,13 +40,6 @@ public class ProductController {
         return productService.getAll(page, size, sortBy, direction);
     }
 
-    //region Description
-    /* getById()
-    * Takes 1 parameter - product id
-    *
-    * Returns one product assigned to this id
-    * */
-    //endregion
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/{id}")
@@ -136,7 +119,7 @@ public class ProductController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/product/{id}/update")
-    public String add(@NotNull @PathParam("id") int id, Product product) {
+    public Response update(@NotNull @PathParam("id") int id, Product product) {
         return productService.update(id, product);
     }
 

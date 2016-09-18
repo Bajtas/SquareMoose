@@ -16,96 +16,88 @@ public class DeliveryAdress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String adress;
-
-    private String town;
-
-    private String zipCode;
-
     private String name;
-
     private String surname;
-
+    private String adress;
+    private String town;
+    private String zipCode;
     private String contactPhone;
-
     @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.EAGER)
     private List<Order> orders;
-
-//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "deliveryAdresses")
-//    private List<BUser> users;
-
-    public Integer getId() {
-        return id;
-    }
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "deliveryAdresses")
+    private List<User> users;
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getAdress() {
-        return adress;
-    }
-
-    public void setAdress(String adress) {
-        this.adress = adress;
-    }
-
-    public String getTown() {
-        return town;
-    }
-
-    public void setTown(String town) {
-        this.town = town;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getName() {
-        return name;
+    public Integer getId() {
+        return id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getName() {
+        return name;
     }
 
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
-    public String getContactPhone() {
-        return contactPhone;
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getZipCode() {
+        return zipCode;
     }
 
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
-//    public List<BUser> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(List<BUser> users) {
-//        this.users = users;
-//    }
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
 
     @Override
     public boolean equals(Object other) {
