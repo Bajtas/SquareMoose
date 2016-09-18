@@ -18,15 +18,18 @@ import java.util.List;
 @Controller
 @Path("/ActualOrderStateService")
 public class ActualOrderStateController {
-    @Autowired
-    ActualOrderStateService actualOrderStateService; // ActualOrderStateService service bean for connection between controller and service layers
+    @Autowired private ActualOrderStateService actualOrderStateService; // ActualOrderStateService service bean for connection between controller and service layers
+
+    private ActualOrderStateService getService() {
+        return  actualOrderStateService;
+    }
 
     // Search by ActualOrderStateService properties
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates")
     public Iterable<ActualOrderState> getAll() {
-        return actualOrderStateService.getAll();
+        return getService().getAll();
     }
 
     @GET
@@ -36,62 +39,65 @@ public class ActualOrderStateController {
                                  @QueryParam("size") Integer size,
                                  @QueryParam("sortBy") String sortBy,
                                  @QueryParam("dir") String direction) {
-        return actualOrderStateService.getAll(page, size, sortBy, direction);
+        return getService().getAll(page, size, sortBy, direction);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/actualstates/{id}")
+    @Path("/actualstate/{id}")
     public ActualOrderState getById(@NotNull @PathParam("id") Integer id) {
-        return actualOrderStateService.getById(id);
+        return getService().getById(id);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates/name/{name}")
     public List<ActualOrderState> getByNameContainsIgnoreCase(@NotNull @PathParam("name") String name) {
-        return actualOrderStateService.getByNameContainsIgnoreCase(name);
+        return getService().getByNameContainsIgnoreCase(name);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates/description/{description}")
     public List<ActualOrderState> getByDescriptionContainsIgnoreCase(@NotNull @PathParam("description") String description) {
-        return actualOrderStateService.getByDescriptionContainsIgnoreCase(description);
+        return getService().getByDescriptionContainsIgnoreCase(description);
     }
     /* --------------------------------------------------------------------------------------------- */
 
     /* Find by Order properties */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/actualstates/order/{id}")
+    @Path("/actualstate/order/{id}")
     public ActualOrderState getByOrderId(@NotNull @PathParam("id") int id) {
-        return actualOrderStateService.getByOrderId(id);
+        return getService().getByOrderId(id);
     }
 
 
+    // Add new
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/actualstates/add")
+    @Path("/actualstate/add")
     public String add(ActualOrderState actualOrderState) {
-        return actualOrderStateService.add(actualOrderState);
+        return getService().add(actualOrderState);
     }
 
+    // Update
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/actualstate/{id}/update")
     public String add(@NotNull @PathParam("id") int id, ActualOrderState actualOrderState) {
-        return actualOrderStateService.update(id, actualOrderState);
+        return getService().update(id, actualOrderState);
     }
 
+    // Delete
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/actualstate/{id}/delete")
     public String add(@NotNull @PathParam("id") int id) {
-        return actualOrderStateService.delete(id);
+        return getService().delete(id);
     }
 
 }

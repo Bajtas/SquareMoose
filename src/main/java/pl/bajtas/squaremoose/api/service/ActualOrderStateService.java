@@ -43,6 +43,7 @@ public class ActualOrderStateService implements ApplicationListener<ContextRefre
 
     // Search by ActualOrderState properties
     public Iterable<ActualOrderState> getAll() {
+        LOG.info("Getting all ActualOrderStates.");
         return getRepository().findAll();
     }
 

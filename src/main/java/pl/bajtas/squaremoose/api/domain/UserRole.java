@@ -17,17 +17,10 @@ public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
-
     private Date lmod;
-
     @OneToMany(mappedBy = "userRole", fetch = FetchType.EAGER)
     private List<User> users;
-
-    public UserRole() {
-
-    }
 
     public UserRole(int id, String name, Date lmod) {
         this.id = id;
@@ -35,36 +28,45 @@ public class UserRole {
         this.lmod = lmod;
     }
 
-    public Integer getId() {
-        return id;
+    public UserRole(String name) {
+        this.name = name;
+        this.lmod = new Date();
+    }
+
+    public UserRole() {
+
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Integer getId() {
+        return id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public Date getLmod() {
-        return lmod;
+    public String getName() {
+        return name;
     }
 
     public void setLmod(Date lmod) {
         this.lmod = lmod;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public Date getLmod() {
+        return lmod;
     }
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 
     @Override
