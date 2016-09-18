@@ -19,31 +19,23 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "delivery_type")
     private DeliveryType deliveryType;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "payment_method")
     private PaymentMethod paymentMethod;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "delivery_adress")
     private DeliveryAdress deliveryAdress;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "order")
     private ActualOrderState actualOrderState;
-
     private float fullPrice;
-
     private int itemsAmount;
 
     public Integer getId() {

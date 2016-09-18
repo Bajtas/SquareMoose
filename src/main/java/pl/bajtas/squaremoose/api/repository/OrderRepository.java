@@ -1,5 +1,8 @@
 package pl.bajtas.squaremoose.api.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import pl.bajtas.squaremoose.api.domain.Order;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
@@ -9,4 +12,11 @@ import pl.bajtas.squaremoose.api.domain.ProductImage;
  */
 public interface OrderRepository extends CrudRepository<Order, Integer> {
 
+    Page<Order> findAll(Pageable pageRequest);
+
+    Order findByUser_Id(int id);
+    Order findByUser_Login(String login);
+    Order findByDeliveryAdress_Id(int id);
+    Order findByDeliveryType_Id(int id);
+    Order findByPaymentMethod_Id(int id);
 }

@@ -135,14 +135,14 @@ public class DeliveryAdressController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/deliveryadress/user/{login}")
+    @Path("/deliveryadress/user/login/{login}")
     public List<DeliveryAdress> getByUserLogin(@NotNull @PathParam("login") String login) {
         return getService().getByUserLogin(login);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/deliveryadress/user/{email}")
+    @Path("/deliveryadress/user/email/{email}")
     public List<DeliveryAdress> getByUserEmail(@NotNull @PathParam("email") String email) {
         return getService().getByUserEmail(email);
     }
@@ -164,12 +164,12 @@ public class DeliveryAdressController {
     public Response add(@NotNull @PathParam("id") int id, DeliveryAdress deliveryAdress) {
         return getService().update(id, deliveryAdress);
     }
-//
-//    @DELETE
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    @Path("/product/{id}/delete")
-//    public String add(@NotNull @PathParam("id") int id) {
-//        return productService.delete(id);
-//    }
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/deliveryadress/{id}/delete")
+    public Response add(@NotNull @PathParam("id") int id) {
+        return getService().delete(id);
+    }
 }

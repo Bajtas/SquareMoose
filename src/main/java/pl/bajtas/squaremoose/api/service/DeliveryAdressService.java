@@ -164,13 +164,12 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
 
     @Override
     public Response add(DeliveryAdress deliveryAdress) {
-        List<Order> orders = deliveryAdress.getOrders();
         List<User> users = deliveryAdress.getUsers();
 
         try {
             for (User user : users) {
                 if (isUserNotExists(user.getId())) {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("User with id: " + user.getId() + " not exist! First add user!").build();
+                    return Response.status(Response.Status.BAD_REQUEST).entity("User with id: " + user.getId() + " not exist! Add user first!").build();
                 }
             }
             getRepository().save(deliveryAdress);
