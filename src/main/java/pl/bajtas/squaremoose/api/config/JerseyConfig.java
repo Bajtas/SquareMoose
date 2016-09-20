@@ -38,6 +38,10 @@ public class JerseyConfig extends ResourceConfig {
           LOG.error("Could not register class!", e);
         }
       }
+
+      LOG.info("Registering security filter.");
+
+      register(AuthenticationFilter.class);
     }
 
     LOG.info("All class registered without errors!");
