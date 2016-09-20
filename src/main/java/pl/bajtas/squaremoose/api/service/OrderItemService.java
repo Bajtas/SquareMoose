@@ -29,7 +29,6 @@ public class OrderItemService implements GenericService<OrderItem, OrderItemRepo
     private static final Logger LOG = Logger.getLogger(OrderItemService.class);
 
     @Autowired private OrderItemRepository orderItemRepository;
-    @Autowired private ProductRepository productRepository;
     @Autowired private OrderRepository orderRepository;
 
     @Override
@@ -78,6 +77,14 @@ public class OrderItemService implements GenericService<OrderItem, OrderItemRepo
         return getRepository().findOne(id);
     }
 
+    public List<OrderItem> getByOrderId(int id) {
+        return getRepository().findByOrder_Id(id);
+    }
+
+    public List<OrderItem> getByUserId(int id) {
+        return getRepository().findByOrder_User_Id(id);
+    }
+
     @Override
     public Response add(OrderItem orderItem) {
         LOG.info("Trying to save OrderItem: " + orderItem.getId());
@@ -96,6 +103,36 @@ public class OrderItemService implements GenericService<OrderItem, OrderItemRepo
         LOG.info("Object added successfully!");
         return Response.status(Response.Status.OK).entity("OrderItem added successfully!").build();
     }
+
+    public Response addToOrderWithId(int id, OrderItem orderItem) {
+        LOG.info("Trying to save add OrderItem: " + orderItem.getId() + " to Order with id: " + id);
+
+        if (isOrderExists(id)) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: OrderItem with id: " + orderItem.getId() + " already exist.").build();
+        }
+
+        if (isOrderItemExists(orderItem.getId())) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: OrderItem with id: " + orderItem.getId() + " already exist.").build();
+        }
+
+        try {
+            Order order = orderRepository.findOne(id); // get order with id
+            List<OrderItem> orderItems = order.getOrderItems(); // get items from this order
+            getRepository().save(orderItem); // save new order item into DB
+
+            orderItems.add(orderItem); // add new order to order items collection
+            order.setOrderItems(orderItems); // set colection to order
+
+            orderRepository.save(order); // update order in DB
+        } catch (Exception e) {
+            LOG.error("Error occured when saved: ", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error occured when saved: " + e.toString()).build();
+        }
+
+        LOG.info("Object added successfully!");
+        return Response.status(Response.Status.OK).entity("OrderItem added successfully!").build();
+    }
+
 
     @Override
     public Response update(int id, OrderItem orderItem) {
@@ -145,10 +182,18 @@ public class OrderItemService implements GenericService<OrderItem, OrderItemRepo
         }
     }
 
-    private boolean isOrderItemExists(Integer id) {
+    private boolean isOrderItemExists(int id) {
         OrderItem orderItem = orderItemRepository.findOne(id);
         if (orderItem != null)
             return true;
         return false;
     }
+
+    private boolean isOrderExists(int id) {
+        Order order = orderRepository.findOne(id);
+        if (order != null)
+            return true;
+        return false;
+    }
+
 }

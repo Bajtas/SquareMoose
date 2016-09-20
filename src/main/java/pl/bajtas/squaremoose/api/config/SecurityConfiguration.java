@@ -14,6 +14,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        // TODO Build full functionality of security layer.
         httpSecurity.authorizeRequests().antMatchers("/*").permitAll();
 
         httpSecurity.csrf().disable();
