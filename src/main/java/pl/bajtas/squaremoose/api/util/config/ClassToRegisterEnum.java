@@ -24,5 +24,4 @@ public enum ClassToRegisterEnum {
 
         return false;
     }
-
 }

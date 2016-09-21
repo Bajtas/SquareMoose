@@ -10,9 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.*;
-import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.DeliveryAdressRepository;
-import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
@@ -29,7 +27,6 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
     private static final Logger LOG = Logger.getLogger(DeliveryAdressService.class);
 
     @Autowired  private DeliveryAdressRepository deliveryAdressRepository;
-    @Autowired  private ProductRepository productRepository;
     @Autowired  private UserRepository userRepository;
 
     @Override

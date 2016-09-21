@@ -133,7 +133,6 @@ public class OrderItemService implements GenericService<OrderItem, OrderItemRepo
         return Response.status(Response.Status.OK).entity("OrderItem added successfully!").build();
     }
 
-
     @Override
     public Response update(int id, OrderItem orderItem) {
         LOG.info("Trying to save order item with id: " + id);
