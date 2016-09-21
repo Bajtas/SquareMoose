@@ -1,6 +1,7 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.org.apache.xpath.internal.operations.Or;
 
@@ -27,10 +28,7 @@ public class ActualOrderState {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_state_id")
     private OrderState orderState;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "btorderhistoryrow", joinColumns = {
-            @JoinColumn(name = "actual_order_state_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "order_state_history_id", nullable = false) })
+    @OneToMany(mappedBy = "actualOrderState", fetch = FetchType.EAGER)
     private List<OrderStateHistory> orderStateHistories;
 
     public ActualOrderState(String name, String description, Date lmod, Order order, List<OrderStateHistory> orderStateHistories)

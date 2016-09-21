@@ -20,14 +20,15 @@ public class OrderStateHistory {
     private String name;
     private String description;
     private Date lmod;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "orderStateHistories")
-    private List<ActualOrderState> actualOrderStates;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "actual_order_state_id")
+    private ActualOrderState actualOrderState;
 
-    public OrderStateHistory(String name, String description, Date lmod, List<ActualOrderState> actualOrderStates) {
+    public OrderStateHistory(String name, String description, Date lmod, ActualOrderState actualOrderState) {
         this.name = name;
         this.description = description;
         this.lmod = lmod;
-        this.actualOrderStates = actualOrderStates;
+        this.actualOrderState = actualOrderState;
     }
 
     public OrderStateHistory(String name, String description, Date lmod) {
@@ -70,12 +71,12 @@ public class OrderStateHistory {
         this.description = description;
     }
 
-    public void setActualOrderStates(List<ActualOrderState> actualOrderStates) {
-        this.actualOrderStates = actualOrderStates;
+    public void setActualOrderState(ActualOrderState actualOrderStates) {
+        this.actualOrderState = actualOrderState;
     }
 
-    public List<ActualOrderState> getActualOrderStates() {
-        return actualOrderStates;
+    public ActualOrderState getActualOrderState() {
+        return actualOrderState;
     }
 
     public void setLmod(Date lmod) {

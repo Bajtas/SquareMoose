@@ -110,17 +110,9 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
         try {
             if (orderStateHistories != null) {
                 for (OrderStateHistory history : orderStateHistories) {
-                    List<ActualOrderState> actualOrderStates = history.getActualOrderStates();
-                    if (actualOrderStates != null) {
-                        actualOrderStates.add(actualOrderState);
-                        history.setActualOrderStates(actualOrderStates);
-                    } else {
-                        actualOrderStates = new ArrayList<>();
-                        actualOrderStates.add(actualOrderState);
-                        history.setActualOrderStates(actualOrderStates);
-                    }
                     orderStateHistoryRepository.save(history);
                 }
+                actualOrderState.setOrderStateHistories(orderStateHistories);
             }
             if (state != null) {
                 orderStateRepository.save(state);

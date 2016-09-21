@@ -90,6 +90,14 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         List<OrderItem> orderItems = order.getOrderItems();
         DeliveryAdress deliveryAdress = order.getDeliveryAdress();
         DeliveryType deliveryType = order.getDeliveryType();
+        User user = order.getUser();
+
+        if (user == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("User is not specified please specify user!").build();
+        }
+        if (user.getId() < 1) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("User with id: " + user.getId() + " not exist. Please specify user with proper id!").build();
+        }
 
         try {
             for (OrderItem item : orderItems) {
@@ -120,6 +128,22 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
             Order old = getRepository().findOne(id);
             if (old != null) {
                 order.setId(id);
+
+                ActualOrderState actualOrderState = order.getActualOrderState();
+                DeliveryAdress deliveryAdress = order.getDeliveryAdress();
+                DeliveryType deliveryType = order.getDeliveryType();
+                PaymentMethod paymentMethod = order.getPaymentMethod();
+
+                if (actualOrderState != null) {
+                    List<OrderStateHistory> actualOrderStateOrderStateHistories;
+                    if (actualOrderStateRepository.findOne(actualOrderState.getId()) != null) {
+                        actualOrderStateOrderStateHistories = actualOrderState.getOrderStateHistories();
+
+                        // TODO everything
+                    } else {
+                        return Response.status(Response.Status.BAD_REQUEST).entity("ActualOrderState with given id: " + actualOrderState.getId() + " not found!").build();
+                    }
+                }
 
                 getRepository().save(order);
                 return Response.status(Response.Status.OK).entity("Order with id: " + id + " updated successfully!").build();

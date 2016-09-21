@@ -26,13 +26,6 @@ CREATE TABLE "btorderstate" (
   "description" TEXT NOT NULL
 );
 
-CREATE TABLE "btorderstatehistory" (
-  "id" SERIAL PRIMARY KEY,
-  "lmod" TIMESTAMP NOT NULL,
-  "name" TEXT NOT NULL,
-  "description" TEXT NOT NULL
-);
-
 CREATE TABLE "btpaymentmethod" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT NOT NULL
@@ -72,14 +65,14 @@ ALTER TABLE "btimage" ADD CONSTRAINT "fk_btimage__product_id" FOREIGN KEY ("prod
 
 CREATE TABLE "btuserrole" (
   "id" SERIAL PRIMARY KEY,
-  "name" TEXT NOT NULL,
+  "name" TEXT UNIQUE NOT NULL,
   "lmod" TIMESTAMP NOT NULL
 );
 
 CREATE TABLE "btuser" (
   "id" SERIAL PRIMARY KEY,
-  "login" TEXT NOT NULL,
-  "email" TEXT NOT NULL,
+  "login" TEXT UNIQUE NOT NULL,
+  "email" TEXT UNIQUE NOT NULL,
   "password" TEXT NOT NULL,
   "added_on" TIMESTAMP NOT NULL,
   "is_online" BOOLEAN NOT NULL,
@@ -151,18 +144,6 @@ ALTER TABLE "btactualorderstate" ADD CONSTRAINT "fk_btactualorderstate__order" F
 
 ALTER TABLE "btactualorderstate" ADD CONSTRAINT "fk_btactualorderstate__order_state_id" FOREIGN KEY ("order_state_id") REFERENCES "btorderstate" ("id");
 
-CREATE TABLE "btorderhistoryrow" (
-  "actual_order_state_id" INTEGER NOT NULL,
-  "order_state_history_id" INTEGER NOT NULL,
-  PRIMARY KEY ("actual_order_state_id", "order_state_history_id")
-);
-
-CREATE INDEX "idx_btorderhistoryrow__order_state_history_id" ON "btorderhistoryrow" ("order_state_history_id");
-
-ALTER TABLE "btorderhistoryrow" ADD CONSTRAINT "fk_btorderhistoryrow__actual_order_state_id" FOREIGN KEY ("actual_order_state_id") REFERENCES "btactualorderstate" ("id");
-
-ALTER TABLE "btorderhistoryrow" ADD CONSTRAINT "fk_btorderhistoryrow__order_state_history_id" FOREIGN KEY ("order_state_history_id") REFERENCES "btorderstatehistory" ("id");
-
 CREATE TABLE "btorderitem" (
   "id" SERIAL PRIMARY KEY,
   "amount" INTEGER NOT NULL,
@@ -176,4 +157,16 @@ CREATE INDEX "idx_btorderitem__product" ON "btorderitem" ("product");
 
 ALTER TABLE "btorderitem" ADD CONSTRAINT "fk_btorderitem__order" FOREIGN KEY ("order") REFERENCES "btorder" ("id");
 
-ALTER TABLE "btorderitem" ADD CONSTRAINT "fk_btorderitem__product" FOREIGN KEY ("product") REFERENCES "btproduct" ("id")
+ALTER TABLE "btorderitem" ADD CONSTRAINT "fk_btorderitem__product" FOREIGN KEY ("product") REFERENCES "btproduct" ("id");
+
+CREATE TABLE "btorderstatehistory" (
+  "id" SERIAL PRIMARY KEY,
+  "lmod" TIMESTAMP NOT NULL,
+  "name" TEXT NOT NULL,
+  "description" TEXT NOT NULL,
+  "actual_order_state_id" INTEGER NOT NULL
+);
+
+CREATE INDEX "idx_btorderstatehistory__actual_order_state_id" ON "btorderstatehistory" ("actual_order_state_id");
+
+ALTER TABLE "btorderstatehistory" ADD CONSTRAINT "fk_btorderstatehistory__actual_order_state_id" FOREIGN KEY ("actual_order_state_id") REFERENCES "btactualorderstate" ("id")

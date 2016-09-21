@@ -12,6 +12,7 @@ import pl.bajtas.squaremoose.api.service.OrderService;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -85,5 +86,28 @@ public class OrderController {
     @Path("/order/paymentmethod/id/{id}")
     public Order getByPaymentMethodId(@NotNull @PathParam("id") Integer id) {
         return getService().getByPaymentMethodId(id);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/order/add")
+    public Response add(Order order) {
+        return getService().add(order);
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/order/{id}/update")
+    public Response update(@NotNull @PathParam("id") int id, Order updatedOrder) {
+        return getService().update(id, updatedOrder); // false for update old
+    }
+
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/order/{id}/delete")
+    public Response delete(@NotNull @PathParam("id") Integer id) {
+        return getService().delete(id);
     }
 }
