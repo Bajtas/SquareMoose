@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.DeliveryType;
-import pl.bajtas.squaremoose.api.domain.OrderItem;
 import pl.bajtas.squaremoose.api.service.DeliveryTypeService;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Created by Bajtas on 18.09.2016.
@@ -49,5 +49,31 @@ public class DeliveryTypeController {
         return getService().getById(id);
     }
 
+
+   /* --------------------------------------------------------------------------------------------- */
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/deliverytypes/add")
+    public Response add(DeliveryType deliveryType) {
+        return getService().add(deliveryType);
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/deliverytypes/{id}/update")
+    public Response add(@NotNull @PathParam("id") int id, DeliveryType deliveryType) {
+        return getService().update(id, deliveryType);
+    }
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/deliverytypes/{id}/delete")
+    public Response add(@NotNull @PathParam("id") int id) {
+        return getService().delete(id);
+    }
 
 }
