@@ -84,7 +84,7 @@ public class OrderController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/order/paymentmethod/id/{id}")
-    public Order getByPaymentMethodId(@NotNull @PathParam("id") Integer id) {
+    public List<Order> getByPaymentMethodId(@NotNull @PathParam("id") Integer id) {
         return getService().getByPaymentMethodId(id);
     }
 

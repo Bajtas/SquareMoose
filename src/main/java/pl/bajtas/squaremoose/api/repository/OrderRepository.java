@@ -7,6 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 import pl.bajtas.squaremoose.api.domain.Order;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
 
+import java.util.List;
+
 /**
  * Created by Bajtas on 04.09.2016.
  */
@@ -18,5 +20,5 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Order findByUser_Login(String login);
     Order findByDeliveryAdress_Id(int id);
     Order findByDeliveryType_Id(int id);
-    Order findByPaymentMethod_Id(int id);
+    List<Order> findByPaymentMethod_Id(int id);
 }

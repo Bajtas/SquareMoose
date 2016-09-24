@@ -196,7 +196,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         return getRepository().findByDeliveryType_Id(id);
     }
 
-    public Order getByPaymentMethodId(Integer id) {
+    public List<Order> getByPaymentMethodId(Integer id) {
         return getRepository().findByPaymentMethod_Id(id);
     }
 }
