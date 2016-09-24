@@ -14,6 +14,7 @@ import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
+import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
@@ -49,7 +50,8 @@ public class CategoryService implements GenericService<Category, CategoryReposit
 
     @Override
     public Page<Category> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
-        return null;
+        PageUtil<Category> util = new PageUtil<>();
+        return util.getPage(page, size, sortBy, sortDirection, getRepository());
     }
 
     /* Returns one Category by Id */

@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
-import pl.bajtas.squaremoose.api.domain.Category;
-import pl.bajtas.squaremoose.api.domain.DeliveryAdress;
-import pl.bajtas.squaremoose.api.domain.Product;
-import pl.bajtas.squaremoose.api.domain.ProductImage;
+import pl.bajtas.squaremoose.api.domain.*;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
@@ -21,6 +18,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
+import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.ws.rs.core.Response;
@@ -72,26 +70,8 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
     @Transactional
     public Page<Product> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
-        boolean unsorted = false;
-        Sort.Direction direction;
-
-        if (page == null)
-            page = 0;
-        if (size == null)
-            size = 20;
-        if (StringUtils.isEmpty(sortBy))
-            unsorted = true;
-
-        Page<Product> result;
-        if (!unsorted) {
-            direction = SearchUtil.determineSortDirection(sortDirection);
-
-            result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
-        }
-        else
-            result = getRepository().findAll(new PageRequest(page, size));
-
-        return result;
+        PageUtil<Product> util = new PageUtil<>();
+        return util.getPage(page, size, sortBy, sortDirection, getRepository());
     }
 
     @Transactional

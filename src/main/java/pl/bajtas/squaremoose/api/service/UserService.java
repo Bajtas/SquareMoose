@@ -11,11 +11,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
 import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
+import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -75,33 +77,8 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     public Page<User> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
-        LOG.info("Getting all users wrapped with pages.");
-        boolean unsorted = false;
-        Sort.Direction direction;
-
-        if (page == null)
-            page = 0;
-        if (size == null)
-            size = 20;
-        if (StringUtils.isEmpty(sortBy))
-            unsorted = true;
-
-        LOG.info("Page number: " + page + " size of page: " + size);
-
-
-        Page<User> result;
-        if (!unsorted) {
-            direction = SearchUtil.determineSortDirection(sortDirection);
-
-            LOG.info("Results will be sorted by: " + sortBy + " With sorting direction: " + sortDirection);
-            result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
-        } else {
-            LOG.info("Unsorted results.");
-            result = getRepository().findAll(new PageRequest(page, size));
-        }
-
-        LOG.info("Exiting getAll(...) of User Service");
-        return result;
+        PageUtil<User> util = new PageUtil<>();
+        return util.getPage(page, size, sortBy, sortDirection, getRepository());
     }
 
     public List<User> searchUser(String login, String email, String role, Boolean online) {

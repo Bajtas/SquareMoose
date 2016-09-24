@@ -9,11 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import pl.bajtas.squaremoose.api.domain.DeliveryAdress;
 import pl.bajtas.squaremoose.api.domain.DeliveryType;
 import pl.bajtas.squaremoose.api.domain.Order;
 import pl.bajtas.squaremoose.api.repository.DeliveryTypeRepository;
 import pl.bajtas.squaremoose.api.repository.OrderRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
+import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.ws.rs.core.Response;
@@ -47,26 +49,8 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
 
     @Override
     public Page<DeliveryType> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
-        boolean unsorted = false;
-        Sort.Direction direction;
-
-        if (page == null)
-            page = 0;
-        if (size == null)
-            size = 20;
-        if (StringUtils.isEmpty(sortBy))
-            unsorted = true;
-
-        Page<DeliveryType> result;
-        if (!unsorted) {
-            direction = SearchUtil.determineSortDirection(sortDirection);
-
-            result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
-        }
-        else
-            result = getRepository().findAll(new PageRequest(page, size));
-
-        return result;
+        PageUtil<DeliveryType> util = new PageUtil<>();
+        return util.getPage(page, size, sortBy, sortDirection, getRepository());
     }
 
     @Override

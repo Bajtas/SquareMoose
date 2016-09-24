@@ -16,6 +16,7 @@ import pl.bajtas.squaremoose.api.repository.ActualOrderStateRepository;
 import pl.bajtas.squaremoose.api.repository.OrderRepository;
 import pl.bajtas.squaremoose.api.repository.OrderStateRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
+import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import java.util.List;
@@ -48,26 +49,8 @@ public class OrderStateService implements ApplicationListener<ContextRefreshedEv
     }
 
     public Page<OrderState> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
-        boolean unsorted = false;
-        Sort.Direction direction;
-
-        if (page == null)
-            page = 0;
-        if (size == null)
-            size = 20;
-        if (StringUtils.isEmpty(sortBy))
-            unsorted = true;
-
-        Page<OrderState> result;
-        if (!unsorted) {
-            direction = SearchUtil.determineSortDirection(sortDirection);
-
-            result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
-        }
-        else
-            result = getRepository().findAll(new PageRequest(page, size));
-
-        return result;
+        PageUtil<OrderState> util = new PageUtil<>();
+        return util.getPage(page, size, sortBy, sortDirection, getRepository());
     }
 
     public OrderState getById(int id) {

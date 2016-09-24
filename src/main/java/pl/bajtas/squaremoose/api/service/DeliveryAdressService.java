@@ -13,6 +13,7 @@ import pl.bajtas.squaremoose.api.domain.*;
 import pl.bajtas.squaremoose.api.repository.DeliveryAdressRepository;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
+import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.ws.rs.core.Response;
@@ -46,26 +47,8 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
 
     @Override
     public Page<DeliveryAdress> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
-        boolean unsorted = false;
-        Sort.Direction direction;
-
-        if (page == null)
-            page = 0;
-        if (size == null)
-            size = 20;
-        if (StringUtils.isEmpty(sortBy))
-            unsorted = true;
-
-        Page<DeliveryAdress> result;
-        if (!unsorted) {
-            direction = SearchUtil.determineSortDirection(sortDirection);
-
-            result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
-        }
-        else
-            result = getRepository().findAll(new PageRequest(page, size));
-
-        return result;
+        PageUtil<DeliveryAdress> util = new PageUtil<>();
+        return util.getPage(page, size, sortBy, sortDirection, getRepository());
     }
 
     @Override

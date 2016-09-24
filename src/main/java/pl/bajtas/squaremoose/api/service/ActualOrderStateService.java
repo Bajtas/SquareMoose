@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.*;
 import pl.bajtas.squaremoose.api.repository.*;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
+import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.persistence.EntityManager;
@@ -52,26 +53,8 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
 
     @Override
     public Page<ActualOrderState> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
-        boolean unsorted = false;
-        Sort.Direction direction;
-
-        if (page == null)
-            page = 0;
-        if (size == null)
-            size = 20;
-        if (StringUtils.isEmpty(sortBy))
-            unsorted = true;
-
-        Page<ActualOrderState> result;
-        if (!unsorted) {
-            direction = SearchUtil.determineSortDirection(sortDirection);
-
-            result = getRepository().findAll(new PageRequest(page, size, direction, sortBy));
-        }
-        else
-            result = getRepository().findAll(new PageRequest(page, size));
-
-        return result;
+        PageUtil<ActualOrderState> util = new PageUtil<>();
+        return util.getPage(page, size, sortBy, sortDirection, getRepository());
     }
 
     @Override
