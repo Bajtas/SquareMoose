@@ -5,9 +5,11 @@ angular.module('starter.controllers', [])
     // private
     var _cartItemsAmount = 0;
     var _totalPrice = 0;
+    var _cartProducts = {};
     // public API
     this.cartItemsAmount = _cartItemsAmount;
     this.totalPrice = _totalPrice;
+    this.cartProducts = _cartProducts;
 
     this.recalculateTotalPrice = function (cart) {
         _totalPrice = 0;
@@ -15,6 +17,7 @@ angular.module('starter.controllers', [])
             _totalPrice += item.amount * item.price;
         })
         this.totalPrice = _totalPrice;
+        this.cartProducts = cart;
     }
 })
 
@@ -30,8 +33,6 @@ angular.module('starter.controllers', [])
   $scope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/';
   $scope.cart = [];
   $scope.loginData = {};
-  $scope.cartItemsAmount = mainService.cartItemsAmount;
-  $scope.totalPrice = mainService.totalPrice;
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -177,5 +178,43 @@ angular.module('starter.controllers', [])
 
     $scope.changePhoto = function ($event) {
         $scope.mainImageSrc = $event.currentTarget.src;
+    };
+})
+
+.controller('MyCartCtrl', function ($scope, mainService) {
+    $scope.productslist = [];
+    $scope.priceCurrency = '$';
+    $scope.model = {
+        editAmount: false
+    }
+
+    $scope.cartItemsAmount = mainService.cartItemsAmount;
+    $scope.totalPrice = mainService.totalPrice;
+
+    $scope.$on('modal.shown', function () {
+        $scope.productslist = mainService.cartProducts;
+        $scope.cartItemsAmount = mainService.cartItemsAmount;
+        $scope.totalPrice = mainService.totalPrice;
+    });
+
+    $scope.edit = function ($event) {
+        $scope.model.editAmount = true;
+    };
+
+    $scope.refresh = function () {
+        $scope.cartItemsAmount = mainService.cartItemsAmount;
+        $scope.totalPrice = mainService.totalPrice;
+    };
+
+    $scope.updateTotalCost = function (index) {
+        mainService.totalPrice = $scope.productslist[index].amount * $scope.productslist[index].product.price;
+    };
+
+    $scope.countItems = function (index) {
+        counter = 0;
+        $scope.cart.forEach(function (item) {
+            counter += item.amount;
+        });
+        mainService.cartItemsAmount = counter;
     };
 });
