@@ -1,0 +1,23 @@
+/* Empty. Add your own CSS if you like */
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.bjtsicons {
+    display:inline-block;
+    width: 64px; 
+    height: 64px; 
+}
+
+.gallery {
+    float: left;
+    padding-left: 20px;
+}
+
+.gallery:after {
+    content:'';
+    display:block;
+    clear: both;
+}

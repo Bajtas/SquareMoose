@@ -1,0 +1,28 @@
+﻿<ion-modal-view>
+    <ion-header-bar class="bar-dark">
+        <h1 class="title">My cart</h1>
+        <div class="buttons">
+            <button class="button icon-left ion-chevron-left button-clear button-white" ng-click="hideCart()"> Back</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+
+    </ion-content>
+    <ion-footer-bar align-title="left" class="bar-balanced">
+
+        <div class="tabs tabs-icon-top">
+            <a class="tab-item">
+                <p><b>Total items:</b></p>
+                <p font="size:10"><b>{{cartItemsAmount}}</b></p>
+            </a>
+            <a class="tab-item">
+                <p><b>Total price:</b></p>
+                <p font="size:10"><b>{{totalPrice}} $</b></p>
+            </a>
+            <a class="tab-item" ng-click="doSomething()">
+                <i class="icon ion-cash"></i>
+                Go to payment
+            </a>
+        </div>
+    </ion-footer-bar>
+</ion-modal-view>

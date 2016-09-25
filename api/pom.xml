@@ -5,7 +5,7 @@
 
 	<groupId>pl.bajtas</groupId>
 	<artifactId>squaremoose.api</artifactId>
-	<version>0.2.0</version>
+	<version>0.6.2</version>
 	<packaging>war</packaging>
 
 	<name>SquareMoose</name>
@@ -82,6 +82,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
