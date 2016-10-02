@@ -21,63 +21,90 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, mainService) {
+.controller('AppCtrl', function ($scope, $ionicModal, $timeout, $location, $http, $rootScope, mainService) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+    // With the new view caching in Ionic, Controllers are only called
+    // when they are recreated or on app start, instead of every page change.
+    // To listen for when this page is active (for example, to refresh data),
+    // listen for the $ionicView.enter event:
+    //$scope.$on('$ionicView.enter', function(e) {
+    //});
 
-  $scope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/';
-  $scope.cart = [];
-  $scope.loginData = {};
+    $scope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/';
+    $scope.cart = [];
+    $scope.loginData = {};
+    $scope.currentPath = $location.path();
+    $scope.categories = [];
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.loginModal = modal;
-  });
+    $rootScope.$on("$locationChangeStart", function (event, next, current) {
+        $scope.currentPath = $location.path();
+    });
+
+    // Create the login modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/login.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.loginModal = modal;
+    });
 
     // Triggered in the login modal to close it
-  $scope.closeLogin = function () {
-      $scope.loginModal.hide();
-  };
+    $scope.closeLogin = function () {
+        $scope.loginModal.hide();
+    };
 
     // Open the login modal
-  $scope.login = function () {
-      $scope.loginModal.show();
-  };
+    $scope.login = function () {
+        $scope.loginModal.show();
+    };
 
-  // Create cart modal.
-  $ionicModal.fromTemplateUrl('templates/mycart.html', {
-      scope: $scope
-  }).then(function (modal) {
-      $scope.cartModal = modal;
-  });
+    // Create cart modal.
+    $ionicModal.fromTemplateUrl('templates/mycart.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.cartModal = modal;
+    });
 
-  $scope.showCart = function () {
-      $scope.cartModal.show();
-      $scope.cartItemsAmount = mainService.cartItemsAmount;
-      $scope.totalPrice = mainService.totalPrice;
-  };
+    $scope.showCart = function () {
+        $scope.cartModal.show();
+        $scope.cartItemsAmount = mainService.cartItemsAmount;
+        $scope.totalPrice = mainService.totalPrice;
+    };
 
-  $scope.hideCart = function () {
-      $scope.cartModal.hide();
-  };
+    $scope.hideCart = function () {
+        $scope.cartModal.hide();
+    };
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    // Create sort and categories modal.
+    $ionicModal.fromTemplateUrl('templates/productslist-options.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.sortOptionsModal = modal;
+    });
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
+    $scope.showSortOptions = function () {
+        $http.get($scope.apiUrl + 'CategoryService/categories/')
+            .then(function (response) {
+                $scope.categories = response.data;
+            }, function (response) {
+                $scope.content = "Something went wrong";
+            });
+        $scope.sortOptionsModal.show();
+    };
+
+    $scope.hideSortOptions = function () {
+        $scope.sortOptionsModal.hide();
+    };
+
+    // Perform the login action when the user submits the login form
+    $scope.doLogin = function () {
+        console.log('Doing login', $scope.loginData);
+
+        // Simulate a login delay. Remove this and replace with your login
+        // code if using a login system
+        $timeout(function () {
+            $scope.closeLogin();
+        }, 1000);
+    };
 })
 
 .controller('ProductslistCtrl', function ($scope, $http, mainService) {
@@ -86,6 +113,9 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.priceCurrency = '$';
     $scope.cartItemsAmount = 0;
+    $scope.firstSiteLoaded = false;
+    $scope.sortBy = '';
+    $scope.sortDirection = '';
 
     $scope.$on('$ionicView.loaded', function (event) {
         $scope.refresh();
@@ -96,13 +126,14 @@ angular.module('starter.controllers', [])
     });
 
     $scope.refresh = function () {
-        $http.get($scope.apiUrl + 'ProductService/products/page/' + $scope.page)
-        .then(function (response) {
-            $scope.page = response.data;
-            $scope.productslist = $scope.page.content;
-        }, function (response) {
-            $scope.content = "Something went wrong";
-        });
+        $http.get($scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
+            .then(function (response) {
+                $scope.productslist = response.data.content;
+                $scope.lastPage = response.data.totalPages;
+            }, function (response) {
+                $scope.content = "Something went wrong";
+            });
+        $scope.firstSiteLoaded = true;
     };
 
     $scope.countItems = function () {
@@ -112,6 +143,30 @@ angular.module('starter.controllers', [])
         });
         $scope.cartItemsAmount = counter;
         mainService.cartItemsAmount = counter;
+    };
+
+    $scope.loadMore = function () {
+        if ($scope.firstSiteLoaded) {
+            $scope.page++;
+            $http.get($scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
+                .then(function (response) {
+                    var productsArrLen = response.data.content.length;
+                    var products = response.data.content;
+                    for (var i = 0; i < productsArrLen; i++) {
+                        $scope.productslist.push(products[i]);
+                    }
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                }, function (response) {
+                    $scope.content = "Something went wrong";
+                    $scope.lastPage = $scope.page;
+                });
+        }
+    };
+
+    $scope.moreDataCanBeLoaded = function () {
+        if ($scope.page === $scope.lastPage)
+            return false;
+        return true;
     };
 })
 
@@ -130,15 +185,15 @@ angular.module('starter.controllers', [])
 
     $scope.refresh = function () {
         $http.get($scope.apiUrl + 'ProductService/product/' + $stateParams.productId)
-        .then(function (response) {
-            $scope.product = response.data;
-            if ($scope.product.images[0]) {
-                $scope.mainImageSrc = $scope.product.images[0].imageSrc;
-            }
-            $scope.model.totalCost = $scope.product.price;
-        }, function (response) {
-            $scope.content = "Something went wrong";
-        });
+            .then(function (response) {
+                $scope.product = response.data;
+                if ($scope.product.images[0]) {
+                    $scope.mainImageSrc = $scope.product.images[0].imageSrc;
+                }
+                $scope.model.totalCost = $scope.product.price;
+            }, function (response) {
+                $scope.content = "Something went wrong";
+            });
     };
 
     $scope.addToCart = function () {

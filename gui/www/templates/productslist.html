@@ -4,7 +4,7 @@
                        on-refresh="refresh()">
         </ion-refresher>
         <ion-list>
-            <ion-item class="item item-thumbnail-left" ng-repeat="product in productslist" href="#/app/product/{{product.id}}">
+            <ion-item class="item item-thumbnail-left" ng-repeat="product in productslist track by $index" href="#/app/product/{{product.id}}">
                 <img ng-if="product.images[0].imageSrc" ng-src="{{product.images[0].imageSrc}}">
                 <h2>{{product.name}}</h2>
                 <p>{{product.description}}</p>
@@ -22,6 +22,10 @@
                 </ion-delete-button>-->
             </ion-item>
         </ion-list>
+        <ion-infinite-scroll on-infinite="loadMore()"
+                             distance="1%"
+                             ng-if="moreDataCanBeLoaded()">
+        </ion-infinite-scroll>
     </ion-content>
     <ion-footer-bar align-title="left" class="bar-dark">
         <div class="buttons">

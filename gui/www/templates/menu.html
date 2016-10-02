@@ -8,27 +8,36 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+      <ion-nav-buttons side="right">
+            <button ng-show="currentPath === '/app/productslist'" class="button button-icon button-clear ion-funnel" ng-click="showSortOptions()"></button>
+      </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
+      <h1 class="title">Menu</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close ng-click="login()">
-          Login
+        <ion-item menu-close href="#/app/products" class="item item-icon-left item-icon-right">
+          <i class="icon ion-bag"></i> Shopping <i class="icon ion-arrow-right-c"></i>
         </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
+        <ion-item menu-close href="#/app/search" class="item item-icon-left">
+          <i class="icon ion-search"></i> Search
         </ion-item>
-        <ion-item menu-close href="#/app/browse">
-          Browse
+        <ion-item menu-close href="#/app/search" class="item item-icon-left">
+          <i class="icon ion-email"></i> Contact
         </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Playlists
+        <div class="item item-divider">
+            Account
+        </div>
+        <ion-item class="item item-icon-left" menu-close ng-click="login()">
+            <i class="icon ion-log-in"></i> Login
+        </ion-item>
+        <ion-item class="item item-icon-left" menu-close ng-click="register()">
+            <i class="icon ion-key"></i> Register
         </ion-item>
       </ion-list>
     </ion-content>

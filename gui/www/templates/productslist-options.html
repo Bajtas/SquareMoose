@@ -1,0 +1,37 @@
+﻿<ion-modal-view ng-controller="MyCartCtrl">
+    <ion-header-bar class="bar-dark">
+        <h1 class="title">Sort products</h1>
+        <div class="buttons">
+            <button class="button icon-left ion-chevron-left button-clear button-white" ng-click="hideSortOptions()"> Back</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+            <div class="item item-divider item-icon-left">
+                <i class="icon ion-ios-pricetags"></i> Categories
+            </div>
+            <ion-item class="item item-thumbnail-left" ng-repeat="category in categories" href="#/app/product/{{category.id}}">
+                <h2>{{category.name}}</h2>
+            </ion-item>
+        </ion-list>
+        <ion-toggle>
+            Show ...
+        </ion-toggle>
+    </ion-content>
+    <!--<ion-footer-bar align-title="left" class="bar-balanced">
+        <div class="tabs tabs-icon-top">
+            <a class="tab-item">
+                <p><b>Total items:</b></p>
+                <p font="size:10"><b>{{cartItemsAmount}}</b></p>
+            </a>
+            <a class="tab-item">
+                <p><b>Total price:</b></p>
+                <p font="size:10"><b>{{totalPrice}} $</b></p>
+            </a>
+            <a class="tab-item" ng-click="doSomething()">
+                <i class="icon ion-cash"></i>
+                Go to payment
+            </a>
+        </div>
+    </ion-footer-bar>-->
+</ion-modal-view>

@@ -26,7 +26,7 @@ public class PageUtil<T> {
             page = 0;
         if (size == null)
             size = 20;
-        if (StringUtils.isEmpty(sortBy))
+        if (StringUtils.isEmpty(sortBy) || sortBy == null)
             unsorted = true;
 
         Page<T> results = null;
