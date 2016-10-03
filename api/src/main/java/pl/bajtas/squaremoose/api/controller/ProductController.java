@@ -72,14 +72,18 @@ public class ProductController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/products/search")
-    public List<Product> getByAllProperties (
+    @Path("/products/search/page/{page}")
+    public Page<Product> getByAllProperties (
+            @NotNull @PathParam("page") int page,
+            @QueryParam("pageSize") int pageSize,
+            @QueryParam("sortBy") String sortBy,
+            @QueryParam("sortDir") String sortDir,
             @QueryParam("name") String name,
             @QueryParam("description") String description,
             @QueryParam("price1") Double price1,
             @QueryParam("price2") Double price2,
             @QueryParam("categoryName") String categoryMame) throws Exception {
-        return productService.searchProduct(name, description, price1, price2, categoryMame);
+        return productService.searchProduct(page, pageSize, sortBy, sortDir, name, description, price1, price2, categoryMame);
     }
 
     /* --------------------------------------------------------------------------------------------- */

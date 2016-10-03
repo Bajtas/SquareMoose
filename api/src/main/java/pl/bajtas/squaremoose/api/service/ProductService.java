@@ -1,22 +1,24 @@
 package pl.bajtas.squaremoose.api.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
-import pl.bajtas.squaremoose.api.domain.*;
-import pl.bajtas.squaremoose.api.repository.CategoryRepository;
-import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
-import pl.bajtas.squaremoose.api.repository.ProductRepository;
-
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.bajtas.squaremoose.api.domain.Category;
+import pl.bajtas.squaremoose.api.domain.Product;
+import pl.bajtas.squaremoose.api.domain.ProductImage;
+import pl.bajtas.squaremoose.api.repository.CategoryRepository;
+import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
+import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
@@ -32,33 +34,37 @@ import java.util.List;
 
 @Service
 public class ProductService implements ApplicationListener<ContextRefreshedEvent> {
-  
-  private static final Logger LOG = Logger.getLogger(ProductService.class);
 
-    @Autowired  private SessionFactory sessionFactory;
-    @Autowired  private ProductImagesRepository productImagesRepository;
-    @Autowired  private ProductRepository productRepository;
-    @Autowired  private CategoryRepository categoryRepository;
-    
+    private static final Logger LOG = Logger.getLogger(ProductService.class);
+
+    @Autowired
+    private SessionFactory sessionFactory;
+    @Autowired
+    private ProductImagesRepository productImagesRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     public ProductRepository getRepository() {
-      return productRepository;
+        return productRepository;
     }
 
     protected Session getSession() {
-        return  sessionFactory.getCurrentSession();
+        return sessionFactory.getCurrentSession();
     }
 
     // Events
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-      
+
         Product shirt = new Product();
         shirt.setDescription("Spring Framework Guru Shirt");
         shirt.setAddedOn(new Date());
         shirt.setPrice(5);
         shirt.setLmod(new Date());
         shirt.setName("koszulka");
-        
+
         productRepository.save(shirt);
     }
 
@@ -100,14 +106,12 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public List<Product> getByPrice(Double price1, Double price2) throws Exception{
+    public List<Product> getByPrice(Double price1, Double price2) throws Exception {
         if (price1 == null && price2 == null) {
             throw new Exception("Please specify price1 or price2 of Product for this request.");
-        }
-        else if (price1 != null && price2 != null) {
+        } else if (price1 != null && price2 != null) {
             return getRepository().findByPriceBetween(price1, price2);
-        }
-        else if (price1 == null) {
+        } else if (price1 == null) {
             return getRepository().findByPriceLessThanEqual(price2);
         } else if (price2 == null) {
             return getRepository().findByPriceGreaterThanEqual(price1);
@@ -117,12 +121,25 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public List<Product> searchProduct(String name, String description, Double price1, Double price2, String categoryMame) throws Exception {
-        if (name == null && description == null && price1 == null && price2 == null && categoryMame == null)  {
-            Iterable<Product> source = getAll();
-            List<Product> allProducts = new ArrayList<>();
-            source.forEach(allProducts::add);
+    public Page<Product> searchProduct(Integer page, Integer pageSize, String sortBy, String sortDirection, String name, String description, Double price1, Double price2, String categoryMame) throws Exception {
+        boolean unsorted = true;
+        Pageable pageable;
+        if (pageSize == null || pageSize == 0) {
+            pageSize = 20;
+        }
+
+        if (StringUtils.isNotEmpty(sortBy) || StringUtils.isNotBlank(sortBy)) {
+            unsorted = false;
+        }
+
+        if (name == null && description == null && price1 == null && price2 == null && categoryMame == null) {
+            Page<Product> allProducts = getAll(page, pageSize, sortBy, sortDirection);
             return allProducts;
+        }
+        if (!unsorted) {
+            pageable = new PageRequest(page, pageSize, SearchUtil.determineSortDirection(sortDirection), sortBy);
+        } else {
+            pageable = new PageRequest(page, pageSize);
         }
         List<List<Product>> results = new ArrayList<>();
 
@@ -143,7 +160,13 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         }
 
         Combiner<Product> combiner = new Combiner<>(results);
-        return combiner.combine();
+        List<Product> result = combiner.combine();
+
+        if (result == null)
+            return null;
+
+        Page<Product> pageResult = new PageImpl<>(result, pageable, result.size());
+        return pageResult;
     }
 
     /* --------------------------------------------------------------------------------------------- */
@@ -153,12 +176,10 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     public List<Product> getByCategoryIdOrName(Integer id, String name) throws Exception {
         if (id == null && name == null) {
             throw new Exception("Please specify Id or Name of Category for this request.");
-        }
-        else if (id == null) {
+        } else if (id == null) {
             name = name.toLowerCase();
             return getRepository().findByCategory_NameContainsIgnoreCase(name);
-        }
-        else if (name == null) {
+        } else if (name == null) {
             return getRepository().findByCategory_Id(id);
         }
 
