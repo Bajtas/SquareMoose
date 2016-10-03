@@ -6,10 +6,12 @@ angular.module('starter.controllers', [])
     var _cartItemsAmount = 0;
     var _totalPrice = 0;
     var _cartProducts = {};
+    var _productsList = [];
     // public API
     this.cartItemsAmount = _cartItemsAmount;
     this.totalPrice = _totalPrice;
     this.cartProducts = _cartProducts;
+    this.productsList = _productsList;
 
     this.recalculateTotalPrice = function (cart) {
         _totalPrice = 0;
@@ -33,6 +35,7 @@ angular.module('starter.controllers', [])
     $scope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/';
     $scope.cart = [];
     $scope.loginData = {};
+    $scope.optionsData = {};
     $scope.currentPath = $location.path();
     $scope.categories = [];
 
@@ -95,6 +98,17 @@ angular.module('starter.controllers', [])
         $scope.sortOptionsModal.hide();
     };
 
+    $scope.filterAndSort = function () {
+        var url = $scope.apiUrl + 'ProductService/products/search' + '?name=' + $scope.optionsData.title;
+        $http.get(url)
+            .then(function (response) {
+                mainService.productsList = response.data;
+            }, function (response) {
+                $scope.content = "Something went wrong";
+            });
+        $scope.sortOptionsModal.hide();
+    };
+
     // Perform the login action when the user submits the login form
     $scope.doLogin = function () {
         console.log('Doing login', $scope.loginData);
@@ -109,7 +123,12 @@ angular.module('starter.controllers', [])
 
 .controller('ProductslistCtrl', function ($scope, $http, mainService) {
 
-    $scope.productslist = [];
+    $scope.productslist = mainService.productsList;
+    $scope.$watch(function () {
+        return mainService.productsList;
+    }, function (newValue, oldValue) {
+        $scope.productslist = newValue;
+    });
     $scope.page = 0;
     $scope.priceCurrency = '$';
     $scope.cartItemsAmount = 0;

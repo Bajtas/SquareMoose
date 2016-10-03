@@ -10,28 +10,49 @@
             <div class="item item-divider item-icon-left">
                 <i class="icon ion-ios-pricetags"></i> Categories
             </div>
-            <ion-item class="item item-thumbnail-left" ng-repeat="category in categories" href="#/app/product/{{category.id}}">
+            <!--<ion-item class="item item-thumbnail-left" ng-repeat="category in categories" href="#/app/product/{{category.id}}">
                 <h2>{{category.name}}</h2>
-            </ion-item>
+            </ion-item>-->
+            <div class="item item-divider item-icon-left">
+                <i class="icon ion-ios-cart"></i> Properties
+            </div>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Min price:</span>
+                <input type="number" min="0" placeholder="0" ng-model="optionsData.minPrice">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Max price:</span>
+                <input type="number" min="0" placeholder="&#x221e;" ng-model="optionsData.maxPrice">
+            </label>
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Product title" ng-model="optionsData.title">
+            </label>
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Product description" ng-model="optionsData.description">
+            </label>
+            <div class="item item-divider item-icon-left">
+                <i class="icon ion-toggle-filled"></i> Order by
+            </div>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Sort by:
+                </div>
+                <select ng-model="optionsData.sortBy">
+                    <option>Title</option>
+                    <option>Price</option>
+                    <option>Added date</option>
+                </select>
+            </label>
+            <ion-toggle ng-model="optionsData.sortDir">
+                Ascending/Descending
+            </ion-toggle>
         </ion-list>
-        <ion-toggle>
-            Show ...
-        </ion-toggle>
     </ion-content>
-    <!--<ion-footer-bar align-title="left" class="bar-balanced">
-        <div class="tabs tabs-icon-top">
-            <a class="tab-item">
-                <p><b>Total items:</b></p>
-                <p font="size:10"><b>{{cartItemsAmount}}</b></p>
-            </a>
-            <a class="tab-item">
-                <p><b>Total price:</b></p>
-                <p font="size:10"><b>{{totalPrice}} $</b></p>
-            </a>
-            <a class="tab-item" ng-click="doSomething()">
-                <i class="icon ion-cash"></i>
-                Go to payment
-            </a>
-        </div>
-    </ion-footer-bar>-->
+    <ion-footer-bar align-title="center">
+        <button class="button button-full button-calm" ng-click="filterAndSort()">
+            Filter and sort
+        </button>
+    </ion-footer-bar>
 </ion-modal-view>

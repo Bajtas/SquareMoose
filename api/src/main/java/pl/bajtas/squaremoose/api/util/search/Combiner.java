@@ -29,6 +29,10 @@ public class Combiner<T> {
         removeEmptyLists();
 
         int listsSize = listsToCombine.size();
+
+        if (listsSize == 0)
+            return null;
+
         List<T>  result = listsToCombine.get(0);
 
         for (int i=1; i<listsSize;i++) {
