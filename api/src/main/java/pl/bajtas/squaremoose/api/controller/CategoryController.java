@@ -20,7 +20,8 @@ import java.util.List;
 @Path("/CategoryService")
 public class CategoryController {
 
-    @Autowired private CategoryService categoryService; // Category service bean for connection between controller and service layers
+    @Autowired
+    private CategoryService categoryService; // Category service bean for connection between controller and service layers
 
     private CategoryService getService() {
         return categoryService;

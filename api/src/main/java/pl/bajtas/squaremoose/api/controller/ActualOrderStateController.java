@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.ActualOrderState;
-import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.service.ActualOrderStateService;
 
 import javax.validation.constraints.NotNull;
@@ -19,10 +18,11 @@ import java.util.List;
 @Controller
 @Path("/ActualOrderStateService")
 public class ActualOrderStateController {
-    @Autowired private ActualOrderStateService actualOrderStateService; // ActualOrderStateService service bean for connection between controller and service layers
+    @Autowired
+    private ActualOrderStateService actualOrderStateService; // ActualOrderStateService service bean for connection between controller and service layers
 
     private ActualOrderStateService getService() {
-        return  actualOrderStateService;
+        return actualOrderStateService;
     }
 
     // Search by ActualOrderStateService properties
@@ -37,9 +37,9 @@ public class ActualOrderStateController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates/page/{number}")
     public Page<ActualOrderState> getPage(@PathParam("number") Integer page,
-                                 @QueryParam("size") Integer size,
-                                 @QueryParam("sortBy") String sortBy,
-                                 @QueryParam("dir") String direction) {
+                                          @QueryParam("size") Integer size,
+                                          @QueryParam("sortBy") String sortBy,
+                                          @QueryParam("dir") String direction) {
         return getService().getAll(page, size, sortBy, direction);
     }
 
