@@ -19,6 +19,7 @@ import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
+import pl.bajtas.squaremoose.api.util.search.BListComparator;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
@@ -109,6 +110,8 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     public List<Product> getByPrice(Double price1, Double price2) throws Exception {
         if (price1 == null && price2 == null) {
             throw new Exception("Please specify price1 or price2 of Product for this request.");
+        } else if (price1 == 0 && price2 == 0) {
+            return null;
         } else if (price1 != null && price2 != null) {
             return getRepository().findByPriceBetween(price1, price2);
         } else if (price1 == null) {
@@ -121,9 +124,10 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public Page<Product> searchProduct(Integer page, Integer pageSize, String sortBy, String sortDirection, String name, String description, Double price1, Double price2, String categoryMame) throws Exception {
+    public Page<Product> searchProduct(Integer page, Integer pageSize, String sortBy, String sortDirection, String name,
+                                       String description, Double price1, Double price2, String categoryMame) throws Exception {
         boolean unsorted = true;
-        Pageable pageable;
+
         if (pageSize == null || pageSize == 0) {
             pageSize = 20;
         }
@@ -132,40 +136,39 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             unsorted = false;
         }
 
-        if (name == null && description == null && price1 == null && price2 == null && categoryMame == null) {
-            Page<Product> allProducts = getAll(page, pageSize, sortBy, sortDirection);
-            return allProducts;
-        }
-        if (!unsorted) {
-            pageable = new PageRequest(page, pageSize, SearchUtil.determineSortDirection(sortDirection), sortBy);
-        } else {
-            pageable = new PageRequest(page, pageSize);
-        }
         List<List<Product>> results = new ArrayList<>();
 
-        if (name != null) {
+        if (StringUtils.isNotEmpty(name) && StringUtils.isNotBlank(name)) {
             results.add(getByNameContainsIgnoreCase(name));
         }
 
-        if (description != null) {
-            results.add(getByDescriptionContainsIgnoreCase(name));
+        if (StringUtils.isNotEmpty(description) && StringUtils.isNotBlank(description)) {
+            results.add(getByDescriptionContainsIgnoreCase(description));
         }
 
         if (price1 != null || price2 != null) {
             results.add(getByPrice(price1, price2));
         }
 
-        if (categoryMame != null) {
-            results.add(getByCategoryIdOrName(null, name));
+        if (StringUtils.isNotEmpty(categoryMame) && StringUtils.isNotBlank(categoryMame)) {
+            results.add(getByCategoryIdOrName(null, categoryMame));
         }
 
         Combiner<Product> combiner = new Combiner<>(results);
         List<Product> result = combiner.combine();
+        if (!unsorted) {
+            if (result == null) {
+                return getRepository().findAll(new PageRequest(page, pageSize, SearchUtil.determineSortDirection(sortDirection), sortBy));
+            }
+
+            result.sort(new BListComparator(sortBy, sortDirection));
+        }
 
         if (result == null)
             return null;
 
-        Page<Product> pageResult = new PageImpl<>(result, pageable, result.size());
+        int max = (pageSize * (page + 1) > result.size()) ? result.size() : pageSize * (page + 1);
+        Page<Product> pageResult = new PageImpl<>(result.subList(page * pageSize, max), null, result.size());
         return pageResult;
     }
 
