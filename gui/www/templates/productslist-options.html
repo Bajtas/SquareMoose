@@ -1,6 +1,6 @@
 ﻿<ion-modal-view ng-controller="MyCartCtrl">
     <ion-header-bar class="bar-dark">
-        <h1 class="title">Sort products</h1>
+        <h1 class="title">Sort and filter products</h1>
         <div class="buttons">
             <button class="button icon-left ion-chevron-left button-clear button-white" ng-click="hideSortOptions()"> Back</button>
         </div>
@@ -45,7 +45,7 @@
                     <option>Added date</option>
                 </select>
             </label>
-            <ion-toggle ng-model="optionsData.sortDir">
+            <ion-toggle ng-model="optionsData.sortDir" ng-checked="optionsData.sortDir">
                 Ascending/Descending
             </ion-toggle>
         </ion-list>

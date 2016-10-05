@@ -35,7 +35,7 @@ angular.module('starter.controllers', [])
     $scope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/';
     $scope.cart = [];
     $scope.loginData = {};
-    $scope.optionsData = {};
+    $scope.optionsData = { sortDir: false };
     $scope.currentPath = $location.path();
     $scope.categories = [];
 
@@ -99,13 +99,7 @@ angular.module('starter.controllers', [])
     };
 
     $scope.filterAndSort = function () {
-        var url = $scope.apiUrl + 'ProductService/products/search' + '?name=' + $scope.optionsData.title;
-        $http.get(url)
-            .then(function (response) {
-                mainService.productsList = response.data;
-            }, function (response) {
-                $scope.content = "Something went wrong";
-            });
+        $scope.$broadcast('filterAndSort', $scope.optionsData);
         $scope.sortOptionsModal.hide();
     };
 
@@ -121,20 +115,16 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('ProductslistCtrl', function ($scope, $http, mainService) {
+.controller('ProductslistCtrl', function ($scope, $http, $ionicScrollDelegate, mainService) {
 
-    $scope.productslist = mainService.productsList;
-    $scope.$watch(function () {
-        return mainService.productsList;
-    }, function (newValue, oldValue) {
-        $scope.productslist = newValue;
-    });
+    $scope.productsList;
     $scope.page = 0;
     $scope.priceCurrency = '$';
     $scope.cartItemsAmount = 0;
     $scope.firstSiteLoaded = false;
     $scope.sortBy = '';
     $scope.sortDirection = '';
+    $scope.optionsData = null;
 
     $scope.$on('$ionicView.loaded', function (event) {
         $scope.refresh();
@@ -144,10 +134,18 @@ angular.module('starter.controllers', [])
         $scope.countItems();
     });
 
+    $scope.$on('filterAndSort', function (event, optionsData) {
+        $scope.optionsData = optionsData;
+        $scope.page = 0;
+        $scope.productsList = null;
+        $ionicScrollDelegate.scrollTop();
+        $scope.sortAndFilter();
+    });
+
     $scope.refresh = function () {
         $http.get($scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
             .then(function (response) {
-                $scope.productslist = response.data.content;
+                $scope.productsList = response.data.content;
                 $scope.lastPage = response.data.totalPages;
             }, function (response) {
                 $scope.content = "Something went wrong";
@@ -167,19 +165,88 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function () {
         if ($scope.firstSiteLoaded) {
             $scope.page++;
-            $http.get($scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
+            var url;
+            if ($scope.optionsData === null) {
+                url = $scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy;
+
+                $http.get(url)
                 .then(function (response) {
                     var productsArrLen = response.data.content.length;
                     var products = response.data.content;
                     for (var i = 0; i < productsArrLen; i++) {
-                        $scope.productslist.push(products[i]);
+                        $scope.productsList.push(products[i]);
                     }
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                 }, function (response) {
                     $scope.content = "Something went wrong";
                     $scope.lastPage = $scope.page;
                 });
+            } else {
+                $scope.sortAndFilter();
+            }
         }
+    };
+
+    $scope.sortAndFilter = function () {
+        var URL = $scope.apiUrl + 'ProductService/products/search/page/' + $scope.page;
+        var title, description, price1, price2, categoryName, sortBy, sortDir;
+        if (typeof $scope.optionsData.title !== 'undefined') {
+            title = $scope.optionsData.title;
+        }
+        if (typeof $scope.optionsData.description !== 'undefined') {
+            description = $scope.optionsData.description;
+        }
+        if (typeof $scope.optionsData.minPrice !== 'undefined') {
+            price1 = $scope.optionsData.minPrice;
+        }
+        if (typeof $scope.optionsData.maxPrice !== 'undefined') {
+            price2 = $scope.optionsData.maxPrice;
+        }
+        if (typeof $scope.optionsData.categoryName !== 'undefined') {
+            categoryName = $scope.optionsData.categoryName;
+        }
+        if (typeof $scope.optionsData.sortBy !== 'undefined') {
+            sortBy = $scope.optionsData.sortBy;
+            if (sortBy == 'Title')
+                sortBy = 'name';
+            else if (sortBy == 'Price')
+                sortBy = 'price';
+        }
+        if (typeof $scope.optionsData.sortDir !== 'undefined') {
+            if ($scope.optionsData.sortDir === false) {
+                sortDir = 'asc';
+            } else {
+                sortDir = 'desc';
+            }
+        }
+
+        $http({
+            url: URL,
+            method: "GET",
+            params: {
+                'name': title,
+                'description': description,
+                'price1': price1,
+                'price2': price2,
+                'categoryName': categoryName,
+                'sortBy': sortBy,
+                'sortDir': sortDir
+            }
+        }).then(function (response) {
+            if ($scope.productsList !== null) {
+                var productsArrLen = response.data.content.length;
+                var products = response.data.content;
+                for (var i = 0; i < productsArrLen; i++) {
+                    $scope.productsList.push(products[i]);
+                }
+            } else {
+                $scope.productsList = response.data.content;
+            }
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        }, function (response) {
+            $scope.content = "Something went wrong";
+            $scope.lastPage = $scope.page;
+        });;
     };
 
     $scope.moreDataCanBeLoaded = function () {
