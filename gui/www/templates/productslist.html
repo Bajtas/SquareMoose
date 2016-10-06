@@ -5,21 +5,10 @@
         </ion-refresher>
         <ion-list>
             <ion-item class="item item-thumbnail-left" ng-repeat="product in productsList track by $index" href="#/app/product/{{product.id}}">
-                <img ng-if="product.images[0].imageSrc" ng-src="{{product.images[0].imageSrc}}">
+                <img ng-src="{{product.images.length === 0 ? '../img/noimagefound.jpg': product.images[0].imageSrc}}">
                 <h2>{{product.name}}</h2>
                 <p>{{product.description}}</p>
                 <p class="icon ion-ios-pricetags"> {{product.price}} {{priceCurrency}}</p>
-                <!--<ion-option-button class="button-positive"
-                                   ng-click="share(item)">
-                    Share
-                </ion-option-button>
-                <ion-option-button class="button-info"
-                                   ng-click="edit(item)">
-                    Edit
-                </ion-option-button>
-                <ion-delete-button class="ion-minus-circled"
-                                   ng-click="items.splice($index, 1)">
-                </ion-delete-button>-->
             </ion-item>
         </ion-list>
         <ion-infinite-scroll on-infinite="loadMore()"
@@ -36,4 +25,4 @@
             <button class="button">Total items: {{cartItemsAmount}}</button>
         </div>
     </ion-footer-bar>
-</ion-view>
+</ion-view> 

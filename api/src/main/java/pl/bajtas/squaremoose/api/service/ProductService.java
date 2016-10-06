@@ -10,7 +10,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.bajtas.squaremoose.api.domain.Category;
@@ -110,14 +109,14 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     public List<Product> getByPrice(Double price1, Double price2) throws Exception {
         if (price1 == null && price2 == null) {
             throw new Exception("Please specify price1 or price2 of Product for this request.");
-        } else if (price1 == 0 && price2 == 0) {
-            return null;
         } else if (price1 != null && price2 != null) {
             return getRepository().findByPriceBetween(price1, price2);
         } else if (price1 == null) {
             return getRepository().findByPriceLessThanEqual(price2);
         } else if (price2 == null) {
             return getRepository().findByPriceGreaterThanEqual(price1);
+        } else if (price1 == 0 && price2 == 0) {
+            return null;
         }
 
         return null;
