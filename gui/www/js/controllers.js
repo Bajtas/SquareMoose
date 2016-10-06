@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.service('mainService', function () {
+.service('cartService', function () {
 
     // private
     var _cartItemsAmount = 0;
@@ -23,7 +23,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AppCtrl', function ($scope, $ionicModal, $timeout, $location, $http, $rootScope, mainService) {
+.controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope, cartService) {
 
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -69,8 +69,8 @@ angular.module('starter.controllers', [])
 
     $scope.showCart = function () {
         $scope.cartModal.show();
-        $scope.cartItemsAmount = mainService.cartItemsAmount;
-        $scope.totalPrice = mainService.totalPrice;
+        $scope.cartItemsAmount = cartService.cartItemsAmount;
+        $scope.totalPrice = cartService.totalPrice;
     };
 
     $scope.hideCart = function () {
@@ -113,229 +113,35 @@ angular.module('starter.controllers', [])
             $scope.closeLogin();
         }, 1000);
     };
-})
 
-.controller('ProductslistCtrl', function ($scope, $http, $ionicScrollDelegate, mainService) {
-
-    $scope.productsList;
-    $scope.page = 0;
-    $scope.priceCurrency = '$';
-    $scope.cartItemsAmount = 0;
-    $scope.firstSiteLoaded = false;
-    $scope.sortBy = '';
-    $scope.sortDirection = '';
-    $scope.optionsData = null;
-
-    $scope.$on('$ionicView.loaded', function (event) {
-        $scope.refresh();
+    $scope.$on('showAlert', function (event, msg) {
+        $scope.showAlert(msg);
     });
 
-    $scope.$on('$ionicView.enter', function (event) {
-        $scope.countItems();
-    });
-
-    $scope.$on('filterAndSort', function (event, optionsData) {
-        $scope.optionsData = optionsData;
-        $scope.page = 0;
-        $scope.productsList = null;
-        $ionicScrollDelegate.scrollTop();
-        $scope.sortAndFilter();
-    });
-
-    $scope.refresh = function () {
-        $http.get($scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
-            .then(function (response) {
-                $scope.productsList = response.data.content;
-                $scope.lastPage = response.data.totalPages;
-            }, function (response) {
-                $scope.content = "Something went wrong";
-            });
-        $scope.firstSiteLoaded = true;
-    };
-
-    $scope.countItems = function () {
-        counter = 0;
-        $scope.cart.forEach(function (item) {
-            counter += item.amount;
+    // An alert dialog
+    $scope.showAlert = function (msg) {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Some problems occured!',
+            template: 'Something went wrong'
         });
-        $scope.cartItemsAmount = counter;
-        mainService.cartItemsAmount = counter;
-    };
-
-    $scope.loadMore = function () {
-        if ($scope.firstSiteLoaded) {
-            $scope.page++;
-            var url;
-            if ($scope.optionsData === null) {
-                url = $scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy;
-
-                $http.get(url)
-                .then(function (response) {
-                    var productsArrLen = response.data.content.length;
-                    var products = response.data.content;
-                    for (var i = 0; i < productsArrLen; i++) {
-                        $scope.productsList.push(products[i]);
-                    }
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
-                }, function (response) {
-                    $scope.content = "Something went wrong";
-                    $scope.lastPage = $scope.page;
-                });
-            } else {
-                $scope.sortAndFilter();
-            }
-        }
-    };
-
-    $scope.sortAndFilter = function () {
-        var URL = $scope.apiUrl + 'ProductService/products/search/page/' + $scope.page;
-        var title, description, price1, price2, categoryName, sortBy, sortDir;
-        if (typeof $scope.optionsData.title !== 'undefined') {
-            title = $scope.optionsData.title;
-        }
-        if (typeof $scope.optionsData.description !== 'undefined') {
-            description = $scope.optionsData.description;
-        }
-        if (typeof $scope.optionsData.minPrice !== 'undefined') {
-            price1 = $scope.optionsData.minPrice;
-        }
-        if (typeof $scope.optionsData.maxPrice !== 'undefined') {
-            price2 = $scope.optionsData.maxPrice;
-        }
-        if (typeof $scope.optionsData.categoryName !== 'undefined') {
-            categoryName = $scope.optionsData.categoryName;
-        }
-        if (typeof $scope.optionsData.sortBy !== 'undefined') {
-            sortBy = $scope.optionsData.sortBy;
-            if (sortBy == 'Title')
-                sortBy = 'name';
-            else if (sortBy == 'Price')
-                sortBy = 'price';
-        }
-        if (typeof $scope.optionsData.sortDir !== 'undefined') {
-            if ($scope.optionsData.sortDir === false) {
-                sortDir = 'asc';
-            } else {
-                sortDir = 'desc';
-            }
-        }
-
-        $http({
-            url: URL,
-            method: "GET",
-            params: {
-                'name': title,
-                'description': description,
-                'price1': price1,
-                'price2': price2,
-                'categoryName': categoryName,
-                'sortBy': sortBy,
-                'sortDir': sortDir
-            }
-        }).then(function (response) {
-            if ($scope.productsList !== null) {
-                var productsArrLen = response.data.content.length;
-                var products = response.data.content;
-                for (var i = 0; i < productsArrLen; i++) {
-                    $scope.productsList.push(products[i]);
-                }
-            } else {
-                $scope.productsList = response.data.content;
-            }
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-        }, function (response) {
-            $scope.content = "Something went wrong";
-            $scope.lastPage = $scope.page;
-        });;
-    };
-
-    $scope.moreDataCanBeLoaded = function () {
-        if ($scope.page === $scope.lastPage)
-            return false;
-        return true;
+        console.log(msg);
     };
 })
 
-.controller('ProductCtrl', function ($scope, $http, $stateParams, mainService) {
-    $scope.priceCurrency = '$';
-    $scope.product = {};
-    $scope.mainImageSrc = {};
-    $scope.model = {
-        itemAmount: 1,
-        totalCost: 0
-    };
-
-    $scope.$on('$ionicView.loaded', function (event) {
-        $scope.refresh();
-    });
-
-    $scope.refresh = function () {
-        $http.get($scope.apiUrl + 'ProductService/product/' + $stateParams.productId)
-            .then(function (response) {
-                $scope.product = response.data;
-                if ($scope.product.images[0]) {
-                    $scope.mainImageSrc = $scope.product.images[0].imageSrc;
-                }
-                $scope.model.totalCost = $scope.product.price;
-            }, function (response) {
-                $scope.content = "Something went wrong";
-            });
-    };
-
-    $scope.addToCart = function () {
-        isInCart = false;
-        $scope.cart.forEach(function (item) {
-            if (item.id == $stateParams.productId) {
-                isInCart = true;
-                item.amount += $scope.model.itemAmount;
-            }
-        });
-
-        if (isInCart == false) {
-            item = {
-                id: $stateParams.productId,
-                price: $scope.product.price,
-                amount: $scope.model.itemAmount,
-                product: $scope.product
-            };
-            $scope.cart.push(item);
-        }
-
-        $scope.countItems();
-        mainService.recalculateTotalPrice($scope.cart);
-    };
-
-    $scope.updateTotalCost = function () {
-        $scope.model.totalCost = $scope.model.itemAmount * $scope.product.price;
-    };
-
-    $scope.countItems = function () {
-        counter = 0;
-        $scope.cart.forEach(function (item) {
-            counter += item.amount;
-        });
-        mainService.cartItemsAmount = counter;
-    };
-
-    $scope.changePhoto = function ($event) {
-        $scope.mainImageSrc = $event.currentTarget.src;
-    };
-})
-
-.controller('MyCartCtrl', function ($scope, mainService) {
+.controller('MyCartCtrl', function ($scope, cartService) {
     $scope.productslist = [];
     $scope.priceCurrency = '$';
     $scope.model = {
         editAmount: false
     }
 
-    $scope.cartItemsAmount = mainService.cartItemsAmount;
-    $scope.totalPrice = mainService.totalPrice;
+    $scope.cartItemsAmount = cartService.cartItemsAmount;
+    $scope.totalPrice = cartService.totalPrice;
 
     $scope.$on('modal.shown', function () {
-        $scope.productslist = mainService.cartProducts;
-        $scope.cartItemsAmount = mainService.cartItemsAmount;
-        $scope.totalPrice = mainService.totalPrice;
+        $scope.productslist = cartService.cartProducts;
+        $scope.cartItemsAmount = cartService.cartItemsAmount;
+        $scope.totalPrice = cartService.totalPrice;
     });
 
     $scope.edit = function ($event) {
@@ -343,12 +149,12 @@ angular.module('starter.controllers', [])
     };
 
     $scope.refresh = function () {
-        $scope.cartItemsAmount = mainService.cartItemsAmount;
-        $scope.totalPrice = mainService.totalPrice;
+        $scope.cartItemsAmount = cartService.cartItemsAmount;
+        $scope.totalPrice = cartService.totalPrice;
     };
 
     $scope.updateTotalCost = function (index) {
-        mainService.totalPrice = $scope.productslist[index].amount * $scope.productslist[index].product.price;
+        cartService.totalPrice = $scope.productslist[index].amount * $scope.productslist[index].product.price;
     };
 
     $scope.countItems = function (index) {
@@ -356,6 +162,6 @@ angular.module('starter.controllers', [])
         $scope.cart.forEach(function (item) {
             counter += item.amount;
         });
-        mainService.cartItemsAmount = counter;
+        cartService.cartItemsAmount = counter;
     };
 });

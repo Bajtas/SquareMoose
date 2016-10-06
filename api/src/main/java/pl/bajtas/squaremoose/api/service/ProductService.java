@@ -168,6 +168,8 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             return null;
 
         int max = (pageSize * (page + 1) > result.size()) ? result.size() : pageSize * (page + 1);
+        if (max < pageSize * page)
+            return null;
         Page<Product> pageResult = new PageImpl<>(result.subList(page * pageSize, max), null, result.size());
         return pageResult;
     }

@@ -23,11 +23,11 @@
             <div class="item item-text-wrap">
                 <label class="item item-input">
                     <span class="input-label">Amount</span>
-                    <input type="number" ng-model="model.itemAmount" min="1" ng-change="updateTotalCost()">
+                    <input type="number" ng-model="cartCalcData.itemAmount" min="1" ng-change="updateTotalCost()">
                 </label>
             </div>
             <div class="item item-divider">
-                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Total cost: {{model.totalCost}} {{priceCurrency}}</h4>
+                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Total cost: {{cartCalcData.totalCost}} {{priceCurrency}}</h4>
             </div>
         </div>
 
