@@ -7,6 +7,7 @@ angular.module('starter.controllers', [])
     var _totalPrice = 0;
     var _cartProducts = {};
     var _productsList = [];
+
     // public API
     this.cartItemsAmount = _cartItemsAmount;
     this.totalPrice = _totalPrice;
@@ -23,28 +24,74 @@ angular.module('starter.controllers', [])
     }
 })
 
-.service('loginService', function ($ionicModal) {
-    var service = this;
+.service('loginService', function ($ionicModal, registerService) {
+    var _credentials = {};
+    var _modal = {};
+    var _appScope = {};
 
-    this.showModal = function () {
+    this.modal = _modal;
+    this.credentials = _credentials;
+
+    this.init = function (appScope) {
+        _appScope = appScope;
         $ionicModal.fromTemplateUrl('templates/login.html', {
-            controller: 'AppCtrl'
+            controller: 'AppCtrl',
+            scope: _appScope
         }).then(function (modal) {
-            service.modal = modal;
-            service.modal.show();
+            _modal = modal;
         });
     };
 
-    this.hideModal = function () {
-        service.modal.hide();
+    this.show = function (scope) {
+        _modal.show();
     };
 
-    this.doLogin = function () {
+    this.hide = function () {
+        _modal.hide();
+    };
+
+    this.login = function () {
         console.log('Doing login');
+    };
+
+    this.showRegister = function () {
+        registerService.show();
     };
 })
 
-.controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope, cartService, loginService) {
+.service('registerService', function ($ionicModal) {
+    var _credentials = {};
+    var _modal = {};
+    var _appScope = {};
+
+    this.modal = _modal;
+    this.credentials = _credentials;
+
+    this.init = function (appScope) {
+        _appScope = appScope;
+        $ionicModal.fromTemplateUrl('templates/register.html', {
+            controller: 'AppCtrl',
+            scope: _appScope
+        }).then(function (modal) {
+            _modal = modal;
+        });
+    };
+
+    this.show = function () {
+        _modal.show();
+    };
+
+    this.hide = function () {
+        _modal.hide();
+    };
+
+    this.register = function () {
+        console.log('Doing register');
+    };
+})
+
+.controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope,
+    cartService, loginService, registerService) {
 
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -60,6 +107,11 @@ angular.module('starter.controllers', [])
     $scope.currentPath = $location.path();
     $scope.categories = [];
     $scope.loginService = loginService;
+    $scope.init = function () {
+        loginService.init($scope);
+        registerService.init($scope);
+    };
+    $scope.init();
 
     $rootScope.$on("$locationChangeStart", function (event, next, current) {
         $scope.currentPath = $location.path();
@@ -120,6 +172,10 @@ angular.module('starter.controllers', [])
             template: 'Something went wrong'
         });
         console.log(msg);
+    };
+
+    $scope.showLogin = function () {
+        loginService.showModal($scope);
     };
 })
 
