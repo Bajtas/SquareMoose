@@ -53,41 +53,6 @@ angular.module('starter.controllers', [])
     this.login = function () {
         console.log('Doing login');
     };
-
-    this.showRegister = function () {
-        registerService.show();
-    };
-})
-
-.service('registerService', function ($ionicModal) {
-    var _credentials = {};
-    var _modal = {};
-    var _appScope = {};
-
-    this.modal = _modal;
-    this.credentials = _credentials;
-
-    this.init = function (appScope) {
-        _appScope = appScope;
-        $ionicModal.fromTemplateUrl('templates/register.html', {
-            controller: 'AppCtrl',
-            scope: _appScope
-        }).then(function (modal) {
-            _modal = modal;
-        });
-    };
-
-    this.show = function () {
-        _modal.show();
-    };
-
-    this.hide = function () {
-        _modal.hide();
-    };
-
-    this.register = function () {
-        console.log('Doing register');
-    };
 })
 
 .controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope,
@@ -103,18 +68,35 @@ angular.module('starter.controllers', [])
     $scope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/';
     $scope.cart = [];
     $scope.loginData = {};
-    $scope.optionsData = { sortDir: false };
+    $scope.optionsData = {
+        sortDir: false
+    };
     $scope.currentPath = $location.path();
     $scope.categories = [];
     $scope.loginService = loginService;
+    $scope.registerService = registerService;
+
+    $scope.$watch(function () {
+        return registerService.credentials;
+    }, function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+            registerService.credentials = $scope.registerService.credentials;
+        }
+    });
+
     $scope.init = function () {
         loginService.init($scope);
-        registerService.init($scope);
+        registerService.init($scope, $scope.apiUrl);
     };
     $scope.init();
 
     $rootScope.$on("$locationChangeStart", function (event, next, current) {
         $scope.currentPath = $location.path();
+    });
+
+    $rootScope.$on('userRegistered', function () {
+
+        $scope.registerService.hide();
     });
 
     // Create cart modal.
@@ -160,23 +142,6 @@ angular.module('starter.controllers', [])
         $scope.sortOptionsModal.hide();
     };
     // End of sort modal
-
-    $scope.$on('showAlert', function (event, msg) {
-        $scope.showAlert(msg);
-    });
-
-    // An alert dialog
-    $scope.showAlert = function (msg) {
-        var alertPopup = $ionicPopup.alert({
-            title: 'Some problems occured!',
-            template: 'Something went wrong'
-        });
-        console.log(msg);
-    };
-
-    $scope.showLogin = function () {
-        loginService.showModal($scope);
-    };
 })
 
 .controller('MyCartCtrl', function ($scope, cartService) {

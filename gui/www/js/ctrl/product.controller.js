@@ -17,7 +17,7 @@
     this.cartCalcData = _cartCalcData;
 })
 
-.controller('ProductCtrl', function ($scope, $http, $stateParams, cartService, ProductService) {
+.controller('ProductCtrl', function ($scope, $rootScope, $http, $stateParams, cartService, ProductService, alertsService) {
     // Fields
     $scope.priceCurrency = ProductService.priceCurrency;
     $scope.product = ProductService.product;
@@ -41,7 +41,7 @@
                 }
                 $scope.cartCalcData.totalCost = $scope.product.price;
             }, function (response) {
-                $scope.$emit('showAlert', response.data);
+                alertsService.showDefaultAlert(response.data);
             });
     };
 

@@ -7,19 +7,16 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
 import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
-import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
+import javax.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -100,7 +97,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
      /* --------------------------------------------------------------------------------------------- */
 
     // Add new
-    public String add(User user) {
+    public Response add(User user) {
         String login = user.getLogin();
         String email = user.getEmail();
         String password = user.getPassword();
@@ -110,16 +107,13 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
             User emailResult = getRepository().findByEmail(email);
 
             if (loginResult != null) {
-                return "User with same login exist in system, please choose another login.";
+                return Response.status(Response.Status.CONFLICT).entity("User with same login exist in system, please choose another login.").build();
             } else if (emailResult != null) {
-                return "User with same email exist in system, please choose another email.";
+                return Response.status(Response.Status.CONFLICT).entity("User with same email exist in system, please choose another email.").build();
             }
 
-            Base64.Decoder decoder = Base64.getDecoder();
-            String decodedPassword = new String(decoder.decode(password), StandardCharsets.UTF_8);
-
-            if (decodedPassword.length() >= 6) {
-                String hashedPassword = passwordEncoder.encode(decodedPassword);
+            if (password.length() >= 6) {
+                String hashedPassword = passwordEncoder.encode(password);
 
                 user.setAddedOn(new Date());
                 user.setLmod(new Date());
@@ -129,17 +123,17 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
                 user.setUserRole(roleForNewUser);
 
                 getRepository().save(user);
-                return "Registered successfully!";
+                return Response.status(Response.Status.OK).entity("Registered successfully!").build();
             } else {
-                return "Password length is to small. Min. 6 characters.";
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Password length is to small. Min. 6 characters.").build();
             }
         } else if (StringUtils.isNotEmpty(login)) {
-            return "Email has been not specified!";
+            return Response.status(Response.Status.BAD_REQUEST).entity("Login has been not specified!").build();
         } else if (StringUtils.isNotEmpty(email)) {
-            return "Email has been not specified!";
-        } else {
-            return "Email and login has been not specified!";
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email has been not specified!").build();
         }
+
+        return Response.status(Response.Status.BAD_REQUEST).entity("Email and login has been not specified!").build();
     }
 
     // Update existing

@@ -65,7 +65,7 @@
     };
 })
 
-.controller('ProductsListCtrl', function ($scope, $http, $ionicScrollDelegate, ProductsListService, cartService) {
+.controller('ProductsListCtrl', function ($scope, $rootScope, $http, $ionicScrollDelegate, ProductsListService, cartService, alertsService) {
     // Fields
     $scope.productsList = ProductsListService.productsList;
     $scope.page = ProductsListService.page;
@@ -102,7 +102,7 @@
                 $scope.productsList = response.data.content;
                 $scope.lastPage = response.data.totalPages;
             }, function (response) {
-                $scope.$emit('showAlert', response.data);
+                alertsService.showDefaultAlert(response.data)
             });
         $scope.firstSiteLoaded = true;
     };
@@ -161,7 +161,7 @@
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
         }, function (response) {
-            $scope.$emit('showAlert', response.data);
+            alertsService.showDefaultAlert(response.data);
             $scope.lastPage = $scope.page;
         });;
     };

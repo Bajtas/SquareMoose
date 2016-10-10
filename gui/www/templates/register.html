@@ -6,26 +6,42 @@
         </div>
     </ion-header-bar>
     <ion-content>
-        <form ng-submit="loginService.doLogin()">
+        <form ng-submit="registerService.doRegister()" name="registerForm">
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Username</span>
-                    <input type="text" ng-model="loginService.credentials.username">
+                    <input type="text" name="username" ng-model="registerService.credentials.username" required>
                 </label>
+                <span ng-show="registerForm.username.$touched && registerForm.username.$invalid">The name is required.</span>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="email" name="email" ng-model="registerService.credentials.email" required>
+                </label>
+                <span ng-show="registerForm.email.$touched && registerForm.email.$invalid && registerForm.email.$pristine">The email is required.</span>
+                <span ng-show="registerForm.email.$touched && registerForm.email.$invalid && registerForm.email.$dirty">Please input proper email adress.</span>
                 <label class="item item-input">
                     <span class="input-label">Password</span>
-                    <input type="password" ng-model="loginService.credentials.password">
+                    <input type="password" name="password1" ng-model="registerService.credentials.password1" required>
                 </label>
+                <span ng-show="registerForm.password1.$touched && registerForm.password1.$invalid">Password is required.</span>
+                <label class="item item-input">
+                    <span class="input-label">Repeat password</span>
+                    <input type="password" name="password2" ng-model="registerService.credentials.password2" required>
+                </label>
+                <span ng-show="registerForm.password2.$touched && registerForm.password2.$invalid">Please repeat password.</span>
+                <div ng-show="registerForm.password1.$dirty && registerForm.password2.$dirty && (registerService.credentials.password1 != registerService.credentials.password2)">
+                    <span>Password mismatched.</span>
+                </div>
                 <label class="item">
-                    <button class="button icon-center ion-log-in button-block button-positive" type="submit"> Log in</button>
+                    <button class="button icon-center ion-person-add button-block button-assertive" type="submit" ng-disabled="registerForm.$invalid"> Register</button>
                 </label>
             </div>
         </form>
         <div class="card">
             <div class="item item-text-wrap">
-                If you don't have account and you want to register, just click this button.
+                If you already have account, just click button bellow.
             </div>
-            <button class="button icon-center ion-person-add button-block button-assertive" type="submit" ng-click="registerService.show()"> Register</button>
+            <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-click="loginService.show()"> Log in</button>
         </div>
     </ion-content>
 </ion-modal-view>

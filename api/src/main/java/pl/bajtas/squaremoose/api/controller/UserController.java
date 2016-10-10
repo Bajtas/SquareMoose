@@ -9,6 +9,7 @@ import pl.bajtas.squaremoose.api.service.UserService;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -113,7 +114,7 @@ public class UserController {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/users/add")
-    public String add(User user) {
+    public Response add(User user) {
         return getService().add(user);
     }
 
