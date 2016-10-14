@@ -76,14 +76,6 @@ angular.module('starter.controllers', [])
     $scope.loginService = loginService;
     $scope.registerService = registerService;
 
-    $scope.$watch(function () {
-        return registerService.credentials;
-    }, function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-            registerService.credentials = $scope.registerService.credentials;
-        }
-    });
-
     $scope.init = function () {
         loginService.init($scope);
         registerService.init($scope, $scope.apiUrl);
@@ -92,11 +84,6 @@ angular.module('starter.controllers', [])
 
     $rootScope.$on("$locationChangeStart", function (event, next, current) {
         $scope.currentPath = $location.path();
-    });
-
-    $rootScope.$on('userRegistered', function () {
-
-        $scope.registerService.hide();
     });
 
     // Create cart modal.
