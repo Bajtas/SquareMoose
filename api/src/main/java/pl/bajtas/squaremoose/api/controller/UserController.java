@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.service.UserService;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -27,7 +29,6 @@ public class UserController {
     }
 
     // Search by User properties
-
     /* Main method
     * Takes 0 parameters
     *
@@ -114,6 +115,7 @@ public class UserController {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/users/add")
+    @PermitAll
     public Response add(User user) {
         return getService().add(user);
     }
@@ -142,5 +144,14 @@ public class UserController {
     @Path("/user/{id}/delete")
     public String delete(@NotNull @PathParam("id") int id,  User user) {
         return getService().delete(id, user);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/user/account")
+    @RolesAllowed("User")
+    public Response account(User user) {
+        return getService().account(user);
     }
 }

@@ -24,36 +24,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.service('loginService', function ($ionicModal, registerService) {
-    var _credentials = {};
-    var _modal = {};
-    var _appScope = {};
 
-    this.modal = _modal;
-    this.credentials = _credentials;
-
-    this.init = function (appScope) {
-        _appScope = appScope;
-        $ionicModal.fromTemplateUrl('templates/login.html', {
-            controller: 'AppCtrl',
-            scope: _appScope
-        }).then(function (modal) {
-            _modal = modal;
-        });
-    };
-
-    this.show = function (scope) {
-        _modal.show();
-    };
-
-    this.hide = function () {
-        _modal.hide();
-    };
-
-    this.login = function () {
-        console.log('Doing login');
-    };
-})
 
 .controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope,
     cartService, loginService, registerService) {
@@ -77,7 +48,7 @@ angular.module('starter.controllers', [])
     $scope.registerService = registerService;
 
     $scope.init = function () {
-        loginService.init($scope);
+        loginService.init($scope, $scope.apiUrl);
         registerService.init($scope, $scope.apiUrl);
     };
     $scope.init();

@@ -1,5 +1,6 @@
 package pl.bajtas.squaremoose.api.controller;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -36,6 +37,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/page/{number}")
+    @PermitAll
     public Page<Product> getPage(@PathParam("number") Integer page,
                                  @QueryParam("size") Integer size,
                                  @QueryParam("sortBy") String sortBy,
@@ -46,6 +48,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/{id}")
+    @PermitAll
     public Product getById(@NotNull @PathParam("id") Integer id) {
         return productService.getById(id);
     }
@@ -53,6 +56,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/name/{name}")
+    @PermitAll
     public List<Product> getByNameContainsIgnoreCase(@NotNull @PathParam("name") String name) {
         return productService.getByNameContainsIgnoreCase(name);
     }
@@ -60,6 +64,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/description/{description}")
+    @PermitAll
     public List<Product> getByDescriptionContainsIgnoreCase(@NotNull @PathParam("description") String description) {
         return productService.getByDescriptionContainsIgnoreCase(description);
     }
@@ -67,6 +72,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/price")
+    @PermitAll
     public List<Product> getByNamePriceBetweenOrGreaterOrLess(@QueryParam("price1") Double price1, @QueryParam("price2") Double price2) throws Exception {
         return productService.getByPrice(price1, price2);
     }
@@ -74,6 +80,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/search/page/{page}")
+    @PermitAll
     public Page<Product> getByAllProperties (
             @NotNull @PathParam("page") int page,
             @QueryParam("pageSize") int pageSize,
@@ -93,6 +100,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/category")
+    @PermitAll
     public List<Product> getByCategoryIdOrName(
             @QueryParam("id") Integer id,
             @QueryParam("name") String name) throws Exception {
@@ -102,6 +110,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/categorized")
+    @PermitAll
     public Iterable<Product> getAllWithCategoryNotNull() {
         return productService.getAllWithCategory();
     }
@@ -109,6 +118,7 @@ public class ProductController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/uncategorized")
+    @PermitAll
     public Iterable<Product> getAllWithCategoryNull() {
         return productService.getAllWithoutCategory();
     }

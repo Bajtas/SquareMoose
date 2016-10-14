@@ -18,10 +18,7 @@ import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
 import javax.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -213,4 +210,65 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         }
     }
 
+    public Response account(User user) {
+        String login = user.getLogin();
+        String password = user.getPassword();
+
+        if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
+            User loginResult = getRepository().findByLogin(login);
+
+            if (loginResult != null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Wrong password or username.").build();
+            }
+
+            if (password.length() >= 6) {
+                String hashedPassword = passwordEncoder.encode(password);
+
+                user.setAddedOn(new Date());
+                user.setLmod(new Date());
+                user.setPassword(hashedPassword);
+
+                UserRole roleForNewUser = userRoleRepository.findByName(DEFAULT_USER_ROLE);
+                user.setUserRole(roleForNewUser);
+
+                getRepository().save(user);
+                return Response.status(Response.Status.OK).entity("Registered successfully!").build();
+            } else {
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Password length is to small. Min. 6 characters.").build();
+            }
+        } else if (StringUtils.isNotEmpty(login)) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Username has been not specified!").build();
+        } else if (StringUtils.isNotEmpty(password)) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Password has been not specified!").build();
+        }
+
+        return Response.status(Response.Status.BAD_REQUEST).entity("Username and password has been not specified!").build();
+    }
+
+    public boolean isUserAllowed(String username, String password, Set<String> rolesSet) {
+        boolean result = false;
+
+        if (StringUtils.isNotEmpty(username) && StringUtils.isNotBlank(username)) {
+            User user = getRepository().findByLogin(username);
+            result = user != null ? passwordEncoder.matches(password, user.getPassword()) : false;
+            result = result == true ? isRoleAllowed(user.getUserRole().getName(), rolesSet) : false;
+        }
+
+        return result;
+    }
+
+    private boolean isRoleAllowed(String userRole, Set<String> rolesSet) {
+        boolean ret = false;
+
+        if (StringUtils.isNotBlank(userRole) && StringUtils.isNotEmpty(userRole)) {
+            for (String role : rolesSet) {
+                if (userRole.equals(role)) {
+                    ret = true;
+                    break;
+                }
+            }
+        }
+
+        return ret;
+    }
 }
