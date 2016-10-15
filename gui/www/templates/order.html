@@ -42,7 +42,7 @@
                         <div class="input-label">
                             Choose delivery adress
                         </div>
-                        <select ng-model="deliveryAdress">
+                        <select ng-model="deliveryAdress" ng-change="deliveryAdressChoosen()">
                             <option>My adress</option>
                             <option>Other</option>
                         </select>
@@ -51,24 +51,28 @@
                 <form ng-submit="createOrder()" name="orderForm">
                     <div class="list list-inset" ng-show="deliveryAdress === 'Other' || deliveryAdress === 'My adress'">
                         <label class="item item-input">
-                            <input type="text" placeholder="First Name">
+                            <input type="text" placeholder="First Name" ng-model="name" name="name" required>
                         </label>
+                        <span ng-show="orderForm.name.$touched && orderForm.name.$invalid">This field is required</span>
                         <label class="item item-input">
-                            <input type="text" placeholder="Last Name">
+                            <input type="text" placeholder="Last Name" ng-model="surname" name="surname" required>
                         </label>
+                        <span ng-show="orderForm.surname.$touched && orderForm.surname.$invalid">This field is required</span>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Adress" ng-model="adress" name="adress" required>
+                        </label>
+                        <span ng-show="orderForm.adress.$touched && orderForm.adress.$invalid">This field is required</span>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Zip-Code" ng-model="zipCode" name="zipCode" required>
+                        </label>
+                        <span ng-show="orderForm.zipCode.$touched && orderForm.zipCode.$invalid">This field is required</span>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Town" ng-model="town" name="town" required>
+                        </label>
+                        <span ng-show="orderForm.town.$touched && orderForm.town.$invalid">This field is required</span>
 
-                        <label class="item item-input">
-                            <input type="text" placeholder="Adress">
-                        </label>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Zip-Code">
-                        </label>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Town">
-                        </label>
-
-                        <label class="item item-input" ng-init="phoneRegex = '\\d{0,9}$'">
-                            <input ng-model="phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex" required>
+                        <label class="item item-input" ng-init="phoneRegex = '\\d{9}$'">
+                            <input ng-model="phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex">
                         </label>
                         <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
                         <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>

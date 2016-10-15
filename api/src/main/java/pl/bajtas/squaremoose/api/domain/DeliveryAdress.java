@@ -22,6 +22,7 @@ public class DeliveryAdress {
     private String town;
     private String zipCode;
     private String contactPhone;
+    private boolean currentlyAssigned;
     @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.EAGER)
     private List<Order> orders;
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "deliveryAdresses")
@@ -83,6 +84,14 @@ public class DeliveryAdress {
         return contactPhone;
     }
 
+    public void setCurrentlyAssigned(boolean currentlyAssigned) {
+        this.currentlyAssigned = currentlyAssigned;
+    }
+
+    public boolean isCurrentlyAssigned() {
+        return currentlyAssigned;
+    }
+
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
@@ -108,4 +117,5 @@ public class DeliveryAdress {
         DeliveryAdress otherDeliveryAdress = (DeliveryAdress) other;
         return id.equals(otherDeliveryAdress.getId());
     }
+
 }

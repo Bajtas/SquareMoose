@@ -10,7 +10,8 @@ CREATE TABLE "btdeliveryadress" (
   "zip_code" TEXT NOT NULL,
   "name" TEXT NOT NULL,
   "surname" TEXT NOT NULL,
-  "contact_phone" TEXT NOT NULL
+  "contact_phone" TEXT NOT NULL,
+  "currently_assigned" BOOLEAN NOT NULL
 );
 
 CREATE TABLE "btdeliverytype" (

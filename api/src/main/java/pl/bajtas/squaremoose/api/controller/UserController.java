@@ -37,6 +37,7 @@ public class UserController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/users")
+    @PermitAll
     public Iterable<User> getAll() {
         return getService().getAll();
     }

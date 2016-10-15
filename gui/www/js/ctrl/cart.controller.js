@@ -1,24 +1,17 @@
 ﻿angular.module('starter.controllers')
 
 .controller('CartCtrl', function ($scope, $rootScope, $location, $http, cartService) {
-    $scope.productslist = [];
-    $scope.priceCurrency = '$';
-    $scope.model = {
-        editAmount: false
-    }
-
-    $scope.cartItemsAmount = cartService.cartItemsAmount;
-    $scope.totalPrice = cartService.totalPrice;
+    // Controller fields
+    $scope.productslist = []; // List of products in cart
+    $scope.priceCurrency = '$'; // Currency string
+    $scope.cartItemsAmount = cartService.cartItemsAmount; // Items amount taken from CartService
+    $scope.totalPrice = cartService.totalPrice; // Total price taken from CartService
 
     $scope.$on('modal.shown', function () {
         $scope.productslist = cartService.cartProducts;
         $scope.cartItemsAmount = cartService.cartItemsAmount;
         $scope.totalPrice = cartService.totalPrice;
     });
-
-    $scope.edit = function ($event) {
-        $scope.model.editAmount = true;
-    };
 
     $scope.refresh = function () {
         $scope.cartItemsAmount = cartService.cartItemsAmount;
