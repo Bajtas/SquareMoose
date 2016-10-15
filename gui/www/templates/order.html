@@ -1,0 +1,92 @@
+﻿<ion-view view-title="Create order">
+    <ion-content>
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
+        </ion-refresher>
+        <ion-list>
+            <ion-list show-delete="shouldShowDelete">
+                <div class="card">
+                    <div class="item item-divider">
+                        Welcome {{user.login}}!
+                    </div>
+                    <div class="item item-text-wrap">
+                        Please check order details below and if everything is fine, scroll down and go to payment.
+                    </div>
+                </div>
+                <div class="item item-divider">
+                    Products in cart
+                </div>
+                <ion-item class="item item-thumbnail-left" ng-repeat="item in productsInCart" href="#/app/product/{{product.id}}">
+                    <img ng-if="item.product.images[0].imageSrc" ng-src="{{item.product.images[0].imageSrc}}">
+                    <h2>{{item.product.name}}</h2>
+                    <p>{{item.product.description}}</p>
+                    <p>Amount: {{item.amount}}</p>
+                    <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount}} {{priceCurrency}}</p>
+                    <ion-option-button class="button-positive" ng-click="share(item)">
+                        Share
+                    </ion-option-button>
+                    <ion-option-button class="button-info" ng-click="edit(item)">
+                        Edit
+                    </ion-option-button>
+                    <label class="item item-input" ng-show="model.editAmount">
+                        <span class="input-label">Amount</span>
+                        <input type="number" ng-model="item.amount" min="1" ng-change="updateTotalCost($index); countItems($index); refresh();">
+                    </label>
+                    <ion-delete-button class="ion-minus-circled" ng-click="productslist.splice($index, 1);">
+                    </ion-delete-button>
+                </ion-item>
+                <div class="item item-divider">
+                    Delivery adress
+                </div>
+                <div class="list">
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            Choose delivery adress
+                        </div>
+                        <select ng-model="deliveryAdress">
+                            <option>My adress</option>
+                            <option>Other</option>
+                        </select>
+                    </label>
+                </div>
+                <form ng-submit="createOrder()" name="orderForm">
+                    <div class="list list-inset" ng-show="deliveryAdress === 'Other' || deliveryAdress === 'My adress'">
+                        <label class="item item-input">
+                            <input type="text" placeholder="First Name">
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Last Name">
+                        </label>
+
+                        <label class="item item-input">
+                            <input type="text" placeholder="Adress">
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Zip-Code">
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Town">
+                        </label>
+
+                        <label class="item item-input" ng-init="phoneRegex = '\\d{0,9}$'">
+                            <input ng-model="phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex" required>
+                        </label>
+                        <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
+                        <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>
+                    </div>
+                </form>
+            </ion-list>
+            <ion-toggle ng-model="shouldShowDelete">
+                Show remove button?
+            </ion-toggle>
+        </ion-list>
+    </ion-content>
+    <!--<ion-footer-bar align-title="left" class="bar-dark">
+        <div class="buttons">
+            <button class="button ion-bag button-clear button-white"> My bag</button>
+        </div>
+        <h6 class="title"></h6>
+        <div class="buttons">
+            <button class="button">Total items: {{cartItemsAmount}}</button>
+        </div>
+    </ion-footer-bar>-->
+</ion-view>
