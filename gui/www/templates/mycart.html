@@ -1,4 +1,4 @@
-﻿<ion-modal-view ng-controller="MyCartCtrl">
+﻿<ion-modal-view ng-controller="CartCtrl">
     <ion-header-bar class="bar-dark">
         <h1 class="title">My cart</h1>
         <div class="buttons">
@@ -41,7 +41,7 @@
                 <p><b>Total price:</b></p>
                 <p font="size:10"><b>{{totalPrice}} $</b></p>
             </a>
-            <a class="tab-item" ng-click="doSomething()">
+            <a class="tab-item" ng-click="order()">
                 <i class="icon ion-cash"></i> Go to payment
             </a>
         </div>

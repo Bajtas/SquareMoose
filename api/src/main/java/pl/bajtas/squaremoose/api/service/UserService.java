@@ -70,6 +70,11 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         return getRepository().findOne(id);
     }
 
+    public User getByLogin(String login) {
+        LOG.info("Getting user with login: " + login);
+        return getRepository().findByLogin(login);
+    }
+
     public Page<User> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
         PageUtil<User> util = new PageUtil<>();
         return util.getPage(page, size, sortBy, sortDirection, getRepository());
@@ -210,39 +215,18 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         }
     }
 
-    public Response account(User user) {
-        String login = user.getLogin();
-        String password = user.getPassword();
-
-        if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
+    public Response account(String login) {
+        if (StringUtils.isNotEmpty(login)) {
             User loginResult = getRepository().findByLogin(login);
 
-            if (loginResult != null) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Wrong password or username.").build();
+            if (loginResult == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("User with given login does't exist.").build();
             }
 
-            if (password.length() >= 6) {
-                String hashedPassword = passwordEncoder.encode(password);
-
-                user.setAddedOn(new Date());
-                user.setLmod(new Date());
-                user.setPassword(hashedPassword);
-
-                UserRole roleForNewUser = userRoleRepository.findByName(DEFAULT_USER_ROLE);
-                user.setUserRole(roleForNewUser);
-
-                getRepository().save(user);
-                return Response.status(Response.Status.OK).entity("Registered successfully!").build();
-            } else {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Password length is to small. Min. 6 characters.").build();
-            }
-        } else if (StringUtils.isNotEmpty(login)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Username has been not specified!").build();
-        } else if (StringUtils.isNotEmpty(password)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Password has been not specified!").build();
+            return Response.status(Response.Status.OK).entity("Logged in successfully!").build();
         }
 
-        return Response.status(Response.Status.BAD_REQUEST).entity("Username and password has been not specified!").build();
+        return Response.status(Response.Status.BAD_REQUEST).entity("Username has been not specified!").build();
     }
 
     public boolean isUserAllowed(String username, String password, Set<String> rolesSet) {

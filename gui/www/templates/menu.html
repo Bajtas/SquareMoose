@@ -1,4 +1,4 @@
-<ion-side-menus enable-menu-with-back-views="false">
+<ion-side-menus enable-menu-with-back-views="false" ng-controller="MenuCtrl">
   <ion-side-menu-content>
     <ion-nav-bar class="bar-stable">
       <ion-nav-back-button>
@@ -33,12 +33,18 @@
         <div class="item item-divider">
             Account
         </div>
-        <ion-item class="item item-icon-left" menu-close ng-click="loginService.show()">
+        <ion-item class="item item-icon-left" menu-close ng-click="loginService.show()" ng-hide="isLoggedIn === true">
             <i class="icon ion-log-in"></i> Login
         </ion-item>
-        <ion-item class="item item-icon-left" menu-close ng-click="registerService.show()">
+        <ion-item class="item item-icon-left" menu-close ng-click="registerService.show()" ng-hide="isLoggedIn === true">
             <i class="icon ion-person-add"></i> Register
         </ion-item>
+          <ion-item class="item item-icon-left" menu-close ng-click="account()" ng-show="isLoggedIn === true">
+              <i class="icon ion-person"></i> My account
+          </ion-item>
+          <ion-item class="item item-icon-left" menu-close ng-click="logout()" ng-show="isLoggedIn === true">
+              <i class="icon ion-log-out"></i> Logout
+          </ion-item>
       </ion-list>
     </ion-content>
   </ion-side-menu>

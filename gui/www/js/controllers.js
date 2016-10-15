@@ -24,8 +24,6 @@ angular.module('starter.controllers', [])
     }
 })
 
-
-
 .controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope,
     cartService, loginService, registerService) {
 
@@ -101,41 +99,3 @@ angular.module('starter.controllers', [])
     };
     // End of sort modal
 })
-
-.controller('MyCartCtrl', function ($scope, cartService) {
-    $scope.productslist = [];
-    $scope.priceCurrency = '$';
-    $scope.model = {
-        editAmount: false
-    }
-
-    $scope.cartItemsAmount = cartService.cartItemsAmount;
-    $scope.totalPrice = cartService.totalPrice;
-
-    $scope.$on('modal.shown', function () {
-        $scope.productslist = cartService.cartProducts;
-        $scope.cartItemsAmount = cartService.cartItemsAmount;
-        $scope.totalPrice = cartService.totalPrice;
-    });
-
-    $scope.edit = function ($event) {
-        $scope.model.editAmount = true;
-    };
-
-    $scope.refresh = function () {
-        $scope.cartItemsAmount = cartService.cartItemsAmount;
-        $scope.totalPrice = cartService.totalPrice;
-    };
-
-    $scope.updateTotalCost = function (index) {
-        cartService.totalPrice = $scope.productslist[index].amount * $scope.productslist[index].product.price;
-    };
-
-    $scope.countItems = function (index) {
-        counter = 0;
-        $scope.cart.forEach(function (item) {
-            counter += item.amount;
-        });
-        cartService.cartItemsAmount = counter;
-    };
-});

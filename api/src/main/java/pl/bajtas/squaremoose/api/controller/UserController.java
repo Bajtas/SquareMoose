@@ -84,6 +84,13 @@ public class UserController {
         return getService().getById(id);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/login/{login}")
+    @RolesAllowed("User")
+    public User getByLogin(@NotNull @PathParam("login") String login) {
+        return getService().getByLogin(login);
+    }
     /* getByAllProperties(...)
     * Takes 4 parameters:
     *  - login
@@ -149,9 +156,9 @@ public class UserController {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/user/account")
-    @RolesAllowed("User")
-    public Response account(User user) {
-        return getService().account(user);
+    @Path("/user/{login}/account")
+    @PermitAll
+    public Response account(@NotNull @PathParam("login") String login) {
+        return getService().account(login);
     }
 }

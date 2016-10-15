@@ -70,10 +70,6 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             final String username = tokenizer.nextToken();
             final String password = tokenizer.nextToken();
 
-            //Verifying Username and password
-            System.out.println(username);
-            System.out.println(password);
-
             //Verify user access
             if(method.isAnnotationPresent(RolesAllowed.class))
             {

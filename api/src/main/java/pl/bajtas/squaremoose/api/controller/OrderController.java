@@ -9,6 +9,7 @@ import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.service.CategoryService;
 import pl.bajtas.squaremoose.api.service.OrderService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -63,6 +64,7 @@ public class OrderController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/order/user/login/{login}")
+    @RolesAllowed("User")
     public Order getByUserLogin(@NotNull @PathParam("login") String login) {
         return getService().getByUserLogin(login);
     }

@@ -2,7 +2,7 @@
 
 .service('ProductService', function () {
     // private
-    var _priceCurrency = 0;
+    var _priceCurrency = '$';
     var _product = {};
     var _mainImageSrc = {};
     var _cartCalcData = {

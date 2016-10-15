@@ -6,16 +6,18 @@
         </div>
     </ion-header-bar>
     <ion-content>
-        <form ng-submit="loginService.login(loginService.credentials, loginService)">
+        <form ng-submit="loginService.login(loginService.credentials, loginService)" name="loginForm">
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Username</span>
-                    <input type="text" ng-model="loginService.credentials.username">
+                    <input type="text" name="login" ng-model="loginService.credentials.login" required>
                 </label>
+                <span ng-show="loginForm.login.$touched && loginForm.login.$invalid">Login is required.</span>
                 <label class="item item-input">
                     <span class="input-label">Password</span>
-                    <input type="password" ng-model="loginService.credentials.password">
+                    <input type="password" name="password" ng-model="loginService.credentials.password">
                 </label>
+                <span ng-show="loginForm.password.$touched && loginForm.password.$invalid">Password is required.</span>
                 <label class="item">
                     <button class="button icon-center ion-log-in button-block button-positive" type="submit"> Log in</button>
                 </label>
