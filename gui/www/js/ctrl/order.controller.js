@@ -4,6 +4,8 @@
     // Fields
     $scope.isLoggedIn = false;
     $scope.productsInCart = [];
+    $scope.deliveryTypes = [];
+    $scope.paymentMethods = [];
     $scope.user = {};
     // End of fields
 
@@ -12,6 +14,18 @@
             $scope.productsInCart = $rootScope.products;
             $scope.user = $rootScope.user;
         }
+
+        $http.get($rootScope.apiUrl + 'DeliveryTypeService/deliverytypes').then(function success(response) {
+            $scope.deliveryTypes = response.data;
+        }, function error(response) {
+
+        });
+
+        $http.get($rootScope.apiUrl + 'PaymentMethodService/methods').then(function success(response) {
+            $scope.paymentMethods = response.data;
+        }, function error(response) {
+
+        });
     });
 
     $scope.deliveryAdressChoosen = function (deliveryAddress) {

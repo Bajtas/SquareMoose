@@ -5,7 +5,7 @@ CREATE TABLE "btcategory" (
 
 CREATE TABLE "btdeliveryadress" (
   "id" SERIAL PRIMARY KEY,
-  "adress" TEXT NOT NULL,
+  "address" TEXT NOT NULL,
   "town" TEXT NOT NULL,
   "zip_code" TEXT NOT NULL,
   "name" TEXT NOT NULL,

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.DeliveryType;
 import pl.bajtas.squaremoose.api.service.DeliveryTypeService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,6 +29,7 @@ public class DeliveryTypeController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliverytypes")
+    @PermitAll
     public Iterable<DeliveryType> getAll() {
         return getService().getAll();
     }

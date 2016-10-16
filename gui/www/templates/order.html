@@ -3,17 +3,17 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
         </ion-refresher>
         <ion-list>
-            <ion-list show-delete="shouldShowDelete">
+            <div show-delete="shouldShowDelete">
                 <div class="card">
                     <div class="item item-divider">
-                        Welcome {{user.login}}!
+                        <i class="icon ion-person"></i> Welcome {{user.login}}!
                     </div>
                     <div class="item item-text-wrap">
                         Please check order details below and if everything is fine, scroll down and go to payment.
                     </div>
                 </div>
                 <div class="item item-divider">
-                    Products in cart
+                    <i class="icon ion-ios-cart"></i> Products in cart
                 </div>
                 <ion-item class="item item-thumbnail-left" ng-repeat="item in productsInCart" href="#/app/product/{{product.id}}">
                     <img ng-if="item.product.images[0].imageSrc" ng-src="{{item.product.images[0].imageSrc}}">
@@ -31,17 +31,20 @@
                         <span class="input-label">Amount</span>
                         <input type="number" ng-model="item.amount" min="1" ng-change="updateTotalCost($index); countItems($index); refresh();">
                     </label>
-                    <ion-delete-button class="ion-minus-circled" ng-click="productslist.splice($index, 1);">
+                    <ion-delete-button class="ion-minus-circled" ng-click="productsInCart.splice($index, 1);">
                     </ion-delete-button>
                 </ion-item>
+                <ion-toggle ng-model="shouldShowDelete">
+                    Show remove button?
+                </ion-toggle>
                 <div class="item item-divider">
-                    Delivery adress
+                    <i class="icon ion-home"></i> Delivery adress
                 </div>
                 <div class="list">
                     <label class="item item-input item-select">
-                        <div class="input-label">
+                        <label class="input-label">
                             Choose delivery adress
-                        </div>
+                        </label>
                         <select ng-model="deliveryAddress" ng-change="deliveryAdressChoosen(deliveryAddress)">
                             <option>My address</option>
                             <option>Other</option>
@@ -77,11 +80,35 @@
                         <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
                         <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>
                     </div>
+                    <div class="item item-divider">
+                        <i class="icon ion-ios-box"></i> Delivery type
+                    </div>
+
+                    <div class="list radio-group" ng-repeat="deliveryType in deliveryTypes">
+                        <ion-radio ng-model="chooseDeliveryType" ng-value="deliveryType.id">
+                            <a class="item item-avatar" href="#">
+                                <img ng-src="{{deliveryType.image}}">
+                                <h2>{{deliveryType.name}}</h2>
+                                <p>Price: {{deliveryType.price}} $</p>
+                                <p>Est. Delivery time: {{deliveryType.time}}</p>
+                            </a>
+                        </ion-radio>
+                    </div>
+                    <div class="item item-divider">
+                        <i class="icon ion-social-usd"></i> Payment method
+                    </div>
+                    <div class="list radio-group" ng-repeat="paymentMethod in paymentMethods">
+                        <ion-radio ng-model="choosepaymentMethod" ng-value="paymentMethod.id">
+                            <i class="icon ion-card" ng-if="paymentMethod.name === 'Credit card'"></i>
+                            <i class="icon ion-cash" ng-if="paymentMethod.name === 'Cash'"></i>
+                            <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'Cash transfer'"></i>
+                            {{paymentMethod.name}}
+                        </ion-radio>
+                    </div>
                 </form>
-            </ion-list>
-            <ion-toggle ng-model="shouldShowDelete">
-                Show remove button?
-            </ion-toggle>
+                <label class="item">
+                    <button class="button icon-center ion-log-in button-block button-positive" type="submit"> Go to payment</button>
+                </label>
         </ion-list>
     </ion-content>
     <!--<ion-footer-bar align-title="left" class="bar-dark">

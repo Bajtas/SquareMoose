@@ -9,6 +9,7 @@ import pl.bajtas.squaremoose.api.domain.PaymentMethod;
 import pl.bajtas.squaremoose.api.service.OrderItemService;
 import pl.bajtas.squaremoose.api.service.PaymentMethodService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,6 +31,7 @@ public class PaymentMethodController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/methods")
+    @PermitAll
     public Iterable<PaymentMethod> getAll() {
         return paymentMethodService.getAll();
     }
