@@ -14,14 +14,29 @@
         }
     });
 
-    $scope.deliveryAdressChoosen = function () {
-        if (!($scope.user.deliveryAdresses === undefined || $scope.user.deliveryAdresses === null)) {
-            for (var i = 0; i < $scope.user.deliveryAdresses.length; i++) {
-                if ($scope.user.deliveryAdresses[i].currentlyAssigned === true) {
-                    $scope.name = 'lol';
-                    break;
+    $scope.deliveryAdressChoosen = function (deliveryAddress) {
+        if (deliveryAddress === 'My address') {
+            if (!($scope.user.deliveryAdresses === undefined || $scope.user.deliveryAdresses === null)) {
+                for (var i = 0; i < $scope.user.deliveryAdresses.length; i++) {
+                    var deliveryAdress = $scope.user.deliveryAdresses[i];
+                    if (deliveryAdress.currentlyAssigned === true) {
+                        $scope.name = deliveryAdress.name;
+                        $scope.surname = deliveryAdress.surname;
+                        $scope.address = deliveryAdress.address;
+                        $scope.town = deliveryAdress.town;
+                        $scope.zipCode = deliveryAdress.zipCode;
+                        $scope.phone = deliveryAdress.contactPhone;
+                        break;
+                    }
                 }
             }
+        } else if (deliveryAddress === 'Other') {
+            $scope.name = '';
+            $scope.surname = '';
+            $scope.address = '';
+            $scope.town = '';
+            $scope.zipCode = '';
+            $scope.phone = '';
         }
     };
 })

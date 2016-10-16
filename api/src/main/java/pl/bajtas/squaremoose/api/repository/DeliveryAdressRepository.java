@@ -48,7 +48,7 @@ public interface DeliveryAdressRepository  extends CrudRepository<DeliveryAdress
     Page<DeliveryAdress> findByOrdersIsNotNull(Pageable pageable);
     Page<DeliveryAdress> findByOrdersIsNull(Pageable pageable);
 
-    List<DeliveryAdress> findByAdressContainsIgnoreCase(String adress);
+    List<DeliveryAdress> findByAddressContainsIgnoreCase(String address);
     List<DeliveryAdress> findByTownContainsIgnoreCase(String town);
     List<DeliveryAdress> findByZipCodeContainsIgnoreCase(String zipCode);
     List<DeliveryAdress> findByNameContainsIgnoreCase(String name);

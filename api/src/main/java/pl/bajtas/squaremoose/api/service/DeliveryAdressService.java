@@ -65,7 +65,7 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
     }
 
     public List<DeliveryAdress> getByAdressContainsIgnoreCase(String adress) {
-        return getRepository().findByAdressContainsIgnoreCase(adress);
+        return getRepository().findByAddressContainsIgnoreCase(adress);
     }
 
     public List<DeliveryAdress> getByTownContainsIgnoreCase(String town) {

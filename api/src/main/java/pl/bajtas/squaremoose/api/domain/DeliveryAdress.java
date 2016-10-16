@@ -18,10 +18,11 @@ public class DeliveryAdress {
     private Integer id;
     private String name;
     private String surname;
-    private String adress;
+    private String address;
     private String town;
     private String zipCode;
     private String contactPhone;
+    @Column(columnDefinition = "boolean default false")
     private boolean currentlyAssigned;
     @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.EAGER)
     private List<Order> orders;
@@ -52,12 +53,12 @@ public class DeliveryAdress {
         return surname;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public void setTown(String town) {

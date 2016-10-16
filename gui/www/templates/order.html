@@ -42,14 +42,14 @@
                         <div class="input-label">
                             Choose delivery adress
                         </div>
-                        <select ng-model="deliveryAdress" ng-change="deliveryAdressChoosen()">
-                            <option>My adress</option>
+                        <select ng-model="deliveryAddress" ng-change="deliveryAdressChoosen(deliveryAddress)">
+                            <option>My address</option>
                             <option>Other</option>
                         </select>
                     </label>
                 </div>
                 <form ng-submit="createOrder()" name="orderForm">
-                    <div class="list list-inset" ng-show="deliveryAdress === 'Other' || deliveryAdress === 'My adress'">
+                    <div class="list list-inset" ng-show="deliveryAddress === 'Other' || deliveryAddress === 'My address'">
                         <label class="item item-input">
                             <input type="text" placeholder="First Name" ng-model="name" name="name" required>
                         </label>
@@ -59,9 +59,9 @@
                         </label>
                         <span ng-show="orderForm.surname.$touched && orderForm.surname.$invalid">This field is required</span>
                         <label class="item item-input">
-                            <input type="text" placeholder="Adress" ng-model="adress" name="adress" required>
+                            <input type="text" placeholder="Address" ng-model="address" name="address" required>
                         </label>
-                        <span ng-show="orderForm.adress.$touched && orderForm.adress.$invalid">This field is required</span>
+                        <span ng-show="orderForm.address.$touched && orderForm.address.$invalid">This field is required</span>
                         <label class="item item-input">
                             <input type="text" placeholder="Zip-Code" ng-model="zipCode" name="zipCode" required>
                         </label>
