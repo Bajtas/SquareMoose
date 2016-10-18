@@ -22,10 +22,10 @@ public class OrderItem {
     @NotNull
     private Integer amount;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product")
+    @JoinColumn(name = "product_id")
     private Product product;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order")
+    @JoinColumn(name = "order_id")
     private Order order;
 
     public void setId(Integer id) {

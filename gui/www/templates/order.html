@@ -2,7 +2,11 @@
     <ion-content>
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
         </ion-refresher>
-        <ion-list>
+
+        <center><ion-spinner class="android-energized" ng-show="orderFinalizationScreen"></ion-spinner></center>
+        
+
+        <ion-list ng-hide="orderFinalizationScreen">
             <div show-delete="shouldShowDelete">
                 <div class="card">
                     <div class="item item-divider">
@@ -34,7 +38,7 @@
                     <ion-delete-button class="ion-minus-circled" ng-click="productsInCart.splice($index, 1);">
                     </ion-delete-button>
                 </ion-item>
-                <ion-toggle ng-model="shouldShowDelete">
+                <ion-toggle ng-model="form.shouldShowDelete">
                     Show remove button?
                 </ion-toggle>
                 <div class="item item-divider">
@@ -45,37 +49,37 @@
                         <label class="input-label">
                             Choose delivery adress
                         </label>
-                        <select ng-model="deliveryAddress" ng-change="deliveryAdressChoosen(deliveryAddress)">
+                        <select ng-model="form.deliveryAddress" ng-change="deliveryAdressChoosen(form.deliveryAddress)">
                             <option>My address</option>
                             <option>Other</option>
                         </select>
                     </label>
                 </div>
                 <form ng-submit="createOrder()" name="orderForm">
-                    <div class="list list-inset" ng-show="deliveryAddress === 'Other' || deliveryAddress === 'My address'">
+                    <div class="list list-inset" ng-show="form.deliveryAddress === 'Other' || form.deliveryAddress === 'My address'">
                         <label class="item item-input">
-                            <input type="text" placeholder="First Name" ng-model="name" name="name" required>
+                            <input type="text" placeholder="First Name" ng-model="form.deliveryAdress.name" name="name" required>
                         </label>
                         <span ng-show="orderForm.name.$touched && orderForm.name.$invalid">This field is required</span>
                         <label class="item item-input">
-                            <input type="text" placeholder="Last Name" ng-model="surname" name="surname" required>
+                            <input type="text" placeholder="Last Name" ng-model="form.deliveryAdress.surname" name="surname" required>
                         </label>
                         <span ng-show="orderForm.surname.$touched && orderForm.surname.$invalid">This field is required</span>
                         <label class="item item-input">
-                            <input type="text" placeholder="Address" ng-model="address" name="address" required>
+                            <input type="text" placeholder="Address" ng-model="form.deliveryAdress.address" name="address" required>
                         </label>
                         <span ng-show="orderForm.address.$touched && orderForm.address.$invalid">This field is required</span>
                         <label class="item item-input">
-                            <input type="text" placeholder="Zip-Code" ng-model="zipCode" name="zipCode" required>
+                            <input type="text" placeholder="Zip-Code" ng-model="form.deliveryAdress.zipCode" name="zipCode" required>
                         </label>
                         <span ng-show="orderForm.zipCode.$touched && orderForm.zipCode.$invalid">This field is required</span>
                         <label class="item item-input">
-                            <input type="text" placeholder="Town" ng-model="town" name="town" required>
+                            <input type="text" placeholder="Town" ng-model="form.deliveryAdress.town" name="town" required>
                         </label>
                         <span ng-show="orderForm.town.$touched && orderForm.town.$invalid">This field is required</span>
 
                         <label class="item item-input" ng-init="phoneRegex = '\\d{9}$'">
-                            <input ng-model="phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex">
+                            <input ng-model="form.deliveryAdress.phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex">
                         </label>
                         <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
                         <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>
@@ -85,7 +89,7 @@
                     </div>
 
                     <div class="list radio-group" ng-repeat="deliveryType in deliveryTypes">
-                        <ion-radio ng-model="chooseDeliveryType" ng-value="deliveryType.id">
+                        <ion-radio ng-model="form.choosenDeliveryType" ng-value="deliveryType.id" name="choosenDeliveryType" required>
                             <a class="item item-avatar" href="#">
                                 <img ng-src="{{deliveryType.image}}">
                                 <h2>{{deliveryType.name}}</h2>
@@ -94,30 +98,23 @@
                             </a>
                         </ion-radio>
                     </div>
+                    <span ng-show="orderForm.choosenDeliveryType.$untouched"><i>Please choose delivery type.</i></span>
                     <div class="item item-divider">
                         <i class="icon ion-social-usd"></i> Payment method
                     </div>
                     <div class="list radio-group" ng-repeat="paymentMethod in paymentMethods">
-                        <ion-radio ng-model="choosepaymentMethod" ng-value="paymentMethod.id">
+                        <ion-radio ng-model="form.choosenPaymentMethod" ng-value="paymentMethod.id" name="choosenPaymentMethod" required>
                             <i class="icon ion-card" ng-if="paymentMethod.name === 'Credit card'"></i>
                             <i class="icon ion-cash" ng-if="paymentMethod.name === 'Cash'"></i>
                             <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'Cash transfer'"></i>
                             {{paymentMethod.name}}
                         </ion-radio>
                     </div>
+                    <span ng-show="orderForm.choosenPaymentMethod.$untouched"><i>Please choose payment type.</i></span>
+                    <label class="item">
+                        <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="(orderForm.choosenDeliveryType.$untouched || orderForm.choosenPaymentMethod.$untouched) && orderForm.$invalid"> Finalize order</button>
+                    </label>
                 </form>
-                <label class="item">
-                    <button class="button icon-center ion-log-in button-block button-positive" type="submit"> Go to payment</button>
-                </label>
         </ion-list>
     </ion-content>
-    <!--<ion-footer-bar align-title="left" class="bar-dark">
-        <div class="buttons">
-            <button class="button ion-bag button-clear button-white"> My bag</button>
-        </div>
-        <h6 class="title"></h6>
-        <div class="buttons">
-            <button class="button">Total items: {{cartItemsAmount}}</button>
-        </div>
-    </ion-footer-bar>-->
 </ion-view>

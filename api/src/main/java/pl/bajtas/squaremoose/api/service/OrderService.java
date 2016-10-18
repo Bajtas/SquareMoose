@@ -1,22 +1,18 @@
 package pl.bajtas.squaremoose.api.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.*;
 import pl.bajtas.squaremoose.api.repository.*;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
-import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
-import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,9 +79,6 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         }
 
         try {
-            for (OrderItem item : orderItems) {
-                orderItemRepository.save(item);
-            }
             if (deliveryType != null) {
                 if (deliveryTypeNotExist(deliveryType.getId())) {
                     return Response.status(Response.Status.BAD_REQUEST).entity("Delivery type with id: " + deliveryType.getId() + " does not exist!").build();
@@ -95,12 +88,20 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
                 deliveryAdressRepository.save(deliveryAdress);
             }
 
+            order.setAddedOn(new Date());
+            order.setLmod(new Date());
+
             getRepository().save(order);
+
+            for (OrderItem item : orderItems) {
+                item.setOrder(order);
+                orderItemRepository.save(item);
+            }
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
 
-        return Response.status(Response.Status.OK).entity("Product added successfully!").build();
+        return Response.status(Response.Status.OK).entity("Product added successfully! Id: " + order.getId()).build();
     }
 
     @Override

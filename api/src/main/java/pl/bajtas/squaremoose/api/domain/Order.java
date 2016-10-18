@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +38,8 @@ public class Order {
     private ActualOrderState actualOrderState;
     private float fullPrice;
     private int itemsAmount;
+    private Date addedOn;
+    private Date lmod;
 
     public Integer getId() {
         return id;
@@ -102,6 +105,30 @@ public class Order {
         this.deliveryAdress = deliveryAdress;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setAddedOn(Date addedOn) {
+        this.addedOn = addedOn;
+    }
+
+    public Date getAddedOn() {
+        return addedOn;
+    }
+
+    public void setLmod(Date lmod) {
+        this.lmod = lmod;
+    }
+
+    public Date getLmod() {
+        return lmod;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null || !(other instanceof Order)) {
@@ -110,13 +137,5 @@ public class Order {
 
         Order otherOrder = (Order) other;
         return id.equals(otherOrder.getId());
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

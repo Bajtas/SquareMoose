@@ -36,6 +36,13 @@
         $http.get($scope.apiUrl + 'ProductService/product/' + $stateParams.productId)
             .then(function (response) {
                 $scope.product = response.data;
+                for (var i = 0; i < $scope.product.images.length; i++) {
+                    if (!($scope.product.images[i] instanceof Object)) {
+                        $scope.product.images.splice(i, $scope.product.images.length);
+                        break;
+                    }
+                }
+
                 if ($scope.product.images[0]) {
                     $scope.mainImageSrc = $scope.product.images[0].imageSrc;
                 }

@@ -9,6 +9,7 @@ import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.service.CategoryService;
 import pl.bajtas.squaremoose.api.service.OrderService;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -32,6 +33,7 @@ public class OrderController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/orders")
+    @PermitAll
     public Iterable<Order> getAll() {
         return getService().getAll();
     }
@@ -49,6 +51,7 @@ public class OrderController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/order/{id}")
+    @PermitAll
     public Order getById(@NotNull @PathParam("id") Integer id) {
         return getService().getById(id);
     }
