@@ -1,9 +1,7 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.sun.org.apache.xpath.internal.operations.Or;
 
 import javax.persistence.*;
 import java.util.Date;

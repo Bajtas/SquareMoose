@@ -3,10 +3,7 @@ package pl.bajtas.squaremoose.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import pl.bajtas.squaremoose.api.domain.Order;
-import pl.bajtas.squaremoose.api.domain.OrderItem;
 import pl.bajtas.squaremoose.api.domain.PaymentMethod;
-import pl.bajtas.squaremoose.api.service.OrderItemService;
 import pl.bajtas.squaremoose.api.service.PaymentMethodService;
 
 import javax.annotation.security.PermitAll;

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
-import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.repository.ProductImagesRepository;
@@ -13,7 +12,6 @@ import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

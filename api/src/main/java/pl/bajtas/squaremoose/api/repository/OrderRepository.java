@@ -1,11 +1,9 @@
 package pl.bajtas.squaremoose.api.repository;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import pl.bajtas.squaremoose.api.domain.Order;
-import pl.bajtas.squaremoose.api.domain.ProductImage;
 
 import java.util.List;
 

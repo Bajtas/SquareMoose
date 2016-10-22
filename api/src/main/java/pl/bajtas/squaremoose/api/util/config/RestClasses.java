@@ -1,12 +1,12 @@
 package pl.bajtas.squaremoose.api.util.config;
 
+import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Configuration;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RestClasses {

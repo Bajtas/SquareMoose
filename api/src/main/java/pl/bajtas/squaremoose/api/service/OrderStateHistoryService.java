@@ -4,9 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.OrderStateHistory;
-import pl.bajtas.squaremoose.api.domain.PaymentMethod;
 import pl.bajtas.squaremoose.api.repository.OrderStateHistoryRepository;
-import pl.bajtas.squaremoose.api.repository.PaymentMethodRepository;
 
 import javax.persistence.EntityManager;
 

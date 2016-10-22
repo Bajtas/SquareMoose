@@ -3,9 +3,7 @@ package pl.bajtas.squaremoose.api.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
-import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.OrderState;
-import pl.bajtas.squaremoose.api.domain.PaymentMethod;
 
 import java.util.List;
 

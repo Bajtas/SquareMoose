@@ -1,20 +1,17 @@
 package pl.bajtas.squaremoose.api.controller;
 
-import javax.annotation.security.PermitAll;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.service.ProductService;
 
+import javax.annotation.security.PermitAll;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Controller

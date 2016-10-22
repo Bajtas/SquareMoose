@@ -126,7 +126,7 @@
             headers: {
                 Authorization: $scope.auth
             },
-            url: $scope.apiUrl + 'OrderService/order/add'
+            url: $rootScope.apiUrl + 'OrderService/order/add'
         }).then(function success(response) {
             $scope.orderFinalizationScreen = true;
             $rootScope.order = {

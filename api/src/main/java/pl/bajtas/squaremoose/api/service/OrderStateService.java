@@ -1,23 +1,18 @@
 package pl.bajtas.squaremoose.api.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.ActualOrderState;
-import pl.bajtas.squaremoose.api.domain.Order;
 import pl.bajtas.squaremoose.api.domain.OrderState;
 import pl.bajtas.squaremoose.api.repository.ActualOrderStateRepository;
 import pl.bajtas.squaremoose.api.repository.OrderRepository;
 import pl.bajtas.squaremoose.api.repository.OrderStateRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
-import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import java.util.List;
 

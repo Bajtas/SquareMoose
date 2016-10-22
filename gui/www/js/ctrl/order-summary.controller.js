@@ -1,6 +1,7 @@
 ﻿angular.module('starter.controllers')
 
-.controller('OrderSummaryCtrl', function ($scope, $ionicPlatform, $ionicPopup, $http, $rootScope, $location, $stateParams, $cordovaToast) {
+.controller('OrderSummaryCtrl', function ($scope, $http, $rootScope, $location,
+    $stateParams, $cordovaToast, $ionicPlatform, $ionicPopup, $ionicNavBarDelegate) {
     // Fields
     $scope.isLoggedIn = false;
     $scope.orderFinalizationLoader = false;
@@ -10,6 +11,8 @@
     $scope.paymentMethods = [];
     $scope.user = {};
     $scope.form = {};
+
+    $ionicNavBarDelegate.showBackButton(false);
     // End of fields
 
     $scope.$on('$ionicView.loaded', function (event) {

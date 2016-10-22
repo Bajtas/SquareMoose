@@ -1,13 +1,9 @@
 package pl.bajtas.squaremoose.api.repository;
 
-import org.springframework.cglib.core.Predicate;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
-
 import pl.bajtas.squaremoose.api.domain.Product;
 
 import java.util.List;

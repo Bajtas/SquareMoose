@@ -97,7 +97,7 @@
 
     // Functions
     $scope.refresh = function () {
-        $http.get($scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
+        $http.get($rootScope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
             .then(function (response) {
                 $scope.productsList = response.data.content;
                 $scope.lastPage = response.data.totalPages;
@@ -121,7 +121,7 @@
             $scope.page++;
             var url;
             if ($scope.optionsData === null) {
-                url = $scope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy;
+                url = $rootScope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy;
 
                 $http.get(url)
                     .then(function (response) {
@@ -142,7 +142,7 @@
     };
 
     $scope.sortAndFilter = function () {
-        var URL = $scope.apiUrl + 'ProductService/products/search/page/' + $scope.page;
+        var URL = $rootScope.apiUrl + 'ProductService/products/search/page/' + $scope.page;
         var sortAndFilterParams = ProductsListService.prepareParams($scope.optionsData);
 
         $http({

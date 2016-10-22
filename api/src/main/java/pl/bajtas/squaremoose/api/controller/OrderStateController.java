@@ -7,7 +7,6 @@ package pl.bajtas.squaremoose.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.OrderState;
 import pl.bajtas.squaremoose.api.service.OrderStateService;
 

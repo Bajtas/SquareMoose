@@ -38,7 +38,7 @@
             $http({
                 method: "GET",
                 headers: { Authorization : $scope.auth },
-                url: $scope.apiUrl + 'UserService/user/login/' + $scope.login
+                url: $rootScope.apiUrl + 'UserService/user/login/' + $scope.login
             }).then(function success(response) {
                 $scope.hideCart();
 

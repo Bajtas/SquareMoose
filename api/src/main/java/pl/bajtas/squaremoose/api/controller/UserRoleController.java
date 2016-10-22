@@ -2,12 +2,9 @@ package pl.bajtas.squaremoose.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.service.UserRoleService;
-import pl.bajtas.squaremoose.api.service.UserService;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
     cartService, loginService, registerService) {
 
     // Root API URL
-    $rootScope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/';
+    $rootScope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/API/';
     $scope.cart = [];
     $scope.loginData = {};
     $scope.optionsData = {
@@ -40,8 +40,8 @@ angular.module('starter.controllers', [])
     $scope.registerService = registerService;
 
     $scope.init = function () {
-        loginService.init($scope, $scope.apiUrl);
-        registerService.init($scope, $scope.apiUrl);
+        loginService.init($scope, $rootScope.apiUrl);
+        registerService.init($scope, $rootScope.apiUrl);
     };
     $scope.init();
 
@@ -74,7 +74,7 @@ angular.module('starter.controllers', [])
     });
 
     $scope.showSortOptions = function () {
-        $http.get($scope.apiUrl + 'CategoryService/categories/')
+        $http.get($rootScope.apiUrl + 'CategoryService/categories/')
             .then(function (response) {
                 $scope.categories = response.data;
             }, function (response) {

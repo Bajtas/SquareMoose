@@ -33,7 +33,7 @@
 
     // Functions
     $scope.refresh = function () {
-        $http.get($scope.apiUrl + 'ProductService/product/' + $stateParams.productId)
+        $http.get($rootScope.apiUrl + 'ProductService/product/' + $stateParams.productId)
             .then(function (response) {
                 $scope.product = response.data;
                 for (var i = 0; i < $scope.product.images.length; i++) {

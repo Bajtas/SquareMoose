@@ -1,10 +1,8 @@
 package pl.bajtas.squaremoose.api.util.search;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

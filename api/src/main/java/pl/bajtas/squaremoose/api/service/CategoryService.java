@@ -6,17 +6,14 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.Product;
-import pl.bajtas.squaremoose.api.repository.ActualOrderStateRepository;
 import pl.bajtas.squaremoose.api.repository.CategoryRepository;
 import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
-import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;

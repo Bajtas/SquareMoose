@@ -3,10 +3,7 @@ package pl.bajtas.squaremoose.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.domain.DeliveryAdress;
-import pl.bajtas.squaremoose.api.domain.Product;
-import pl.bajtas.squaremoose.api.service.CategoryService;
 import pl.bajtas.squaremoose.api.service.DeliveryAdressService;
 
 import javax.validation.constraints.NotNull;

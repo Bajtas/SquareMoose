@@ -1,13 +1,15 @@
 package pl.bajtas.squaremoose.api;
 
-import java.util.Arrays;
-
 import org.apache.log4j.Logger;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
+import java.util.Arrays;
+
 @SpringBootApplication(scanBasePackages = {"pl.bajtas.squaremoose.api.config"})
+@EnableAutoConfiguration
 public class SpringBootWebApplication extends SpringBootServletInitializer {
 
   private static final Logger LOG = Logger.getLogger(SpringBootWebApplication.class);

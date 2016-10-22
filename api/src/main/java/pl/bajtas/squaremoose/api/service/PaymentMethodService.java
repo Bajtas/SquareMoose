@@ -1,23 +1,18 @@
 package pl.bajtas.squaremoose.api.service;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
-import pl.bajtas.squaremoose.api.domain.DeliveryType;
-import pl.bajtas.squaremoose.api.domain.Order;
-import pl.bajtas.squaremoose.api.domain.OrderItem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.bajtas.squaremoose.api.domain.Order;
 import pl.bajtas.squaremoose.api.domain.PaymentMethod;
-import pl.bajtas.squaremoose.api.repository.DeliveryTypeRepository;
-import pl.bajtas.squaremoose.api.repository.OrderItemRepository;
 import pl.bajtas.squaremoose.api.repository.OrderRepository;
 import pl.bajtas.squaremoose.api.repository.PaymentMethodRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
-import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
 import java.util.List;
 

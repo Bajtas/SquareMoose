@@ -12,7 +12,7 @@
             <div class="item item-divider">
                 <i class="icon ion-ios-cart"></i> Ordered products
             </div>
-            <ion-item class="item item-thumbnail-left" ng-repeat="item in productsInCart" href="#/app/product/{{product.id}}">
+            <ion-item class="item item-thumbnail-left" ng-repeat="item in productsInCart" href="#/app/product/{{item.product.id}}">
                 <img ng-if="item.product.images[0].imageSrc" ng-src="{{item.product.images[0].imageSrc}}">
                 <h2>{{item.product.name}}</h2>
                 <p>{{item.product.description}}</p>

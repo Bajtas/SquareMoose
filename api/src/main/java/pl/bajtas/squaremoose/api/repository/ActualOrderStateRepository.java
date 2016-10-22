@@ -4,8 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import pl.bajtas.squaremoose.api.domain.ActualOrderState;
-import pl.bajtas.squaremoose.api.domain.Category;
-import pl.bajtas.squaremoose.api.domain.Product;
 
 import java.util.List;
 
