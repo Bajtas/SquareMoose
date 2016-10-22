@@ -1,0 +1,80 @@
+﻿<ion-view view-title="Order summary">
+    <ion-content>
+        <ion-list>
+            <div class="card">
+                <div class="item item-divider">
+                    <i class="icon ion-person"></i> Thank you for purchase {{user.login}}!
+                </div>
+                <div class="item item-text-wrap">
+                    Below you can see order details, please check delivery adress and if there is some mistake please email us. You can check order status after you log in and go to 'My orders tab'.
+                </div>
+            </div>
+            <div class="item item-divider">
+                <i class="icon ion-ios-cart"></i> Ordered products
+            </div>
+            <ion-item class="item item-thumbnail-left" ng-repeat="item in productsInCart" href="#/app/product/{{product.id}}">
+                <img ng-if="item.product.images[0].imageSrc" ng-src="{{item.product.images[0].imageSrc}}">
+                <h2>{{item.product.name}}</h2>
+                <p>{{item.product.description}}</p>
+                <p>Amount: {{item.amount}}</p>
+                <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount}} {{priceCurrency}}</p>
+                <ion-option-button class="button-positive" ng-click="share(item)">
+                    Share
+                </ion-option-button>
+                <label class="item item-input" ng-show="model.editAmount">
+                    <span class="input-label">Amount</span>
+                    <input type="number" ng-model="item.amount" min="1">
+                </label>
+            </ion-item>
+            <div class="item item-divider">
+                <i class="icon ion-home"></i> Delivery adress
+            </div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="text" placeholder="First Name" ng-model="form.deliveryAdress.name" name="name" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Last Name" ng-model="form.deliveryAdress.surname" name="surname" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Address" ng-model="form.deliveryAdress.address" name="address" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Zip-Code" ng-model="form.deliveryAdress.zipCode" name="zipCode" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Town" ng-model="form.deliveryAdress.town" name="town" disabled>
+                </label>
+
+                <label class="item item-input" ng-init="phoneRegex = '\\d{9}$'">
+                    <input ng-model="form.deliveryAdress.phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex" min="0" disabled>
+                </label>
+            </div>
+            <div class="item item-divider">
+                <i class="icon ion-ios-box"></i> Delivery type
+            </div>
+
+            <ion-radio ng-model="form.choosenDeliveryType" ng-repeat="deliveryType in deliveryTypes" ng-value="deliveryType.id" name="choosenDeliveryType" ng-disabled="true">
+                <a class="item item-avatar" href="#">
+                    <img ng-src="{{deliveryType.image}}">
+                    <h2>{{deliveryType.name}}</h2>
+                    <p>Price: {{deliveryType.price}} $</p>
+                    <p>Est. Delivery time: {{deliveryType.time}}</p>
+                </a>
+            </ion-radio>
+            <div class="item item-divider">
+                <i class="icon ion-social-usd"></i> Payment method
+            </div>
+            <div class="list radio-group" ng-repeat="paymentMethod in paymentMethods">
+                <ion-radio ng-model="form.choosenPaymentMethod" ng-value="paymentMethod.id" name="choosenPaymentMethod" ng-disabled="true">
+                    <i class="icon ion-card" ng-if="paymentMethod.name === 'Credit card'"></i>
+                    <i class="icon ion-cash" ng-if="paymentMethod.name === 'Cash'"></i>
+                    <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'Cash transfer'"></i> {{paymentMethod.name}}
+                </ion-radio>
+            </div>
+            <label class="item">
+                <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="(orderForm.choosenDeliveryType.$untouched || orderForm.choosenPaymentMethod.$untouched) && orderForm.$invalid"> Finalize order</button>
+            </label>
+        </ion-list>
+    </ion-content>
+</ion-view>

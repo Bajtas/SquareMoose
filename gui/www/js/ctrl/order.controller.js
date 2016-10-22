@@ -3,6 +3,7 @@
 .controller('OrderCtrl', function ($scope, $ionicPlatform, $ionicPopup, $http, $rootScope, $location, $stateParams, $cordovaToast) {
     // Fields
     $scope.isLoggedIn = false;
+    $scope.orderFinalizationLoader = false;
     $scope.orderFinalizationScreen = false;
     $scope.productsInCart = [];
     $scope.deliveryTypes = [];
@@ -105,7 +106,7 @@
         }
         $scope.user.deliveryAdresses = null;
 
-        var order = {
+        $scope.order = {
             'orderItems': orderItems,
             'deliveryType': deliveryType,
             'paymentMethod': paymentMethod,
@@ -116,25 +117,36 @@
 
         $scope.auth = localStorage.getItem("Authorization");
 
-        console.log(angular.toJson(order));
+        console.log(angular.toJson($scope.order));
 
-        $scope.orderFinalizationScreen = true;
+        $scope.orderFinalizationLoader = true;
         $http({
             method: "POST",
-            data: order,
-            headers: { Authorization: $scope.auth },
+            data: $scope.order,
+            headers: {
+                Authorization: $scope.auth
+            },
             url: $scope.apiUrl + 'OrderService/order/add'
         }).then(function success(response) {
-            var alertPopup = $ionicPopup.alert({
-                title: "Success!",
-                template: "asdassdasd"
-            });
+            $scope.orderFinalizationScreen = true;
+            $rootScope.order = {
+                'orderItems': orderItems,
+                'deliveryType': deliveryType,
+                'paymentMethod': paymentMethod,
+                'deliveryAdress': $scope.order.deliveryAdress,
+                'user': $scope.user,
+                'itemsAmount': $scope.order.itemsAmount,
+                'choosenDeliveryType': $scope.form.choosenDeliveryType,
+                'choosenPaymentMethod': $scope.form.choosenPaymentMethod
+            };
+
+            $location.path('/app/order-summary');
         }, function error(response) {
             var alertPopup = $ionicPopup.alert({
                 title: "Problem occured!",
                 template: "There is some problem with order, please try again."
             });
-            $scope.orderFinalizationScreen = false;
+            $scope.orderFinalizationLoader = false;
         });
     };
 })

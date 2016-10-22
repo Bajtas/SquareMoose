@@ -58,15 +58,25 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
             }
         })
 
-        .state('app.order', {
-            url: '/order',
-            views: {
-                'menuContent': {
-                    templateUrl: 'templates/order.html',
-                    controller: 'OrderCtrl'
-                }
+    .state('app.order', {
+        url: '/order',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/order.html',
+                controller: 'OrderCtrl'
             }
-        })
+        }
+    })
+
+    .state('app.orderSummary', {
+        url: '/order-summary',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/order-summary.html',
+                controller: 'OrderSummaryCtrl'
+            }
+        }
+    })
 
     .state('app.single', {
         url: '/product/:productId',

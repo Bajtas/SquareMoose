@@ -3,118 +3,119 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
         </ion-refresher>
 
-        <center><ion-spinner class="android-energized" ng-show="orderFinalizationScreen"></ion-spinner></center>
-        
+        <ion-spinner class="android-energized centered" ng-show="orderFinalizationLoader"></ion-spinner>
 
-        <ion-list ng-hide="orderFinalizationScreen">
-            <div show-delete="shouldShowDelete">
-                <div class="card">
-                    <div class="item item-divider">
-                        <i class="icon ion-person"></i> Welcome {{user.login}}!
-                    </div>
-                    <div class="item item-text-wrap">
-                        Please check order details below and if everything is fine, scroll down and go to payment.
-                    </div>
+        <div class="centered" ng-show="productsInCart.length === 0" ng-hide="productsInCart.length > 0">
+            <h3>We are not happy because your cart is empty. <i class="ion-sad-outline"></i></h3>
+        </div>
+
+        <ion-list ng-hide="orderFinalizationLoader || orderFinalizationScreen || productsInCart.length === 0" show-delete="shouldShowDelete">
+            <div class="card">
+                <div class="item item-divider">
+                    <i class="icon ion-person"></i> Welcome {{user.login}}!
+                </div>
+                <div class="item item-text-wrap">
+                    Please check order details below and if everything is fine, scroll down and go to payment.
+                </div>
+            </div>
+            <div class="item item-divider">
+                <i class="icon ion-ios-cart"></i> Products in cart
+            </div>
+            <ion-item class="item item-thumbnail-left" ng-repeat="item in productsInCart" href="#/app/product/{{product.id}}">
+                <img ng-if="item.product.images[0].imageSrc" ng-src="{{item.product.images[0].imageSrc}}">
+                <h2>{{item.product.name}}</h2>
+                <p>{{item.product.description}}</p>
+                <p>Amount: {{item.amount}}</p>
+                <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount}} {{priceCurrency}}</p>
+                <ion-option-button class="button-positive" ng-click="share(item)">
+                    Share
+                </ion-option-button>
+                <ion-option-button class="button-info" ng-click="edit(item)">
+                    Edit
+                </ion-option-button>
+                <label class="item item-input" ng-show="model.editAmount">
+                    <span class="input-label">Amount</span>
+                    <input type="number" ng-model="item.amount" min="1" ng-change="updateTotalCost($index); countItems($index); refresh();">
+                </label>
+                <ion-delete-button class="ion-minus-circled" ng-click="productsInCart.splice($index, 1);">
+                </ion-delete-button>
+            </ion-item>
+            <ion-toggle ng-model="shouldShowDelete">
+                Show remove button?
+            </ion-toggle>
+            <div class="item item-divider">
+                <i class="icon ion-home"></i> Delivery adress
+            </div>
+            <div class="list">
+                <label class="item item-input item-select">
+                    <label class="input-label">
+                        Choose delivery adress
+                    </label>
+                    <select ng-model="form.deliveryAddress" ng-change="deliveryAdressChoosen(form.deliveryAddress)">
+                        <option>My address</option>
+                        <option>Other</option>
+                    </select>
+                </label>
+            </div>
+            <form ng-submit="createOrder()" name="orderForm">
+                <div class="list list-inset" ng-show="form.deliveryAddress === 'Other' || form.deliveryAddress === 'My address'">
+                    <label class="item item-input">
+                        <input type="text" placeholder="First Name" ng-model="form.deliveryAdress.name" name="name" required>
+                    </label>
+                    <span ng-show="orderForm.name.$touched && orderForm.name.$invalid">This field is required</span>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Last Name" ng-model="form.deliveryAdress.surname" name="surname" required>
+                    </label>
+                    <span ng-show="orderForm.surname.$touched && orderForm.surname.$invalid">This field is required</span>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Address" ng-model="form.deliveryAdress.address" name="address" required>
+                    </label>
+                    <span ng-show="orderForm.address.$touched && orderForm.address.$invalid">This field is required</span>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Zip-Code" ng-model="form.deliveryAdress.zipCode" name="zipCode" required>
+                    </label>
+                    <span ng-show="orderForm.zipCode.$touched && orderForm.zipCode.$invalid">This field is required</span>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Town" ng-model="form.deliveryAdress.town" name="town" required>
+                    </label>
+                    <span ng-show="orderForm.town.$touched && orderForm.town.$invalid">This field is required</span>
+
+                    <label class="item item-input" ng-init="phoneRegex = '\\d{9}$'">
+                        <input ng-model="form.deliveryAdress.phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex" min="0">
+                    </label>
+                    <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
+                    <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>
                 </div>
                 <div class="item item-divider">
-                    <i class="icon ion-ios-cart"></i> Products in cart
+                    <i class="icon ion-ios-box"></i> Delivery type
                 </div>
-                <ion-item class="item item-thumbnail-left" ng-repeat="item in productsInCart" href="#/app/product/{{product.id}}">
-                    <img ng-if="item.product.images[0].imageSrc" ng-src="{{item.product.images[0].imageSrc}}">
-                    <h2>{{item.product.name}}</h2>
-                    <p>{{item.product.description}}</p>
-                    <p>Amount: {{item.amount}}</p>
-                    <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount}} {{priceCurrency}}</p>
-                    <ion-option-button class="button-positive" ng-click="share(item)">
-                        Share
-                    </ion-option-button>
-                    <ion-option-button class="button-info" ng-click="edit(item)">
-                        Edit
-                    </ion-option-button>
-                    <label class="item item-input" ng-show="model.editAmount">
-                        <span class="input-label">Amount</span>
-                        <input type="number" ng-model="item.amount" min="1" ng-change="updateTotalCost($index); countItems($index); refresh();">
-                    </label>
-                    <ion-delete-button class="ion-minus-circled" ng-click="productsInCart.splice($index, 1);">
-                    </ion-delete-button>
-                </ion-item>
-                <ion-toggle ng-model="form.shouldShowDelete">
-                    Show remove button?
-                </ion-toggle>
+
+                <div class="list radio-group" ng-repeat="deliveryType in deliveryTypes">
+                    <ion-radio ng-model="form.choosenDeliveryType" ng-value="deliveryType.id" name="choosenDeliveryType" required>
+                        <a class="item item-avatar" href="#">
+                            <img ng-src="{{deliveryType.image}}">
+                            <h2>{{deliveryType.name}}</h2>
+                            <p>Price: {{deliveryType.price}} $</p>
+                            <p>Est. Delivery time: {{deliveryType.time}}</p>
+                        </a>
+                    </ion-radio>
+                </div>
+                <span ng-show="orderForm.choosenDeliveryType.$untouched"><i>Please choose delivery type.</i></span>
                 <div class="item item-divider">
-                    <i class="icon ion-home"></i> Delivery adress
+                    <i class="icon ion-social-usd"></i> Payment method
                 </div>
-                <div class="list">
-                    <label class="item item-input item-select">
-                        <label class="input-label">
-                            Choose delivery adress
-                        </label>
-                        <select ng-model="form.deliveryAddress" ng-change="deliveryAdressChoosen(form.deliveryAddress)">
-                            <option>My address</option>
-                            <option>Other</option>
-                        </select>
-                    </label>
+                <div class="list radio-group" ng-repeat="paymentMethod in paymentMethods">
+                    <ion-radio ng-model="form.choosenPaymentMethod" ng-value="paymentMethod.id" name="choosenPaymentMethod" required>
+                        <i class="icon ion-card" ng-if="paymentMethod.name === 'Credit card'"></i>
+                        <i class="icon ion-cash" ng-if="paymentMethod.name === 'Cash'"></i>
+                        <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'Cash transfer'"></i> {{paymentMethod.name}}
+                    </ion-radio>
                 </div>
-                <form ng-submit="createOrder()" name="orderForm">
-                    <div class="list list-inset" ng-show="form.deliveryAddress === 'Other' || form.deliveryAddress === 'My address'">
-                        <label class="item item-input">
-                            <input type="text" placeholder="First Name" ng-model="form.deliveryAdress.name" name="name" required>
-                        </label>
-                        <span ng-show="orderForm.name.$touched && orderForm.name.$invalid">This field is required</span>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Last Name" ng-model="form.deliveryAdress.surname" name="surname" required>
-                        </label>
-                        <span ng-show="orderForm.surname.$touched && orderForm.surname.$invalid">This field is required</span>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Address" ng-model="form.deliveryAdress.address" name="address" required>
-                        </label>
-                        <span ng-show="orderForm.address.$touched && orderForm.address.$invalid">This field is required</span>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Zip-Code" ng-model="form.deliveryAdress.zipCode" name="zipCode" required>
-                        </label>
-                        <span ng-show="orderForm.zipCode.$touched && orderForm.zipCode.$invalid">This field is required</span>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Town" ng-model="form.deliveryAdress.town" name="town" required>
-                        </label>
-                        <span ng-show="orderForm.town.$touched && orderForm.town.$invalid">This field is required</span>
-
-                        <label class="item item-input" ng-init="phoneRegex = '\\d{9}$'">
-                            <input ng-model="form.deliveryAdress.phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex">
-                        </label>
-                        <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
-                        <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>
-                    </div>
-                    <div class="item item-divider">
-                        <i class="icon ion-ios-box"></i> Delivery type
-                    </div>
-
-                    <div class="list radio-group" ng-repeat="deliveryType in deliveryTypes">
-                        <ion-radio ng-model="form.choosenDeliveryType" ng-value="deliveryType.id" name="choosenDeliveryType" required>
-                            <a class="item item-avatar" href="#">
-                                <img ng-src="{{deliveryType.image}}">
-                                <h2>{{deliveryType.name}}</h2>
-                                <p>Price: {{deliveryType.price}} $</p>
-                                <p>Est. Delivery time: {{deliveryType.time}}</p>
-                            </a>
-                        </ion-radio>
-                    </div>
-                    <span ng-show="orderForm.choosenDeliveryType.$untouched"><i>Please choose delivery type.</i></span>
-                    <div class="item item-divider">
-                        <i class="icon ion-social-usd"></i> Payment method
-                    </div>
-                    <div class="list radio-group" ng-repeat="paymentMethod in paymentMethods">
-                        <ion-radio ng-model="form.choosenPaymentMethod" ng-value="paymentMethod.id" name="choosenPaymentMethod" required>
-                            <i class="icon ion-card" ng-if="paymentMethod.name === 'Credit card'"></i>
-                            <i class="icon ion-cash" ng-if="paymentMethod.name === 'Cash'"></i>
-                            <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'Cash transfer'"></i>
-                            {{paymentMethod.name}}
-                        </ion-radio>
-                    </div>
-                    <span ng-show="orderForm.choosenPaymentMethod.$untouched"><i>Please choose payment type.</i></span>
-                    <label class="item">
-                        <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="(orderForm.choosenDeliveryType.$untouched || orderForm.choosenPaymentMethod.$untouched) && orderForm.$invalid"> Finalize order</button>
-                    </label>
-                </form>
+                <span ng-show="orderForm.choosenPaymentMethod.$untouched"><i>Please choose payment type.</i></span>
+                <label class="item">
+                    <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="(orderForm.choosenDeliveryType.$untouched || orderForm.choosenPaymentMethod.$untouched) && orderForm.$invalid"> Finalize order</button>
+                </label>
+            </form>
         </ion-list>
     </ion-content>
 </ion-view>
