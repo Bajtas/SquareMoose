@@ -1,0 +1,25 @@
+<div class="col_4"></div>
+<div class="col_4">
+    <h1 class="center">SquareMoose</h1>
+    <h4 class="center">Dashboard</h4>
+    <form class="vertical" ng-submit="login()" name="loginForm">
+        <div class="notice error" ng-show="loginErr"><i class="fa fa-exclamation" aria-hidden="true"></i>Wrong password or email.
+        </div>
+        <label for="login">Login: </label>
+        <input id="login" name="login" type="text" ng-model="credentials.login" placeholder="Login" required>
+        <div ng-show="loginForm.login.$touched && loginForm.login.$invalid" class="notice error" ng-show="loginErr"><i class="fa fa-exclamation" aria-hidden="true"></i>Login is required.
+        </div>
+        <label for="password">Password: </label>
+        <input id="password" name="password" type="password" ng-model="credentials.password" placeholder="Password" required>
+        <div ng-show="loginForm.password.$touched && loginForm.password.$invalid" class="notice error" ng-show="loginErr"><i class="fa fa-exclamation" aria-hidden="true"></i>Password is required.
+        </div>
+        <div class="col_3">
+        </div>
+        <div class="col_6">
+            <button class="medium green full-width"><i class="fa fa-play-circle"></i> Login</button>
+        </div>
+        <div class="col_3">
+        </div>
+    </form>
+</div>
+<div class="col_4"></div>

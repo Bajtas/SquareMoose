@@ -15,7 +15,7 @@
                 <span ng-show="loginForm.login.$touched && loginForm.login.$invalid">Login is required.</span>
                 <label class="item item-input">
                     <span class="input-label">Password</span>
-                    <input type="password" name="password" ng-model="loginService.credentials.password">
+                    <input type="password" name="password" ng-model="loginService.credentials.password" required>
                 </label>
                 <span ng-show="loginForm.password.$touched && loginForm.password.$invalid">Password is required.</span>
                 <label class="item">

@@ -1,19 +1,15 @@
-var app = angular.module("SquareMooseDashboard", ["ngRoute"]);
+var app = angular.module("SquareMooseDashboard", ["ngRoute", "SquareMooseControllers"]);
 app.config(function($routeProvider) {
 	 $routeProvider
 
         .when('/login', {
 			url: '/login',
-            templateUrl: 'sign-in.html'
-        })
-		
-		.when('/', {
-			url: '/',
-            templateUrl: 'main.html'
+            templateUrl: '../sign-in.html',
+            controller: 'AppCtrl'
         })
 		
 		.otherwise({
-        redirectTo: '/login'
+        redirectTo: '/404.html'
       });
 		
 });
