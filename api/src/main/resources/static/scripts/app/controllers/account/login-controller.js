@@ -1,4 +1,4 @@
-angular.module('SquareMooseControllers', [])
+angular.module('SquareMooseControllers')
 
 .controller('LoginCtrl', function($scope, $rootScope, $http, $location, $base64) {
     $scope.loginErr = false;

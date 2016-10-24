@@ -18,18 +18,23 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     });
 
     $stateProvider
-    //    .state('app', {
-    //      url: "/app",
-    //      template: "test",
-    //     abstract: true,
-    //      controller: 'AppCtrl'
-    //    })
-
         .state('login', {
-        url: dashboardUrl + "/login",
-        templateUrl: '../sign-in.html',
-        controller: 'LoginCtrl'
-    });
+            url: dashboardUrl + "/login",
+            templateUrl: '../sign-in.html',
+            controller: 'LoginCtrl'
+        })
+        .state('app', {
+            url: dashboardUrl + "/app",
+            templateUrl: '../dashboard.html',
+            controller: 'DashboardCtrl'
+        });
 
     $urlRouterProvider.otherwise(dashboardUrl + "/login");
 });
+
+//    .state('app', {
+//      url: "/app",
+//      template: "test",
+//     abstract: true,
+//      controller: 'AppCtrl'
+//    })
