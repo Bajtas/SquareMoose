@@ -1,11 +1,22 @@
 var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "SquareMooseControllers"]);
 
 app.run(function($rootScope) {
-    $rootScope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/API/';
+    $rootScope.hostUrl = 'http://squaremoose.ddns.net:4545';
+    $rootScope.appUrl = $rootScope.hostUrl + '/bjts';
+    $rootScope.apiUrl = $rootScope.appUrl + '/API';
+    $rootScope.dashboardUrl = $rootScope.appUrl + 'dashboard';
 });
 
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+
+    var dashboardUrl = '/bjts/dashboard';
+
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
+
     $stateProvider
     //    .state('app', {
     //      url: "/app",
@@ -15,10 +26,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
     //    })
 
         .state('login', {
-        url: "/login",
+        url: dashboardUrl + "/login",
         templateUrl: '../sign-in.html',
         controller: 'LoginCtrl'
     });
 
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise(dashboardUrl + "/login");
 });
