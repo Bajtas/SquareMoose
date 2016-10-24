@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @EntityScan(basePackages = {"pl.bajtas.squaremoose.api.domain"})
 @EnableJpaRepositories(basePackages = {"pl.bajtas.squaremoose.api.repository", "pl.bajtas.squaremoose.api.dao"})
-@ComponentScan(basePackages = {"pl.bajtas.squaremoose.api.service", "pl.bajtas.squaremoose.api.dashboard"})
+@ComponentScan(basePackages = {"pl.bajtas.squaremoose.api.service", "pl.bajtas.squaremoose.api.dashboard", "pl.bajtas.squaremoose.api.controller"})
 public class AppConfig {
   
   private static final Logger LOG = Logger.getLogger(AppConfig.class);
