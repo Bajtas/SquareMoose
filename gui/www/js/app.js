@@ -5,8 +5,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'])
 
-.run(function ($ionicPlatform) {
-    $ionicPlatform.ready(function () {
+.run(function($ionicPlatform) {
+    $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (cordova.platformId === "ios" && window.cordova && window.cordova.plugins.Keyboard) {
@@ -21,7 +21,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
     });
 })
 
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
         .state('app', {
@@ -52,17 +52,27 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
             url: '/productslist',
             views: {
                 'menuContent': {
-                    templateUrl: 'templates/productslist.html',
+                    templateUrl: 'templates/shop/product/productslist.html',
                     controller: 'ProductsListCtrl'
                 }
             }
         })
 
+    .state('app.product', {
+        url: '/product/:productId',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/shop/product/product.html',
+                controller: 'ProductCtrl'
+            }
+        }
+    })
+
     .state('app.order', {
         url: '/order',
         views: {
             'menuContent': {
-                templateUrl: 'templates/order.html',
+                templateUrl: 'templates/shop/order/order.html',
                 controller: 'OrderCtrl'
             }
         }
@@ -72,32 +82,21 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
         url: '/order-summary',
         views: {
             'menuContent': {
-                templateUrl: 'templates/order-summary.html',
+                templateUrl: 'templates/shop/order/order-summary.html',
                 controller: 'OrderSummaryCtrl'
             }
         }
     })
 
-         .state('app.myaccount', {
-             url: '/my-account',
-             views: {
-                 'menuContent': {
-                     templateUrl: 'templates/my-account.html',
-                     controller: 'MyAccountCtrl'
-                 }
-             }
-         })
-
-    .state('app.single', {
-        url: '/product/:productId',
+    .state('app.myaccount', {
+        url: '/my-account',
         views: {
             'menuContent': {
-                templateUrl: 'templates/product.html',
-                controller: 'ProductCtrl'
+                templateUrl: 'templates/account/my-account.html',
+                controller: 'MyAccountCtrl'
             }
         }
     });
-    // if none of the above states are matched, use this as the fallback
+
     $urlRouterProvider.otherwise('/app/productslist');
-    //$urlRouterProvider.otherwise('/app/order');
 });

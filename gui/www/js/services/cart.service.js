@@ -18,7 +18,7 @@
 
     this.init = function (appScope, url) {
         _appScope = appScope;
-        $ionicModal.fromTemplateUrl('templates/mycart.html', {
+        $ionicModal.fromTemplateUrl('templates/shop/cart/cart.html', {
             controller: 'AppCtrl',
             scope: _appScope
         }).then(function (modal) {

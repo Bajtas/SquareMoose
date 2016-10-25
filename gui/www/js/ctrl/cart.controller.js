@@ -40,7 +40,7 @@
                 headers: { Authorization : $scope.auth },
                 url: $rootScope.apiUrl + 'UserService/user/login/' + $scope.login
             }).then(function success(response) {
-                $scope.hideCart();
+                cartService.hide();
 
                 if (localStorage.getItem("Authorization") !== 'undefined') {
                     $rootScope.isLoggedIn = true;
