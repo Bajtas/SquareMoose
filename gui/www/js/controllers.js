@@ -1,29 +1,5 @@
 angular.module('starter.controllers', [])
 
-.service('cartService', function () {
-
-    // private
-    var _cartItemsAmount = 0;
-    var _totalPrice = 0;
-    var _cartProducts = {};
-    var _productsList = [];
-
-    // public API
-    this.cartItemsAmount = _cartItemsAmount;
-    this.totalPrice = _totalPrice;
-    this.cartProducts = _cartProducts;
-    this.productsList = _productsList;
-
-    this.recalculateTotalPrice = function (cart) {
-        _totalPrice = 0;
-        cart.forEach(function (item) {
-            _totalPrice += item.amount * item.price;
-        })
-        this.totalPrice = _totalPrice;
-        this.cartProducts = cart;
-    }
-})
-
 .controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope,
     cartService, loginService, registerService) {
 
@@ -38,10 +14,12 @@ angular.module('starter.controllers', [])
     $scope.categories = [];
     $scope.loginService = loginService;
     $scope.registerService = registerService;
+    $scope.cartService = cartService;
 
     $scope.init = function () {
         loginService.init($scope, $rootScope.apiUrl);
         registerService.init($scope, $rootScope.apiUrl);
+        cartService.init($scope, $rootScope.apiUrl)
     };
     $scope.init();
 

@@ -78,6 +78,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
         }
     })
 
+         .state('app.myaccount', {
+             url: '/my-account',
+             views: {
+                 'menuContent': {
+                     templateUrl: 'templates/my-account.html',
+                     controller: 'MyAccountCtrl'
+                 }
+             }
+         })
+
     .state('app.single', {
         url: '/product/:productId',
         views: {

@@ -1,6 +1,6 @@
 ﻿angular.module('starter.controllers')
 
-.controller('CartCtrl', function ($scope, $rootScope, $location, $http, cartService) {
+.controller('CartCtrl', function ($scope, $rootScope, $ionicPopup, $location, $http, cartService) {
     // Controller fields
     $scope.productslist = []; // List of products in cart
     $scope.priceCurrency = '$'; // Currency string

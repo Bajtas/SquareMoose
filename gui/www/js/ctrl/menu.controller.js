@@ -1,6 +1,6 @@
 ﻿angular.module('starter.controllers')
 
-.controller('MenuCtrl', function ($scope, $ionicPlatform, $http, $stateParams, $cordovaToast) {
+.controller('MenuCtrl', function ($scope, $ionicPlatform, $location, $http, $stateParams, $cordovaToast) {
     // Controller fields
     $scope.isLoggedIn = false; // Indicator to tell if user is logged in
 
@@ -16,10 +16,6 @@
             $scope.isLoggedIn = true;
         }
     });
-
-    $scope.account = function () {
-
-    };
 
     $scope.logout = function () {
         $scope.isLoggedIn = false;

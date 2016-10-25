@@ -52,41 +52,6 @@
             });
     };
 
-    $scope.addToCart = function () {
-        isInCart = false;
-        $scope.cart.forEach(function (item) {
-            if (item.id == $stateParams.productId) {
-                isInCart = true;
-                item.amount += $scope.cartCalcData.itemAmount;
-            }
-        });
-
-        if (isInCart == false) {
-            item = {
-                id: $stateParams.productId,
-                price: $scope.product.price,
-                amount: $scope.cartCalcData.itemAmount,
-                product: $scope.product
-            };
-            $scope.cart.push(item);
-        }
-
-        $scope.countItems();
-        cartService.recalculateTotalPrice($scope.cart);
-    };
-
-    $scope.updateTotalCost = function () {
-        $scope.cartCalcData.totalCost = $scope.cartCalcData.itemAmount * $scope.product.price;
-    };
-
-    $scope.countItems = function () {
-        counter = 0;
-        $scope.cart.forEach(function (item) {
-            counter += item.amount;
-        });
-        cartService.cartItemsAmount = counter;
-    };
-
     $scope.changePhoto = function ($event) {
         $scope.mainImageSrc = $event.currentTarget.src;
     };

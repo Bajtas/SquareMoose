@@ -2,7 +2,7 @@
     <ion-header-bar class="bar-dark">
         <h1 class="title">My cart</h1>
         <div class="buttons">
-            <button class="button icon-left ion-chevron-left button-clear button-white" ng-click="hideCart()"> Back</button>
+            <button class="button icon-left ion-chevron-left button-clear button-white" ng-click="cartService.hide()"> Back</button>
         </div>
     </ion-header-bar>
     <ion-content>
@@ -23,7 +23,7 @@
                     <span class="input-label">Amount</span>
                     <input type="number" ng-model="item.amount" min="1" ng-change="updateTotalCost($index); countItems($index); refresh();">
                 </label>
-                <ion-delete-button class="ion-minus-circled" ng-click="productslist.splice($index, 1);">
+                <ion-delete-button class="ion-minus-circled" ng-click="cartService.remove($index); refresh();">
                 </ion-delete-button>
             </ion-item>
         </ion-list>
@@ -42,7 +42,7 @@
                 <p font="size:10"><b>{{totalPrice}} $</b></p>
             </a>
             <a class="tab-item" ng-click="order()">
-                <i class="icon ion-cash"></i> Go to payment
+                <i class="icon ion-android-playstore"></i> Create order
             </a>
         </div>
     </ion-footer-bar>

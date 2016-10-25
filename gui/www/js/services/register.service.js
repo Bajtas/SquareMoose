@@ -11,7 +11,7 @@
 
     this.init = function (appScope, url) {
         _appScope = appScope;
-        $ionicModal.fromTemplateUrl('templates/register.html', {
+        $ionicModal.fromTemplateUrl('templates/account/register.html', {
             controller: 'AppCtrl',
             scope: _appScope
         }).then(function (modal) {

@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
@@ -11,7 +12,6 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
     <!--For users deploying their apps to Windows 8.1 or Android Gingerbread, platformOverrided.js
     will inject platform-specific code from the /merges folder -->
     <script src="js/platformOverrides.js"></script>
@@ -34,15 +34,18 @@
     <script src="js/ctrl/menu.controller.js"></script>
     <script src="js/ctrl/order.controller.js"></script>
     <script src="js/ctrl/order-summary.controller.js"></script>
+    <script src="js/ctrl/my-account.controller.js"></script>
 
     <script src="js/services/register.service.js"></script>
     <script src="js/services/login.service.js"></script>
+    <script src="js/services/cart.service.js"></script>
 
     <script src="js/util/alerts.service.js"></script>
-      
-  </head>
 
-  <body ng-app="starter">
+</head>
+
+<body ng-app="starter">
     <ion-nav-view></ion-nav-view>
-  </body>
+</body>
+
 </html>

@@ -1,9 +1,9 @@
 ﻿<ion-footer-bar align-title="left" class="bar-dark">
-    <div class="buttons" ng-click="showCart()">
+    <div class="buttons" ng-click="cartService.show()">
         <button class="button ion-bag button-clear button-white"> My cart</button>
     </div>
     <h6 class="title"></h6>
-    <div class="buttons" ng-click="addToCart()">
+    <div class="buttons" ng-click="cartService.addToCart(product, cartCalcData.itemAmount)">
         <button class="button ion-ios-plus-outline button-clear"> Add to cart</button>
     </div>
 </ion-footer-bar>
