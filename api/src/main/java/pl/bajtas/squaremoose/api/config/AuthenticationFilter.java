@@ -26,12 +26,12 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
     @Context private ResourceInfo resourceInfo;
     @Autowired private UserService userService;
 
-    private static final String AUTHORIZATION_PROPERTY = "Authorization";
-    private static final String AUTHENTICATION_SCHEME = "Basic";
+    public static final String AUTHORIZATION_PROPERTY = "Authorization";
+    public static final String AUTHENTICATION_SCHEME = "Basic";
 
-    private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
+    public static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
             .entity("You cannot access this resource").build();
-    private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
+    public static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
             .entity("Access blocked for all users !!").build();
 
     @Override
@@ -64,7 +64,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
             //Decode username and password
-            String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));;
+            String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
 
             //Split username and password tokens
             final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");

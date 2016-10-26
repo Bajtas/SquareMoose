@@ -2,6 +2,7 @@ package pl.bajtas.squaremoose.api.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Lazy;
@@ -9,6 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.bajtas.squaremoose.api.config.AuthenticationFilter;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.repository.UserRepository;
@@ -16,9 +18,12 @@ import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import static org.glassfish.jersey.internal.util.Base64.decode;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -139,7 +144,24 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     // Update existing
-    public String update(User newUser) {
+    public Response update(User newUser, HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+
+        //Get encoded username and password
+        final String encodedUserPassword = authorization.replaceFirst(AuthenticationFilter.AUTHENTICATION_SCHEME + " ", "");
+
+        //Decode username and password
+        String usernameAndPassword = new String(decode(encodedUserPassword.getBytes()));
+
+        //Split username and password tokens
+        final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+        final String username = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
+        final String password = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
+
+        //Is user valid?
+        if (!isUserValid(username, password) && username.equals(newUser.getLogin()))
+            return Response.status(Response.Status.FORBIDDEN).entity("Access denied!").build();
+
         String login = newUser.getLogin(); // get login to find user for update
         String newEmail = newUser.getEmail();
         String newPassword = newUser.getPassword();
@@ -148,35 +170,34 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
             User old = getRepository().findByLogin(login);
 
             if (old == null) {
-                return "User with specified login not found!";
+                return Response.status(Response.Status.BAD_REQUEST).entity("User with specified login not found!").build();
             }
 
             if (StringUtils.isNotEmpty(newEmail)) {
                 if (getRepository().findByEmail(newEmail) != null) {
-                    return "This email is already taken!";
+                    return Response.status(Response.Status.CONFLICT).entity("This email is already taken!").build();
                 } else {
                     old.setEmail(newEmail);
                 }
             }
 
             if (StringUtils.isNotEmpty(newPassword)) {
-                Base64.Decoder decoder = Base64.getDecoder();
-                String decodedPassword = new String(decoder.decode(newPassword), StandardCharsets.UTF_8);
+                String decodedPassword = new String(Base64.decode(newPassword.getBytes()), StandardCharsets.UTF_8);
 
                 if (decodedPassword.length() >= 6) {
                     String hashedPassword = passwordEncoder.encode(decodedPassword);
                     old.setPassword(hashedPassword);
                 } else {
-                    return "Password length is to small. Min. 6 characters.";
+                    return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Password length is to small. Min. 6 characters.").build();
                 }
             }
 
             old.setLmod(new Date());
             getRepository().save(old);
 
-            return "Updated successfully.";
+            return Response.status(Response.Status.OK).entity("Updated successfully.").build();
         } else {
-            return "Login has been not specified!";
+            return Response.status(Response.Status.BAD_REQUEST).entity("Login has been not specified!").build();
         }
     }
 
@@ -197,8 +218,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
                 return "User with specified login does not exist in system.";
             }
 
-            Base64.Decoder decoder = Base64.getDecoder();
-            String decodedPassword = new String(decoder.decode(password), StandardCharsets.UTF_8);
+            String decodedPassword = new String(Base64.decode(password.getBytes()), StandardCharsets.UTF_8);
 
             if (passwordEncoder.matches(decodedPassword, loginResult.getPassword())) {
                 getRepository().delete(loginResult);
@@ -236,6 +256,17 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
             User user = getRepository().findByLogin(username);
             result = user != null ? passwordEncoder.matches(password, user.getPassword()) : false;
             result = result == true ? isRoleAllowed(user.getUserRole().getName(), rolesSet) : false;
+        }
+
+        return result;
+    }
+
+    private boolean isUserValid(String username, String password) {
+        boolean result = false;
+
+        if (StringUtils.isNotEmpty(username) && StringUtils.isNotBlank(username) && StringUtils.isNotEmpty(password) && StringUtils.isNotBlank(password)) {
+            User user = getRepository().findByLogin(username);
+            result = user != null ? passwordEncoder.matches(password, user.getPassword()) : false;
         }
 
         return result;

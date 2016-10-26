@@ -8,10 +8,13 @@ import pl.bajtas.squaremoose.api.service.UserService;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.util.List;
 
 /**
@@ -21,8 +24,8 @@ import java.util.List;
 @Path("/UserService")
 public class UserController {
 
-    @Autowired
-    UserService userService; // Product service bean for connection between controller and service layers
+    @Autowired UserService userService; // Product service bean for connection between controller and service layers
+    @Context HttpServletRequest request;
 
     public UserService getService() {
         return userService;
@@ -137,8 +140,8 @@ public class UserController {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/update")
-    public String update(User user) {
-        return getService().update(user);
+    public Response update(User user) {
+        return getService().update(user, request);
     }
 
     /*  Add new User to DB

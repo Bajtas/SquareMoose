@@ -13,7 +13,31 @@
         var user  = {
             'login': localStorage.getItem("UserLogin"),
             'email': $scope.formData.email,
-            'password': $scope.formData.newPassowrd
+            'password': $scope.formData.password1
         };
+
+        $http({
+            method: "PUT",
+            data: user,
+            headers: {
+                Authorization: localStorage.getItem("Authorization")
+            },
+            url: $rootScope.apiUrl + 'UserService/update'
+        }).then(function success(response) {
+            if (response.data === 'Logged in successfully!') {
+                $ionicPlatform.ready(function () {
+                    $cordovaToast.show('Logged in successfully!', 'short', 'bottom');
+                });
+
+                modal.hide();
+
+                $rootScope.$broadcast('loggedIn');
+            }
+        }, function error(response) {
+            var alertPopup = $ionicPopup.alert({
+                title: "Problem occured!",
+                template: response.data
+            });
+        });
     };
 })
