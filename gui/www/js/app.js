@@ -5,8 +5,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'])
 
-.run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
+.run(function ($ionicPlatform) {
+    $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (cordova.platformId === "ios" && window.cordova && window.cordova.plugins.Keyboard) {
@@ -21,16 +21,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
-
-        .state('app', {
+      // Menu controller
+     .state('app', {
             url: '/app',
             abstract: true,
             templateUrl: 'templates/menu.html',
             controller: 'AppCtrl'
-        })
-
+    })
+    // Search controller
     .state('app.search', {
         url: '/search',
         views: {
@@ -39,7 +39,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
             }
         }
     })
-
+    // Browser controller
     .state('app.browse', {
         url: '/browse',
         views: {
@@ -48,16 +48,17 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
             }
         }
     })
-        .state('app.refresh', {
-            url: '/productslist',
-            views: {
-                'menuContent': {
-                    templateUrl: 'templates/shop/product/productslist.html',
-                    controller: 'ProductsListCtrl'
-                }
+    // Products list controller
+    .state('app.products-list', {
+        url: '/productslist',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/shop/product/productslist.html',
+                controller: 'ProductsListCtrl'
             }
-        })
-
+        }
+    })
+    // Product controller
     .state('app.product', {
         url: '/product/:productId',
         views: {
@@ -67,7 +68,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
             }
         }
     })
-
+    // Order controller
     .state('app.order', {
         url: '/order',
         views: {
@@ -77,7 +78,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
             }
         }
     })
-
+    // Order summary controller
     .state('app.orderSummary', {
         url: '/order-summary',
         views: {
@@ -87,7 +88,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
             }
         }
     })
-
+    // My account controller
     .state('app.myaccount', {
         url: '/my-account',
         views: {
@@ -98,5 +99,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
         }
     });
 
+    // Default URL to go when URL is not set
     $urlRouterProvider.otherwise('/app/productslist');
 });

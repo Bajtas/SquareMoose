@@ -37,7 +37,9 @@
         if ($scope.auth !== 'undefined') {
             $http({
                 method: "GET",
-                headers: { Authorization : $scope.auth },
+                headers: {
+                    Authorization: $scope.auth
+                },
                 url: $rootScope.apiUrl + 'UserService/user/login/' + $scope.login
             }).then(function success(response) {
                 cartService.hide();
