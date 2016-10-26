@@ -27,7 +27,14 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: dashboardUrl + "/app",
             templateUrl: '../dashboard.html',
             controller: 'DashboardCtrl'
-        });
+        })
+        .state('app', {
+                    url: dashboardUrl + "/app",
+                    templateUrl: '../dashboard.html',
+                    controller: 'DashboardCtrl'
+                })
+
+        ;
 
     $urlRouterProvider.otherwise(dashboardUrl + "/login");
 });

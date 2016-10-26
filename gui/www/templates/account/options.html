@@ -1,0 +1,45 @@
+﻿<ion-view view-title="Options">
+    <ion-content>
+        <ion-list>
+            <div class="card">
+                <div class="item item-text-wrap">
+                    <i class="icon ion-information-circled"></i> You can change email or password here.
+                </div>
+            </div>
+            <form ng-submit="saveChanges()" name="optionsForm">
+                <div class="list">
+                    <div class="item item-divider">
+                        <i class="icon ion-email"></i> Email change
+                    </div>
+                    <label class="item item-input">
+                        <span class="input-label">Email</span>
+                        <input type="email" name="email" ng-model="formData.email">
+                    </label>
+                    <span ng-show="optionsForm.email.$error && optionsForm.email.$dirty" ng-hide="optionsForm.email.$valid">Email address is invalid.</span>
+                    <div class="item item-divider">
+                        <i class="icon ion-locked"></i> Password change
+                    </div>
+                    <label class="item item-input">
+                        <span class="input-label">Old password</span>
+                        <input type="password" name="oldPassword" ng-model="formData.oldPassword">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Password</span>
+                        <input type="password" name="password1" ng-model="formData.password1">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Repeat password</span>
+                        <input type="password" name="password2" ng-model="formData.password2">
+                    </label>
+                    <span ng-show="optionsForm.password1.$dirty && optionsForm.password2.$invalid">Please repeat password.</span>
+                    <div ng-show="optionsForm.password1.$dirty && optionsForm.password2.$dirty && (formData.password1 != formData.password2)">
+                        <span>Password mismatched.</span>
+                    </div>
+                    <label class="item">
+                        <button class="button icon-center ion-paper-airplane button-block button-assertive" type="submit" ng-disabled="optionsForm.$invalid || (formData.password1 != formData.password2) || (formData.oldPassword && !formData.password1 && !formData.password2)"> Save settings</button>
+                    </label>
+                </div>
+            </form>
+        </ion-list>
+    </ion-content>
+</ion-view>

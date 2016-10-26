@@ -1,5 +1,6 @@
 package pl.bajtas.squaremoose.api.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.bajtas.squaremoose.api.service.UserService;
@@ -67,8 +68,14 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
             //Split username and password tokens
             final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-            final String username = tokenizer.nextToken();
-            final String password = tokenizer.nextToken();
+            final String username = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
+            final String password = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
+
+            // Check if token is wrong
+            if (StringUtils.isEmpty(username) || StringUtils.isBlank(username) || StringUtils.isEmpty(password) || StringUtils.isBlank(password)) {
+                requestContext.abortWith(ACCESS_DENIED);
+                return;
+            }
 
             //Verify user access
             if(method.isAnnotationPresent(RolesAllowed.class))

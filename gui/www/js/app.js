@@ -97,7 +97,31 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
                 controller: 'MyAccountCtrl'
             }
         }
-    });
+    })
+    // Account - Options controller
+    .state('app.options', {
+        url: '/options',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/account/options.html',
+                controller: 'OptionsCtrl'
+            }
+        }
+    })
+    // Account - Delivery address controller
+    .state('app.delivery-address', {
+        url: '/delivery-address',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/account/delivery-address.html',
+                controller: 'DeliveryAddressCtrl'
+            }
+        }
+    })
+
+
+
+    ;
 
     // Default URL to go when URL is not set
     $urlRouterProvider.otherwise('/app/productslist');
