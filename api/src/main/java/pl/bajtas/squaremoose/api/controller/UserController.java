@@ -3,6 +3,7 @@ package pl.bajtas.squaremoose.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import pl.bajtas.squaremoose.api.config.AuthenticationFilter;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.service.UserService;
 
@@ -141,7 +142,7 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/update")
     public Response update(User user) {
-        return getService().update(user, request);
+        return getService().update(user, request.getHeader(AuthenticationFilter.AUTHORIZATION_PROPERTY));
     }
 
     /*  Add new User to DB

@@ -18,12 +18,11 @@ import pl.bajtas.squaremoose.api.repository.UserRoleRepository;
 import pl.bajtas.squaremoose.api.util.search.Combiner;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static org.glassfish.jersey.internal.util.Base64.decode;
+import static org.glassfish.jersey.internal.util.Base64.*;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -144,14 +143,12 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     // Update existing
-    public Response update(User newUser, HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-
+    public Response update(User newUser, String authorization)  {
         //Get encoded username and password
         final String encodedUserPassword = authorization.replaceFirst(AuthenticationFilter.AUTHENTICATION_SCHEME + " ", "");
 
         //Decode username and password
-        String usernameAndPassword = new String(decode(encodedUserPassword.getBytes()));
+        String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
 
         //Split username and password tokens
         final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
@@ -254,8 +251,8 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
 
         if (StringUtils.isNotEmpty(username) && StringUtils.isNotBlank(username)) {
             User user = getRepository().findByLogin(username);
-            result = user != null ? passwordEncoder.matches(password, user.getPassword()) : false;
-            result = result == true ? isRoleAllowed(user.getUserRole().getName(), rolesSet) : false;
+            result = user != null && passwordEncoder.matches(password, user.getPassword());
+            result = result && isRoleAllowed(user.getUserRole().getName(), rolesSet);
         }
 
         return result;
@@ -266,7 +263,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
 
         if (StringUtils.isNotEmpty(username) && StringUtils.isNotBlank(username) && StringUtils.isNotEmpty(password) && StringUtils.isNotBlank(password)) {
             User user = getRepository().findByLogin(username);
-            result = user != null ? passwordEncoder.matches(password, user.getPassword()) : false;
+            result = user != null && passwordEncoder.matches(password, user.getPassword());
         }
 
         return result;
