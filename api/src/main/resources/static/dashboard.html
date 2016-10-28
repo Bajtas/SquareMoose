@@ -38,9 +38,17 @@
             </tbody>
         </table>
 
+        <div class="separator"></div>
+
+        <div class="col_10">
+            <h6>Page: {{page + 1}}</h6>
+        </div>
         <div class="col_2">
-            <button class="medium"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous page</button>
-            <h6>Page: {{page+1}}</h6>
+            <h6>TotalPages: {{lastPage + 1}}</h6>
+        </div>
+
+        <div class="col_2">
+            <button class="medium" ng-model="page" ng-click="previousPage()" ng-disabled="page == 0"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous page</button>
         </div>
         <div class="col_2"></div>
         <div class="col_6">
@@ -50,17 +58,12 @@
             <select ng-model="sortDir" ng-options="direction.name for direction in sortDirections" ng-change="sort()">
                 <option value="">-- Sort direction --</option>
             </select>
-            
+            <label for="goToPage">Go to page: </label>
+            <input id="goToPage" type="number" min="1" placeholder="Go to page" ng-model="pageToGo" ng-init="0">
+            <button class="medium" ng-click="toPage()" ng-disabled="pageToGo < 0"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go</button>
         </div>
-        <div class="2">
-            <button class="medium"><i class="fa fa-arrow-right" aria-hidden="true"></i> Next page</button>
+        <div class="col_2">
+            <button class="medium" ng-click="nextPage()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Next page</button>
         </div>
-
-        <ul class="button-bar">
-            <li><a href=""><i class="fa fa-pencil"></i> Edit</a></li>
-            <li><a href=""><i class="fa fa-tag"></i> Tag</a></li>
-            <li><a href=""><i class="fa fa-upload"></i> Upload</a></li>
-            <li><a href=""><i class="fa fa-plus-sign"></i></a></li>
-        </ul>
     </div>
 </div>

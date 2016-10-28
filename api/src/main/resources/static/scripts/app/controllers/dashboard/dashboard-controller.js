@@ -6,6 +6,7 @@ angular.module('SquareMooseControllers')
     $scope.productsList = [];
     $scope.lastPage = 0;
     $scope.page = 0;
+    $scope.pageToGo = 0;
     $scope.error = false;
 
     $scope.init = function() {
@@ -59,6 +60,24 @@ angular.module('SquareMooseControllers')
         else
             localStorage.setItem("sortDir", $scope.sortDir.value);
 
+        $scope.init();
+    };
+
+    $scope.nextPage = function() {
+        $scope.page++;
+        localStorage.setItem("page", $scope.page);
+        $scope.init();
+    };
+
+    $scope.previousPage = function() {
+            $scope.page--;
+            localStorage.setItem("page", $scope.page);
+            $scope.init();
+    };
+
+    $scope.toPage = function() {
+        $scope.page = $scope.pageToGo-1;
+        localStorage.setItem("page", $scope.page);
         $scope.init();
     };
 
