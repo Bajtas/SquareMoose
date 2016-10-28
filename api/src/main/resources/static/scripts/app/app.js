@@ -1,4 +1,4 @@
-var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "SquareMooseControllers"]);
+var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "angularModalService", "SquareMooseControllers"]);
 
 app.run(function($rootScope) {
     $rootScope.hostUrl = 'http://squaremoose.ddns.net:4545';
@@ -28,20 +28,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             templateUrl: '../dashboard.html',
             controller: 'DashboardCtrl'
         })
-        .state('app', {
-                    url: dashboardUrl + "/app",
-                    templateUrl: '../dashboard.html',
-                    controller: 'DashboardCtrl'
-                })
-
-        ;
+        .state('app.products-list', {
+                    url: dashboardUrl + "/products-list",
+                    templateUrl: '../products-list.html',
+                    controller: 'ProductsListCtrl'
+                });
 
     $urlRouterProvider.otherwise(dashboardUrl + "/login");
 });
-
-//    .state('app', {
-//      url: "/app",
-//      template: "test",
-//     abstract: true,
-//      controller: 'AppCtrl'
-//    })

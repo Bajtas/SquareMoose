@@ -1,6 +1,6 @@
 angular.module('SquareMooseControllers')
 
-.controller('LoginCtrl', function($scope, $rootScope, $http, $location, $base64) {
+.controller('LoginCtrl', function($scope, $rootScope, $http, $state, $base64) {
     $scope.loginErr = false;
     $scope.credentials = {};
 
@@ -20,10 +20,10 @@ angular.module('SquareMooseControllers')
                     method: "GET",
                     data: $scope.credentials,
                     headers: config.header,
-                    url: $rootScope.apiUrl + 'UserService/user/' + $scope.credentials.login + '/account'
+                    url: $rootScope.apiUrl + '/UserService/user/' + $scope.credentials.login + '/account'
                 }).then(function success(response) {
                     if (response.data === 'Logged in successfully!') {
-                        $location.path('/configuration/streaming');
+                        $state.go('app');
                     }
                 }, function error(response) {
                     localStorage.setItem("Authorization", "undefined");

@@ -22,8 +22,6 @@ import javax.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static org.glassfish.jersey.internal.util.Base64.*;
-
 /**
  * Created by Bajtas on 04.09.2016.
  */
