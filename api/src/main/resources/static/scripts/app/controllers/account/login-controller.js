@@ -1,7 +1,8 @@
 angular.module('SquareMooseControllers')
 
-.controller('LoginCtrl', function($scope, $rootScope, $http, $state, $base64) {
+.controller('LoginCtrl', function($scope, $rootScope, $http, $state, $base64, $location) {
     $scope.loginErr = false;
+    $scope.stateName = $state.current.name;
     $scope.credentials = {};
 
     $scope.login = function() {

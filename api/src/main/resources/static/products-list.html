@@ -1,8 +1,3 @@
-<ul>
-    <li><a href="app"><i class="fa fa-home" aria-hidden="true"></i> App</a></li>
-    <li><a href="products-list"><i class="fa fa-archive" aria-hidden="true"></i> Products</a></li>
-    <li><a href="contact">Contact</a></li>
-</ul>
 <div class="main">
     <div class="col_12" ng-show="error">
         <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
@@ -31,7 +26,7 @@
                 <td value="{{product.addedOn}}">{{product.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
                 <td value="{{product.addedOn}}">{{product.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
                 <td value="">
-                    <a href="" ng-click="modifyProduct(product.id)"><i class="fa fa-pencil"></i></a>
+                    <a href="#/product-details/{{product.id}}"><i class="fa fa-pencil"></i></a>
                     <a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>
                 </td>
             </tr>
@@ -44,14 +39,16 @@
             <h6>Page: {{page + 1}}</h6>
         </div>
         <div class="col_2">
-            <h6>TotalPages: {{lastPage + 1}}</h6>
+            <h6>TotalPages: {{lastPage - 1}}</h6>
         </div>
 
         <div class="col_2">
             <button class="medium" ng-model="page" ng-click="previousPage()" ng-disabled="page == 0"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous page</button>
         </div>
-        <div class="col_2"></div>
+        <div class="col_2">
+        </div>
         <div class="col_6">
+            <button class="medium" ng-click="addProduct()"><i class="fa fa-plus" aria-hidden="true"></i> Add new</button>
             <select ng-model="sortBy" ng-options="parameter.name for parameter in sortParameters" ng-change="sort()">
                 <option value="">-- Sort by --</option>
             </select>

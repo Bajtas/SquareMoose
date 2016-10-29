@@ -6,6 +6,7 @@ import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.service.CategoryService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -36,6 +37,7 @@ public class CategoryController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/categories")
+    @PermitAll
     public Iterable<Category> getAll() {
         return getService().getAll();
     }

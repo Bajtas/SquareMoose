@@ -2,13 +2,23 @@ package pl.bajtas.squaremoose.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import pl.bajtas.squaremoose.api.domain.ProductImage;
 import pl.bajtas.squaremoose.api.service.ProductImagesService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
  * Created by Bajtas on 03.09.2016.
@@ -98,6 +108,23 @@ public class ProductImagesController {
     @Path("/images/add")
     public String add(ProductImage productImage) {
         return productImagesService.add(productImage); // true for add new
+    }
+
+    @PermitAll
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = "multipart/form-data" ,
+            produces = { "application/json", "application/xml" })
+    public String upload(@RequestParam("file") MultipartFile file) {
+        String response = "ts";
+        try {
+            if (file.isEmpty()) {
+                response ="Failed to store empty file " + file.getOriginalFilename();
+            }
+            Files.copy(file.getInputStream(), Paths.get(file.getOriginalFilename()), REPLACE_EXISTING);
+        } catch (IOException e) {
+            response = "Failed to store file " + file.getOriginalFilename();
+        }
+
+        return response;
     }
 
     //region Description

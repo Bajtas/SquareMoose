@@ -1,0 +1,38 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" data-ng-init="init()" ng-hide="error">
+        <h5>Products stats:</h5>
+        <table class="striped sortable" cellspacing="0" cellpadding="0">
+            <thead>
+            <tr class="alt first last">
+                <th rel="0" value="Id">Id</th>
+                <th rel="1" value="Name">Name<span class="arrow"></span></th>
+                <th rel="2" value="Category">Category</th>
+                <th rel="3" value="Price">Price</th>
+                <th rel="4" value="AddedOn">Added on</th>
+                <th rel="5" value="Lmod">Last mod.</th>
+                <th rel="6" value="Actions">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr class="" ng-repeat="product in productsList track by $index">-->
+                <!--<td value="{{product.id}}">{{product.id}}</td>-->
+                <!--<td value="{{product.name}}">{{product.name}}</td>-->
+                <!--<td value="{{product.category.name}}">{{product.category.name}}</td>-->
+                <!--<td value="{{product.price}}">{{product.price}}</td>-->
+                <!--<td value="{{product.addedOn}}">{{product.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>-->
+                <!--<td value="{{product.addedOn}}">{{product.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>-->
+                <!--<td value="">-->
+                    <!--<a href="" ng-click="modifyProduct(product.id)"><i class="fa fa-pencil"></i></a>-->
+                    <!--<a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>-->
+                <!--</td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+
+        <div class="separator"></div>
+    </div>
+</div>
