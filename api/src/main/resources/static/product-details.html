@@ -18,9 +18,10 @@
                     <input id="text1" type="text" ng-model="product.name">
 
                     <label for="select1">Category:</label>
-                    <select id="select1">
-                        <option value="" ng-selected="noCategoryAssigned"></option>
-                        <option ng-repeat="category in categories track by category.id" value="category.id" ng-selected="product.category.id === category.id">{{category.name}}</option>
+                    <select id="select1"
+                            ng-int="categoryAssigned = categories[0]"
+                            ng-model="categoryAssigned"
+                            ng-options="category.name for category in categories">
                     </select>
 
                     <label for="textarea1">Product description</label>

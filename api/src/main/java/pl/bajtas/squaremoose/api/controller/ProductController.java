@@ -134,6 +134,7 @@ public class ProductController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/product/{id}/update")
+    @PermitAll
     public Response update(@NotNull @PathParam("id") int id, Product product) {
         return productService.update(id, product);
     }

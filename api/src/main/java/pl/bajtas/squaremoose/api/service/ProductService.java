@@ -226,20 +226,28 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
         try {
             Product old = getRepository().findOne(id);
+            old.setDescription(product.getDescription());
+            old.setName(product.getName());
+            old.setPrice(product.getPrice());
+
             if (old != null) {
-                product.setId(id);
-                if (category != null) {
+                if (category.getId() == null) {
                     categoryRepository.save(category);
                 }
+                old.setCategory(category);
                 if (productImages != null) {
                     for (ProductImage image : productImages) {
-                        productImagesRepository.save(image);
+                        if (image.getId() == null) {
+                            image.setAddedOn(new Date());
+                            productImagesRepository.save(image);
+                        }
                     }
+                    old.setImages(productImages);
                 }
 
-                product.setLmod(new Date());
+                old.setLmod(new Date());
 
-                productRepository.save(product);
+                productRepository.save(old);
                 return Response.status(Response.Status.OK).entity("Category with id: " + id + " updated successfully!").build();
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).entity("Category with given id: " + id + " not found!").build();
