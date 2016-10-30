@@ -62,6 +62,7 @@ public class CategoryController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/{id}")
+    @PermitAll
     public Category getById(@NotNull @PathParam("id") Integer id) {
         return getService().getById(id);
     }

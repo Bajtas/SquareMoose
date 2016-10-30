@@ -52,7 +52,10 @@
         </div>
         <div class="col_12">
             <div class="gallery">
-                <a ng-repeat="image in product.images track by image.id" ng-click="showPic(image.id)"><img ng-src="{{image.imageSrc}}" width="100" height="100" /></a>
+                <a ng-repeat="image in product.images track by image.id" ng-click="showPic(image.id)">
+                    <img ng-src="{{image.imageSrc}}" width="100" height="100" />
+                    <div style=""><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
+                </a>
             </div>
         </div>
     </div>

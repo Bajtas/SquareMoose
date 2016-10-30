@@ -1,0 +1,41 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" ng-hide="error">
+        <h5>Category details:</h5>
+        <h6>Id: {{category.id}}</h6>
+
+        <div class="col_4">
+            <div class="separator"></div>
+            <h6>Related products: </h6>
+            <table class="sortable" cellspacing="0" cellpadding="0">
+                <thead><tr class="alt first last">
+                    <th rel="0" value="Name">Id</th>
+                    <th rel="1" value="Number">Name</th>
+                </tr></thead>
+                <tbody>
+                <tr class="" ng-repeat="product in category.products track by $index">
+                    <td value="{{product.id}}">{{product.id}}</td>
+                    <td value="{{product.name}}">{{product.name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col_8">
+            <div class="separator"></div>
+            <div class="notice success" ng-show="showInfo">
+                <i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}
+                <a href="#close" class="icon-remove"></a>
+            </div>
+            <form class="vertical" style="padding-top:20px">
+                <label for="text1">Category name:</label>
+                <input id="text1" type="text" ng-model="category.name">
+                <div class="col_12">
+                    <button type="submit" ng-click="modifyProduct()">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -39,6 +39,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/categories",
             templateUrl: '../categories.html',
             controller: 'CategoriesCtrl'
+        })
+        .state('category-details', {
+                    url: "/category-details/:categoryId",
+                    templateUrl: '../category-details.html',
+                    controller: 'CategoryDetailsCtrl'
         });
 
     $urlRouterProvider.otherwise("/login");
