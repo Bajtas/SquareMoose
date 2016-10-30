@@ -5,14 +5,12 @@ angular.module('SquareMooseControllers')
     $scope.selectedCategory = {};
     $scope.files = [];
     $scope.picsUrls = [];
+    $scope.showInfo = false;
 
     $scope.$on('$viewContentLoaded', function() {
         var productsUrl = $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId;
         var categoriesUrl = $rootScope.apiUrl + '/CategoryService/categories';
         var noPicUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
-
-        if (localStorage.getItem("sortDir") !== null && localStorage.getItem("sortDir") !== 'undefined')
-            productsUrl += '&dir=' + localStorage.getItem("sortDir");
 
         $http.get(productsUrl)
             .then(function(response) {
@@ -73,6 +71,8 @@ angular.module('SquareMooseControllers')
         var apiForPicHost = 'http://uploads.im/api?upload';
 
         $scope.product.category = $scope.categoryAssigned;
+        if ($scope.product.category !== null && $scope.product.category !== undefined)
+            $scope.product.category.products = null;
 
         if ($scope.files.length !== 0) {
             $scope.files.forEach(function(element) {
@@ -96,8 +96,10 @@ angular.module('SquareMooseControllers')
                 },
                 url: $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId + '/update'
             }).then(function success(response) {
-                $location.refresh();
+                $scope.updateInfo = response.data;
+                $scope.showInfo = true;
             }, function error(response) {
+                $scope.showInfo = false;
                 $scope.error = true;
                 $scope.errMsg = response.data;
             });
@@ -123,10 +125,12 @@ angular.module('SquareMooseControllers')
                     },
                     url: $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId + '/update'
                 }).then(function success(response) {
-                    $location.refresh();
+                    $scope.updateInfo = response.data;
+                    $scope.showInfo = true;
                 }, function error(response) {
                     $scope.error = true;
                     $scope.errMsg = response.data;
+                    $scope.showInfo = false;
                 });
             }
         }

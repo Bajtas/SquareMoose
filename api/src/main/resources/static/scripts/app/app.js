@@ -29,11 +29,16 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/products-list",
             templateUrl: '../products-list.html',
             controller: 'ProductsListCtrl'
-       })
+        })
         .state('product-details', {
             url: "/product-details/:productId",
             templateUrl: '../product-details.html',
             controller: 'ProductDetailsCtrl',
+        })
+        .state('categories', {
+            url: "/categories",
+            templateUrl: '../categories.html',
+            controller: 'CategoriesCtrl'
         });
 
     $urlRouterProvider.otherwise("/login");

@@ -13,6 +13,10 @@
             <h6>Id: {{product.id}}</h6>
         </div>
         <div class="col_8">
+            <div class="notice success" ng-show="showInfo">
+                <i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}
+                <a href="#close" class="icon-remove"></a>
+            </div>
             <form class="vertical">
                     <label for="text1">Product Name:</label>
                     <input id="text1" type="text" ng-model="product.name">

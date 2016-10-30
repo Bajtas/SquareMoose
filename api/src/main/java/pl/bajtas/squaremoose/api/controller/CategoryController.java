@@ -1,6 +1,7 @@
 package pl.bajtas.squaremoose.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.service.CategoryService;
@@ -40,6 +41,17 @@ public class CategoryController {
     @PermitAll
     public Iterable<Category> getAll() {
         return getService().getAll();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/categories/page/{number}")
+    @PermitAll
+    public Page<Category> getPage(@PathParam("number") Integer page,
+                                 @QueryParam("size") Integer size,
+                                 @QueryParam("sortBy") String sortBy,
+                                 @QueryParam("dir") String direction) {
+        return getService().getAll(page, size, sortBy, direction);
     }
 
     /* Search by Id
@@ -110,6 +122,7 @@ public class CategoryController {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/category/{id}/delete")
+    @PermitAll
     public Response delete(@NotNull @PathParam("id") Integer id) {
         return getService().delete(id);
     }

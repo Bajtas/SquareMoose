@@ -231,7 +231,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             old.setPrice(product.getPrice());
 
             if (old != null) {
-                if (category.getId() == null) {
+                if (category != null && category.getId() == null) {
                     categoryRepository.save(category);
                 }
                 old.setCategory(category);

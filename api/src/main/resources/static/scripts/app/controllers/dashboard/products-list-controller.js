@@ -93,8 +93,10 @@ angular.module('SquareMooseControllers')
 
     $scope.toPage = function() {
         $scope.page = $scope.pageToGo - 1;
-        localStorage.setItem("page", $scope.page);
-        $scope.init();
+        if ($scope.page > 0 || $scope.page > $scope.lastPage) {
+            localStorage.setItem("page", $scope.page);
+            $scope.init();
+        }
     };
 
     $scope.deleteProduct = function(productId) {
