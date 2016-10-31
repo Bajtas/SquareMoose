@@ -2,13 +2,9 @@ package pl.bajtas.squaremoose.api.config;
 
 import org.apache.log4j.Logger;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.MultipartConfigElement;
 
 @Component
 @EntityScan(basePackages = {"pl.bajtas.squaremoose.api.domain"})
@@ -17,7 +13,7 @@ import javax.servlet.MultipartConfigElement;
 public class AppConfig {
   
   private static final Logger LOG = Logger.getLogger(AppConfig.class);
-  
+
   public AppConfig() {
     LOG.info("AppConfig init");
     LOG.info("Scanning for repositories and domains.");

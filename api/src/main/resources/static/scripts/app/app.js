@@ -35,6 +35,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             templateUrl: '../product-details.html',
             controller: 'ProductDetailsCtrl',
         })
+        .state('product-add', {
+                    url: "/product-add",
+                    templateUrl: '../product-add.html',
+                    controller: 'ProductAddCtrl',
+                })
         .state('categories', {
             url: "/categories",
             templateUrl: '../categories.html',

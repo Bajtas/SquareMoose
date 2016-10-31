@@ -2,7 +2,6 @@ package pl.bajtas.squaremoose.api.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -48,10 +47,6 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
     public ProductRepository getRepository() {
         return productRepository;
-    }
-
-    protected Session getSession() {
-        return sessionFactory.getCurrentSession();
     }
 
     // Events
@@ -169,8 +164,8 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
         int max = (pageSize * (page + 1) > result.size()) ? result.size() : pageSize * (page + 1);
         if (max < pageSize * page)
             return null;
-        Page<Product> pageResult = new PageImpl<>(result.subList(page * pageSize, max), null, result.size());
-        return pageResult;
+
+        return new PageImpl<>(result.subList(page * pageSize, max), null, result.size());
     }
 
     /* --------------------------------------------------------------------------------------------- */
@@ -236,12 +231,10 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
                 }
                 old.setCategory(category);
                 if (productImages != null) {
-                    for (ProductImage image : productImages) {
-                        if (image.getId() == null) {
-                            image.setAddedOn(new Date());
-                            productImagesRepository.save(image);
-                        }
-                    }
+                    productImages.stream().filter(image -> image.getId() == null).forEach(image -> {
+                        image.setAddedOn(new Date());
+                        productImagesRepository.save(image);
+                    });
                     old.setImages(productImages);
                 }
 

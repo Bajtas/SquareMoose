@@ -113,7 +113,7 @@ angular.module('SquareMooseControllers')
         $state.go('');
     };
 
-    $scope.addProduct = function() {
-        $location.path('/add-product');
+    $scope.addNew = function() {
+        $state.go('product-add');
     };
 });

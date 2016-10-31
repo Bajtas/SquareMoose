@@ -154,8 +154,8 @@ public class UserController {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/user/{id}/delete")
-    public String delete(@NotNull @PathParam("id") int id,  User user) {
-        return getService().delete(id, user);
+    public String delete(User user) {
+        return getService().delete(user);
     }
 
     @GET

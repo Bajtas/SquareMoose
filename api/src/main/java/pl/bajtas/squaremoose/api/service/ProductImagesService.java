@@ -141,6 +141,6 @@ public class ProductImagesService implements ApplicationListener<ContextRefreshe
 
     // Other
     private boolean isImageExists(Integer id) {
-        return getRepository().findOne(id) != null ? true : false;
+        return getRepository().findOne(id) != null;
     }
 }

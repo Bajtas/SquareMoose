@@ -13,6 +13,7 @@ import java.util.Properties;
  */
 @Configuration
 public class HibernateConfig {
+
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());

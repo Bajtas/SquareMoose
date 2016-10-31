@@ -1,6 +1,6 @@
 angular.module('SquareMooseControllers')
 
-.controller('ProductDetailsCtrl', function($scope, $rootScope, $http, $state, $base64, $stateParams, $location, Upload) {
+.controller('ProductAddCtrl', function($scope, $rootScope, $http, $state, $base64, $stateParams, $location, Upload) {
     $scope.error = false;
     $scope.selectedCategory = {};
     $scope.files = [];
@@ -8,36 +8,13 @@ angular.module('SquareMooseControllers')
     $scope.showInfo = false;
 
     $scope.$on('$viewContentLoaded', function() {
-        var productsUrl = $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId;
         var categoriesUrl = $rootScope.apiUrl + '/CategoryService/categories';
-        var noPicUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
 
-        $http.get(productsUrl)
-            .then(function(response) {
-                $scope.product = response.data;
-                if ($scope.product.images.length > 0)
-                    $scope.mainImage = $scope.product.images[0].imageSrc;
-
-                if ($scope.mainImage === 'undefined')
-                    $scope.mainImage = noPicUrl;
-            }, function(response) {
-                $scope.error = true;
-                $scope.errMsg = response.data;
-            });
+        $scope.mainImage = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
 
         $http.get(categoriesUrl)
             .then(function(response) {
                 $scope.categories = response.data;
-                if ($scope.product.category !== null) {
-                    for (var i = 0; i < $scope.categories.length; i++) {
-                        if ($scope.categories[i].id === $scope.product.category.id) {
-                            $scope.categoryAssigned = $scope.categories[i];
-                            break;
-                        }
-                    }
-                } else {
-                    $scope.noCategoryAssigned = true;
-                }
             }, function(response) {
                 $scope.error = true;
                 $scope.errMsg = response.data;

@@ -29,9 +29,9 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
     public static final String AUTHORIZATION_PROPERTY = "Authorization";
     public static final String AUTHENTICATION_SCHEME = "Basic";
 
-    public static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
+    private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
             .entity("You cannot access this resource").build();
-    public static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
+    private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
             .entity("Access blocked for all users !!").build();
 
     @Override
@@ -81,13 +81,12 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             if(method.isAnnotationPresent(RolesAllowed.class))
             {
                 RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-                Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
+                Set<String> rolesSet = new HashSet<>(Arrays.asList(rolesAnnotation.value()));
 
                 //Is user valid?
                 if( !userService.isUserAllowed(username, password, rolesSet))
                 {
                     requestContext.abortWith(ACCESS_DENIED);
-                    return;
                 }
             }
         }

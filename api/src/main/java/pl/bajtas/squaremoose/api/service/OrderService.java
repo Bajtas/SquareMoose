@@ -184,9 +184,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
 
     private boolean deliveryTypeNotExist(Integer id) {
         DeliveryType type = deliveryTypeRepository.findOne(id);
-        if (type == null)
-            return true;
-        return false;
+        return type == null;
     }
 
     public Order getByDeliveryAdressId(Integer id) {

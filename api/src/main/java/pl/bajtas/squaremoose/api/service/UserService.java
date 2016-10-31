@@ -197,8 +197,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     // Delete
-    /* TO DO: REMOVE SECOND PARAMETER, CREDENTIALS NEEDS TO BE CHECK THROUGH SPRING SECURITY */
-    public String delete(int id, User user) {
+    public String delete(User user) {
         String login = user.getLogin();
         String email = user.getEmail();
         String password = user.getPassword();

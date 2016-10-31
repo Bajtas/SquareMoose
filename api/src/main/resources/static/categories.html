@@ -46,7 +46,7 @@
                 <option value="">-- Sort direction --</option>
             </select>
             <label for="goToPage">Go to page: </label>
-            <input id="goToPage" type="number" min="1" placeholder="Go to page" ng-model="pageToGo" ng-init="0">
+            <input id="goToPage" type="number" min="1" placeholder="Go to page" ng-model="pageToGo" ng-init="1">
             <button class="medium" ng-click="toPage()" ng-disabled="pageToGo < 0"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go</button>
         </div>
         <div class="col_2">
