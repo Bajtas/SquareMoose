@@ -117,11 +117,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
                 controller: 'DeliveryAddressCtrl'
             }
         }
-    })
-
-
-
-    ;
+    });
 
     // Default URL to go when URL is not set
     $urlRouterProvider.otherwise('/app/productslist');

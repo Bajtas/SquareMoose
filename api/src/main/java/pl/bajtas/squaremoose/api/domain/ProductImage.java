@@ -1,6 +1,7 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class ProductImage {
     private String imageSrc;
     private Date addedOn;
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "images")
+    @JsonIgnore
     private List<Product> products;
 
     public ProductImage(String imageSrc, Date addedOn, List<Product> products) {

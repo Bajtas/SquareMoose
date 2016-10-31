@@ -36,6 +36,7 @@
         $http.get($rootScope.apiUrl + 'ProductService/product/' + $stateParams.productId)
             .then(function (response) {
                 $scope.product = response.data;
+                $scope.prepareData();
                 for (var i = 0; i < $scope.product.images.length; i++) {
                     if (!($scope.product.images[i] instanceof Object)) {
                         $scope.product.images.splice(i, $scope.product.images.length);
@@ -54,6 +55,15 @@
 
     $scope.changePhoto = function ($event) {
         $scope.mainImageSrc = $event.currentTarget.src;
+    };
+
+    $scope.prepareData = function () {
+        for (var i = 0; i < $scope.product.images.length; i++) {
+            if (angular.isObject($scope.product.images[i]))
+                continue;
+
+            $scope.product.images.splice(i, 1);
+        }
     };
     // End of functions
 })

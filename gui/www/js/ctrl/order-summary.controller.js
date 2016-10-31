@@ -37,4 +37,12 @@
         $scope.form.choosenDeliveryType = $rootScope.order.choosenDeliveryType;
         $scope.form.choosenPaymentMethod = $rootScope.order.choosenPaymentMethod;
     });
+
+    $scope.backToShop = function () {
+        $location.path('/app/productslist');
+    };
+
+    $scope.showMyOrders = function () {
+        $location.path('/app/my-orders');
+    };
 })

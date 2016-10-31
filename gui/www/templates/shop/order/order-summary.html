@@ -73,7 +73,10 @@
                 </ion-radio>
             </div>
             <label class="item">
-                <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="(orderForm.choosenDeliveryType.$untouched || orderForm.choosenPaymentMethod.$untouched) && orderForm.$invalid"> Finalize order</button>
+                <button ng-click="backToShop()" class="button icon-center ion-log-in button-block button-assertive"> Back to shop</button>
+            </label>
+            <label class="item">
+                <button ng-click="showMyOrders" class="button icon-center ion-bag button-block button-royal"> Show my orders</button>
             </label>
         </ion-list>
     </ion-content>
