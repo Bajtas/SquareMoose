@@ -23,7 +23,6 @@ import pl.bajtas.squaremoose.api.util.TestPageImpl;
 import pl.bajtas.squaremoose.api.util.TestUtil;
 import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
-import javax.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -188,7 +187,7 @@ public class ProductControllerTest {
         if (name1.compareTo(name2) == 0){
             assertEquals(name1, name2);
         } else {
-            boolean compareResult = name1.compareTo(name2) > 0 ? true : false;
+            boolean compareResult = name1.compareTo(name2) > 0;
             assertTrue(compareResult);
         }
 
@@ -218,7 +217,7 @@ public class ProductControllerTest {
             if (name1.compareToIgnoreCase(name2) == 0){
                 assertEquals(name1, name2);
             } else {
-                boolean compareResult = name1.compareToIgnoreCase(name2) > 0 ? true : false;
+                boolean compareResult = name1.compareToIgnoreCase(name2) > 0;
                 assertFalse(compareResult);
             }
         }
@@ -688,8 +687,8 @@ public class ProductControllerTest {
             Product product = productRepository.findOne(randomId);
             if (product != null) {
                 if (product.getCategory() == null || product.getImages() == null) {
-                    boolean categoryAdded = product.getCategory() == null ? true : false;
-                    boolean imageAdded = product.getImages().size() == 0 ? true : false;
+                    boolean categoryAdded = product.getCategory() == null;
+                    boolean imageAdded = product.getImages().size() == 0;
 
                     Product updatedProduct = new Product("updatedProduct", "updatedDescription", 60.10);
 
@@ -726,7 +725,7 @@ public class ProductControllerTest {
                     product = productRepository.findOne(randomId);
                     assertEquals(product.getName(), "updatedProduct");
                     assertEquals(product.getDescription(), "updatedDescription");
-                    boolean result = product.getPrice() == 60.10 ? true : false;
+                    boolean result = product.getPrice() == 60.10;
                     assertTrue(result);
 
                     assertEquals(out.getBody(), "Product with id: " + randomId + " updated successfully!");

@@ -210,10 +210,6 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
     }
 
     private boolean isUserNotExists(Integer id) {
-        if (id != null) {
-            return userRepository.findOne(id) == null ? true : false;
-        } else {
-            return true;
-        }
+        return id == null || userRepository.findOne(id) == null;
     }
 }

@@ -243,7 +243,7 @@ public class ActualOrderStateControllerTest {
             if (name1.compareToIgnoreCase(name2) == 0) {
                 assertEquals(name1, name2);
             } else {
-                boolean compareResult = name1.compareToIgnoreCase(name2) > 0 ? true : false;
+                boolean compareResult = name1.compareToIgnoreCase(name2) > 0;
                 assertFalse(compareResult);
             }
         }
@@ -473,8 +473,8 @@ public class ActualOrderStateControllerTest {
             ActualOrderState actualOrderState = actualOrderStateRepository.findOne(randomId);
             if (actualOrderState != null) {
                 if (actualOrderState.getOrderState() == null || actualOrderState.getOrderStateHistories().size() == 0) {
-                    boolean orderStateAdded = actualOrderState.getOrderState() == null ? true : false;
-                    boolean historyAdded = actualOrderState.getOrderStateHistories().size() == 0 ? true : false;
+                    boolean orderStateAdded = actualOrderState.getOrderState() == null;
+                    boolean historyAdded = actualOrderState.getOrderStateHistories().size() == 0;
 
                     ActualOrderState updatedActualOrderState = new ActualOrderState("updatedActualState", "updatedDescription");
 

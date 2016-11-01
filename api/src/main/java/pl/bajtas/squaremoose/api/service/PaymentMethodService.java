@@ -121,9 +121,7 @@ public class PaymentMethodService implements GenericService<PaymentMethod, Payme
 
     private boolean isPaymentMethodExists(Integer id) {
         PaymentMethod paymentMethod = getRepository().findOne(id);
-        if (paymentMethod != null)
-            return true;
-        return false;
+        return paymentMethod != null;
     }
 
 }

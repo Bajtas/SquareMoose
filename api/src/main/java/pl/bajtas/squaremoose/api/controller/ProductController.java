@@ -8,7 +8,6 @@ import pl.bajtas.squaremoose.api.domain.Product;
 import pl.bajtas.squaremoose.api.service.ProductService;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

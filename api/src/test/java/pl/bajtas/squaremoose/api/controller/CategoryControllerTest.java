@@ -83,7 +83,7 @@ public class CategoryControllerTest {
         Random ran = new Random();
 
         for (int i = 0; i < categorySize; i++) {
-            int randomId = allCategories.get(ran.nextInt((categorySize - 1 - 0) + 1)).getId();
+            int randomId = allCategories.get(ran.nextInt((categorySize - 1) + 1)).getId();
             ids.add(randomId);
 
             if (i == 5)
@@ -116,7 +116,7 @@ public class CategoryControllerTest {
         Random ran = new Random();
 
         for (int i = 0; i < categorySize; i++) {
-            String randomName = allCategories.get(ran.nextInt((categorySize - 1 - 0) + 1)).getName();
+            String randomName = allCategories.get(ran.nextInt((categorySize - 1) + 1)).getName();
             names.add(randomName);
 
             if (i == 5)
@@ -213,7 +213,7 @@ public class CategoryControllerTest {
         Random ran = new Random();
 
         for (int i = 0; i < categorySize; i++) {
-            int randomId = allCategories.get(ran.nextInt((categorySize - 1 - 0) + 1)).getId();
+            int randomId = allCategories.get(ran.nextInt((categorySize - 1) + 1)).getId();
             ids.add(randomId);
 
             if (i == 5)
@@ -258,7 +258,7 @@ public class CategoryControllerTest {
         Random ran = new Random();
 
         for (int i = 0; i < categorySize; i++) {
-            int randomId = ran.nextInt((15000 - 1 - 0) + 1);
+            int randomId = ran.nextInt((15000 - 1) + 1);
             ids.add(randomId);
 
             if (i == 5)
@@ -322,7 +322,7 @@ public class CategoryControllerTest {
         Random ran = new Random();
 
         for (int i = 0; i < categorySize; i++) {
-            int randomId = ran.nextInt((categorySize - 1 - 0) + 1);
+            int randomId = ran.nextInt((categorySize - 1) + 1);
             ids.add(randomId);
 
             if (i == 5)

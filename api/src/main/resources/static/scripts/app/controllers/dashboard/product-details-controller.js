@@ -6,6 +6,7 @@ angular.module('SquareMooseControllers')
     $scope.files = [];
     $scope.picsUrls = [];
     $scope.showInfo = false;
+    $scope.saveInProgress = false;
 
     $scope.$on('$viewContentLoaded', function() {
         var productsUrl = $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId;
@@ -70,6 +71,7 @@ angular.module('SquareMooseControllers')
     };
 
     $scope.modifyProduct = function() {
+        $scope.saveInProgress = true;
         var apiForPicHost = 'http://uploads.im/api?upload';
 
         $scope.product.category = $scope.categoryAssigned;
@@ -100,10 +102,12 @@ angular.module('SquareMooseControllers')
             }).then(function success(response) {
                 $scope.updateInfo = response.data;
                 $scope.showInfo = true;
+                $scope.saveInProgress = false;
             }, function error(response) {
                 $scope.showInfo = false;
                 $scope.error = true;
                 $scope.errMsg = response.data;
+                $scope.saveInProgress = false;
             });
         }
 
@@ -130,17 +134,19 @@ angular.module('SquareMooseControllers')
                     $scope.updateInfo = response.data;
                     $scope.showInfo = true;
                     $scope.$emit('$viewContentLoaded');
+                    $scope.saveInProgress = false;
                 }, function error(response) {
                     $scope.error = true;
                     $scope.errMsg = response.data;
                     $scope.showInfo = false;
+                    $scope.saveInProgress = false;
                 });
             }
         }
     }, true);
 
-    $scope.delPic = function (imageId) {
-        for (var i=0;i<$scope.product.images.length;i++) {
+    $scope.delPic = function(imageId) {
+        for (var i = 0; i < $scope.product.images.length; i++) {
             if ($scope.product.images[i].id === imageId) {
                 $scope.product.images.splice(i, 1);
                 break;

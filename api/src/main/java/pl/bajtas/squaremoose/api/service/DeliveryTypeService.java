@@ -124,8 +124,6 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
 
     private boolean isDeliveryTypeExists(Integer id) {
         DeliveryType deliveryType = deliveryTypeRepository.findOne(id);
-        if (deliveryType != null)
-            return true;
-        return false;
+        return deliveryType != null;
     }
 }

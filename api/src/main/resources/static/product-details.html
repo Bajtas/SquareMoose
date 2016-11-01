@@ -3,7 +3,10 @@
         <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
         <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
     </div>
-    <div class="col_12" ng-hide="error">
+    <div class="col_12" ng-show="saveInProgress">
+        <span us-spinner="{radius:30, width:8, length: 16}"></span>
+    </div>
+    <div class="col_12" ng-hide="error || saveInProgress">
         <h5>Product details:</h5>
         <div class="separator"></div>
         <div class="col_4">
@@ -18,8 +21,8 @@
                 <a href="#close" class="icon-remove"></a>
             </div>
             <form class="vertical">
-                    <label for="text1">Product Name:</label>
-                    <input id="text1" type="text" ng-model="product.name">
+                    <label for="name">Product Name:</label>
+                    <input id="name" type="text" ng-model="product.name">
 
                     <label for="select1">Category:</label>
                     <select id="select1"
@@ -32,8 +35,8 @@
                     <textarea id="textarea1" placeholder="Product description" ng-model="product.description"></textarea>
 
                 <div class="col_2">
-                    <label for="text1">Price:</label>
-                    <input id="text1" type="number" ng-model="product.price" min="0">
+                    <label for="price">Price:</label>
+                    <input id="price" type="number" ng-model="product.price" min="0">
                 </div>
                 <div class="col_10"></div>
                 <div class="col_12">
@@ -54,7 +57,7 @@
             <input type="checkbox" id="check1" ng-model="deleteImages"/>
             <label for="check1" class="inline">Delete images</label>
             <div class="gallery">
-                <a ng-repeat="image in product.images track by image.id" ng-click="showPic(image.id)">
+                <a ng-repeat="image in product.images track by $index" ng-click="showPic(image.id)">
                     <img ng-src="{{image.imageSrc}}" width="100" height="100" />
                    <i style="position: relative; top: -65px; left:40px; font-size:30px;"class="fa fa-minus-circle" aria-hidden="true" ng-show="deleteImages" ng-click="delPic(image.id)"></i>
                 </a>

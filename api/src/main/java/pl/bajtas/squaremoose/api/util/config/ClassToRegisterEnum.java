@@ -6,12 +6,12 @@ public enum ClassToRegisterEnum {
 
     private final String value;
 
-    private ClassToRegisterEnum(String s) {
+    ClassToRegisterEnum(String s) {
         value = s;
     }
 
     public boolean equalsName(String otherName) {
-        return (otherName == null) ? false : value.equals(otherName);
+        return otherName != null && value.equals(otherName);
     }
 
     public String toString() {
@@ -19,9 +19,7 @@ public enum ClassToRegisterEnum {
     }
 
     public boolean contains(String str) {
-        if (value.contains(str))
-            return true;
+        return value.contains(str);
 
-        return false;
     }
 }

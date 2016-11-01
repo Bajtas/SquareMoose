@@ -21,7 +21,6 @@ public class PaymentMethod {
     private String name;
 
     @OneToMany(mappedBy = "paymentMethod", fetch = FetchType.EAGER)
-    //@JsonBackReference
     private List<Order> orders;
 
     public Integer getId() {

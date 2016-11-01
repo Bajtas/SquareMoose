@@ -11,5 +11,5 @@ public interface CategoryRepository extends CrudRepository<Category, Integer>{
     Iterable<Category> findByNameContainsIgnoreCase(String name);
     Page<Category> findAll(Pageable pageable);
 
-    Long deleteByName(String name);
+    void deleteByName(String name);
 }

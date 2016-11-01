@@ -1,7 +1,6 @@
 package pl.bajtas.squaremoose.api.util;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,7 +15,7 @@ public class CustomSortDeserializer extends JsonDeserializer<Sort> {
 
     @Override
     public Sort deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+            throws IOException {
         ArrayNode node = jp.getCodec().readTree(jp);
         Order[] orders = new Order[node.size()];
         int i = 0;
@@ -24,7 +23,6 @@ public class CustomSortDeserializer extends JsonDeserializer<Sort> {
             orders[i] = new Order(Direction.valueOf(obj.get("direction").asText()), obj.get("property").asText());
             i++;
         }
-        Sort sort = new Sort(orders);
-        return sort;
+        return new Sort(orders);
     }
 }

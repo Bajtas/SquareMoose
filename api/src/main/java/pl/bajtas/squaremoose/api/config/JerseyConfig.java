@@ -14,7 +14,7 @@ public class JerseyConfig extends ResourceConfig {
   private static final Logger LOG = Logger.getLogger(JerseyConfig.class);
 
   public JerseyConfig() {
-    LOG.info("Jersey initializization.");
+    LOG.info("Jersey initialization.");
 
     ClassToRegisterEnum[] packages =
         {ClassToRegisterEnum.CONTROLLER_CLASS_PACKAGE, ClassToRegisterEnum.SERVICE_CLASS_PACKAGE};

@@ -1,4 +1,5 @@
-var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "SquareMooseControllers", "ngFileUpload"]);
+var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "SquareMooseControllers",
+                        "ngFileUpload", "angularSpinner"]);
 
 app.run(function($rootScope) {
     $rootScope.hostUrl = 'http://squaremoose.ddns.net:4545';

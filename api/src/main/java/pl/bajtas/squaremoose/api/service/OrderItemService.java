@@ -160,16 +160,12 @@ public class OrderItemService implements GenericService<OrderItem, OrderItemRepo
 
     private boolean isOrderItemExists(int id) {
         OrderItem orderItem = orderItemRepository.findOne(id);
-        if (orderItem != null)
-            return true;
-        return false;
+        return orderItem != null;
     }
 
     private boolean isOrderExists(int id) {
         Order order = orderRepository.findOne(id);
-        if (order != null)
-            return true;
-        return false;
+        return order != null;
     }
 
 }
