@@ -101,7 +101,6 @@
             .then(function (response) {
                 $scope.productsList = response.data.content;
                 $scope.lastPage = response.data.totalPages;
-                $scope.prepareData();
             }, function (response) {
                 alertsService.showDefaultAlert(response.data)
             });
@@ -173,19 +172,6 @@
         if ($scope.page === $scope.lastPage)
             return false;
         return true;
-    };
-
-    $scope.prepareData = function () {
-        for (var i = 0; i < $scope.productsList.length; i++) {
-            if ($scope.productsList[i].images === undefined || $scope.productsList[i].images === null)
-                continue;
-            for (var j = 0; j < $scope.productsList[i].images.length; j++) {
-                if (angular.isObject($scope.productsList[i].images[j]))
-                    continue;
-
-                $scope.productsList[i].images.splice(i, 1);
-            }
-        }
     };
     // End of functions
 })

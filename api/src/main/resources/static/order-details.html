@@ -1,0 +1,186 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" ng-show="saveInProgress || loadingInProgress">
+        <span us-spinner="{radius:30, width:8, length: 16}"></span>
+    </div>
+    <div class="col_12" ng-hide="error || saveInProgress">
+        <h5>Order details:</h5>
+        <div class="separator"></div>
+        <div class="col_4">
+            <table class="striped sortable" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr class="alt first last">
+                        <th rel="0" value="Ordered by"><i class="fa fa-user" aria-hidden="true"></i> Ordered by</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="first">
+                        <td value="Login"><b>Login</b>: {{order.user.login}}</td>
+                    </tr>
+                    <tr class="alt">
+                        <td value="Email"><b>Email</b>: {{order.user.email}}</td>
+                    </tr>
+                    <tr>
+                        <td value="Registered on"><b>Registered on</b>: {{order.user.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
+                    </tr>
+                    <tr class="alt last">
+                        <td value="Gretty"><b>Currently online</b>:
+                            <i class="fa fa-check" aria-hidden="true" ng-show="order.user.online"></i>
+                            <i class="fa fa-times" aria-hidden="true" ng-show="!order.user.online"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="separator"></div>
+
+            <table class="striped sortable" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr class="alt first last">
+                        <th rel="0" value="Ordered by"><i class="fa fa-map-marker" aria-hidden="true"></i> Delivery address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="first">
+                        <td value="Name and surname"><b>Name and surname</b>: {{order.deliveryAdress.name}} {{order.deliveryAdress.surname}}</td>
+                    </tr>
+                    <tr class="alt">
+                        <td value="Address"><b>Address</b>: {{order.deliveryAdress.address}}</td>
+                    </tr>
+                    <tr>
+                        <td value="Town on"><b>Town</b>: {{order.deliveryAdress.town}}</td>
+                    </tr>
+                    <tr class="alt">
+                        <td value="Address"><b>Zip code</b>: {{order.deliveryAdress.zipCode}}</td>
+                    </tr>
+                    <tr>
+                        <td value="Contact phone"><b>Contact phone</b>: {{order.deliveryAdress.contactPhone}}</td>
+                    </tr>
+                    <tr>
+                        <td value="Show on map">
+                            <button class="medium green"><i class="fa fa-map" aria-hidden="true"></i> Show on map</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <div id="gmap_canvas" style="height:400px;width:520px;"></div>
+                <style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
+            </div>
+            <script type='text/javascript'>
+                    function init_map() {
+                    var myOptions = {
+                        zoom: 12,
+                        center: new google.maps.LatLng(49.9370052753317, 22.00884391250609),
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
+                    marker = new google.maps.Marker({
+                        map: map,
+                        position: new google.maps.LatLng(49.9370052753317, 22.00884391250609)
+                    });
+                    infowindow = new google.maps.InfoWindow({
+                        content: '<strong></strong><br><br> Tyczyn<br>'
+                    });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        infowindow.open(map, marker);
+                    });
+                    infowindow.open(map, marker);
+                }
+                google.maps.event.addDomListener(window, 'load', init_map);
+        </script>
+        </div>
+        <div class="col_6">
+            <h6>Ordered items: </h6>
+            <table class="striped sortable" cellspacing="0" cellpadding="0">
+                <thead>
+                    <tr class="alt first last">
+                        <th rel="0" value="Id">Lp.<span class="arrow"></span></th>
+                        <th rel="1" value="Name">Name</th>
+                        <th rel="2" value="Category">Category</th>
+                        <th rel="3" value="Price">Price</th>
+                        <th rel="4" value="Quantity">Quantity</th>
+                        <th rel="5" value="Quantity">Total</th>
+                        <th rel="6" value="Actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="" ng-repeat="item in order.orderItems track by $index">
+                        <td value="Lp">{{$index + 1}}</td>
+                        <td value="{{item.product.name}}">
+                            <a href="#/product-details/{{item.product.id}}">{{item.product.name}}</a>
+                        </td>
+                        <td value="{{item.product.category.name}}">{{item.product.category.name}}</td>
+                        <td value="{{item.product.category.name}}">{{item.product.price}}</td>
+                        <td value="{{item.amount}}">{{item.amount}}</td>
+                        <td value="Total">{{item.amount * item.product.price}}</td>
+                        <td value="">
+                            <a href="#/order-details/{{order.id}}"><i class="fa fa-pencil"></i></a>
+                            <a href="" ng-click="deleteOrderItem(item.id)"><i class="fa fa-minus-square"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h6>Sum up: </h6>
+            <p><b>&nbsp;&nbsp;&nbsp;Items amount</b>: {{order.itemsAmount}}</p>
+            <p><b>&nbsp;&nbsp;&nbsp;Total price:</b> {{order.fullPrice}}</p>
+        </div>
+        <div class="col_12">
+            <div class="separator"></div>
+            <p>Created on: {{order.addedOn | date:'MM/dd/yyyy @ h:mma'}}</p>
+            <p>Last status update mod.: {{order.lmod | date:'MM/dd/yyyy @ h:mma'}}</p>
+        </div>
+
+        <!--<div class="col_8">-->
+            <!--<div class="notice success" ng-show="showInfo">-->
+                <!--<i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}-->
+                <!--<a href="#close" class="icon-remove"></a>-->
+            <!--</div>-->
+            <!--<form class="vertical">-->
+                <!--<label for="name">Product Name:</label>-->
+                <!--<input id="name" type="text" ng-model="product.name">-->
+
+                <!--<label for="select1">Category:</label>-->
+                <!--<select id="select1"-->
+                        <!--ng-int="categoryAssigned = categories[0]"-->
+                        <!--ng-model="categoryAssigned"-->
+                        <!--ng-options="category.name for category in categories">-->
+                <!--</select>-->
+
+                <!--<label for="textarea1">Product description</label>-->
+                <!--<textarea id="textarea1" placeholder="Product description" ng-model="product.description"></textarea>-->
+
+                <!--<div class="col_2">-->
+                    <!--<label for="price">Price:</label>-->
+                    <!--<input id="price" type="number" ng-model="product.price" min="0">-->
+                <!--</div>-->
+                <!--<div class="col_10"></div>-->
+                <!--<div class="col_12">-->
+                    <!--<label for="file1">Upload images:</label>-->
+                    <!--<input id="file1" type="file" class="file" ngf-select="onFileSelect($files)" multiple>-->
+                <!--</div>-->
+                <!--<div class="col_12">-->
+                    <!--<button type="submit" ng-click="modifyProduct()">Save changes</button>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+
+        <!--<div class="col_10">-->
+            <!--<div class="separator"></div>-->
+            <!--<h6>Product galery: </h6>-->
+        <!--</div>-->
+        <!--<div class="col_12">-->
+            <!--<input type="checkbox" id="check1" ng-model="deleteImages"/>-->
+            <!--<label for="check1" class="inline">Delete images</label>-->
+            <!--<div class="gallery">-->
+                <!--<a ng-repeat="image in product.images track by $index" ng-click="showPic(image.id)">-->
+                    <!--<img ng-src="{{image.imageSrc}}" width="100" height="100" />-->
+                    <!--<i class="fa fa-minus-circle removePic" aria-hidden="true" ng-show="deleteImages" ng-click="delPic(image.id)"></i>-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>

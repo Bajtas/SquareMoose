@@ -30,8 +30,8 @@
                 <td value="{{order.addedOn}}">{{order.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
                 <td value="{{order.lmod}}">{{order.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
                 <td value="">
-                    <a href="#/product-details/{{product.id}}"><i class="fa fa-pencil"></i></a>
-                    <a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>
+                    <a href="#/order-details/{{order.id}}"><i class="fa fa-pencil"></i></a>
+                    <a href="" ng-click="deleteOrder(order.id)"><i class="fa fa-minus-square"></i></a>
                 </td>
             </tr>
             </tbody>

@@ -23,8 +23,7 @@ public class Product {
     @JsonIgnore
     private List<OrderItem> orderItems;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "btimage", joinColumns = {
-            @JoinColumn(name = "product_id", nullable = false)},
+    @JoinTable(name = "btimage", joinColumns = {@JoinColumn(name = "product_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "image_id", nullable = false)})
     private List<ProductImage> images;
     private String name;

@@ -1,5 +1,5 @@
 var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "SquareMooseControllers",
-    "ngFileUpload", "angularSpinner"
+    "ngFileUpload", "angularSpinner", "angularSlideables"
 ]);
 
 app.run(function($rootScope) {
@@ -56,7 +56,12 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/orders",
             templateUrl: '../orders.html',
             controller: 'OrdersCtrl'
-        });
+        })
+        .state('order-details', {
+                    url: "/order-details/:orderId",
+                    templateUrl: '../order-details.html',
+                    controller: 'OrderDetailsCtrl'
+         });
 
     $urlRouterProvider.otherwise("/login");
 });

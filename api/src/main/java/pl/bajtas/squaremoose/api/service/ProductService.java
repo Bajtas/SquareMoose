@@ -87,7 +87,7 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
     @Transactional
     public Product getById(int id) {
-        return getRepository().findOne(id);
+        return getRepository().findDistinctById(id);
     }
 
     @Transactional
@@ -205,7 +205,9 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             }
             product.setCategory(category);
             product.setImages(productImages);
-            
+            product.setAddedOn(new Date());
+            product.setLmod(new Date());
+
             productRepository.save(product);
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();

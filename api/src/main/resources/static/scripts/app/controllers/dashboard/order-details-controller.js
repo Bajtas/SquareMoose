@@ -1,6 +1,6 @@
 angular.module('SquareMooseControllers')
 
-.controller('ProductDetailsCtrl', function($scope, $rootScope, $http, $state, $base64, $stateParams, $location, Upload) {
+.controller('OrderDetailsCtrl', function($scope, $rootScope, $http, $state, $base64, $stateParams, $location, Upload) {
     $scope.error = false;
     $scope.selectedCategory = {};
     $scope.files = [];
@@ -10,38 +10,13 @@ angular.module('SquareMooseControllers')
     $scope.loadingInProgress = true;
 
     $scope.$on('$viewContentLoaded', function() {
-        var productsUrl = $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId;
+        var orderUrl = $rootScope.apiUrl + '/OrderService/order/' + $stateParams.orderId;
         var categoriesUrl = $rootScope.apiUrl + '/CategoryService/categories';
-        var noPicUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
 
-        $http.get(productsUrl)
+        $http.get(orderUrl)
             .then(function(response) {
-                $scope.product = JSOG.decode(response.data);
-                if ($scope.product.images.length > 0)
-                    $scope.mainImage = $scope.product.images[0].imageSrc;
-
-                if ($scope.mainImage === 'undefined')
-                    $scope.mainImage = noPicUrl;
+                $scope.order = JSOG.decode(response.data);
                 $scope.loadingInProgress = false;
-            }, function(response) {
-                $scope.error = true;
-                $scope.errMsg = response.data;
-                $scope.loadingInProgress = false;
-            });
-
-        $http.get(categoriesUrl)
-            .then(function(response) {
-                $scope.categories = JSOG.decode(response.data);
-                if ($scope.product.category !== null) {
-                    for (var i = 0; i < $scope.categories.length; i++) {
-                        if ($scope.categories[i].id === $scope.product.category.id) {
-                            $scope.categoryAssigned = $scope.categories[i];
-                            break;
-                        }
-                    }
-                } else {
-                    $scope.noCategoryAssigned = true;
-                }
             }, function(response) {
                 $scope.error = true;
                 $scope.errMsg = response.data;

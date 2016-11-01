@@ -14,6 +14,7 @@ import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -53,7 +54,10 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
 
     @Override
     public Order getById(int id) {
-        return getRepository().findOne(id);
+        Order order = getRepository().findDistinctById(id);
+        List<OrderItem> distinctOrderItems = order.getOrderItems().stream().distinct().collect(Collectors.toList());
+        order.setOrderItems(distinctOrderItems);
+        return order;
     }
 
     public Order getByUserId(Integer id) {

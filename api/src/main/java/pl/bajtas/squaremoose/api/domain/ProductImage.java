@@ -24,7 +24,6 @@ public class ProductImage {
     private String imageSrc;
     private Date addedOn;
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "images")
-    @JsonIgnore
     private List<Product> products;
 
     public ProductImage(String imageSrc, Date addedOn, List<Product> products) {

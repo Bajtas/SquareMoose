@@ -19,4 +19,6 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Order findByDeliveryAdress_Id(int id);
     Order findByDeliveryType_Id(int id);
     List<Order> findByPaymentMethod_Id(int id);
+
+    Order findDistinctById(int id);
 }

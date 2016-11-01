@@ -54,6 +54,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     Page<Product> findByPriceGreaterThanEqual(double price1, Pageable page);
     Page<Product> findByPriceLessThanEqual(double price2, Pageable page);
 
+    Product findDistinctById(int id);
+
 //    @Query("from Product a where a.category.id=:categoryid")
 //    List<Product> findByCategoryId(@Param("categoryid") Integer categoryId);
 }
