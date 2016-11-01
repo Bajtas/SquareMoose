@@ -5,35 +5,39 @@
     </div>
     <div class="col_12" data-ng-init="init()" ng-hide="error">
         <h5>Orders:</h5>
-        <!--<table class="striped sortable" cellspacing="0" cellpadding="0">-->
-            <!--<thead>-->
-            <!--<tr class="alt first last">-->
-                <!--<th rel="0" value="Id">Id</th>-->
-                <!--<th rel="1" value="Name">Name<span class="arrow"></span></th>-->
-                <!--<th rel="2" value="Category">Category</th>-->
-                <!--<th rel="3" value="Price">Price</th>-->
-                <!--<th rel="4" value="AddedOn">Added on</th>-->
-                <!--<th rel="5" value="Lmod">Last mod.</th>-->
-                <!--<th rel="6" value="Actions">Actions</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-            <!--<tr class="" ng-repeat="product in productsList track by $index">-->
-                <!--<td value="{{product.id}}">{{product.id}}</td>-->
-                <!--<td value="{{product.name}}">{{product.name}}</td>-->
-                <!--<td value="{{product.category.name}}">{{product.category.name}}</td>-->
-                <!--<td value="{{product.price}}">{{product.price}}</td>-->
-                <!--<td value="{{product.addedOn}}">{{product.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>-->
-                <!--<td value="{{product.addedOn}}">{{product.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>-->
-                <!--<td value="">-->
-                    <!--<a href="#/product-details/{{product.id}}"><i class="fa fa-pencil"></i></a>-->
-                    <!--<a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>-->
-                <!--</td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
+        <table class="striped sortable" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr class="alt first last">
+                    <th rel="0" value="Id">Id</th>
+                    <th rel="1" value="Name">Name<span class="arrow"></span></th>
+                    <th rel="2" value="Delivery type">Delivery type</th>
+                    <th rel="3" value="Payment method">Payment method</th>
+                    <th rel="4" value="AddedOn">Added on</th>
+                    <th rel="5" value="Lmod">Last mod.</th>
+                    <th rel="6" value="Actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr class="" ng-repeat="order in ordersList track by $index">
+                <td value="{{order.id}}">{{order.id}}</td>
+                <td value="{{order.orderItems.id}}">
+                    <p ng-repeat="item in order.orderItems track by $index">
+                        {{$index+1}}. {{item.product.name}} - quantity:  {{item.amount}}
+                    </p>
+                </td>
+                <td value="{{order.deliveryType.name}}">{{order.deliveryType.name}}</td>
+                <td value="{{order.paymentMethod.name}}">{{order.paymentMethod.name}}</td>
+                <td value="{{order.addedOn}}">{{order.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
+                <td value="{{order.lmod}}">{{order.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
+                <td value="">
+                    <a href="#/product-details/{{product.id}}"><i class="fa fa-pencil"></i></a>
+                    <a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-        <!--<div class="separator"></div>-->
+        <div class="separator"></div>
 
         <!--<div class="col_10">-->
             <!--<h6>Page: {{page + 1}}</h6>-->

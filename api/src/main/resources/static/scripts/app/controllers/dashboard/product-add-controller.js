@@ -6,6 +6,9 @@ angular.module('SquareMooseControllers')
     $scope.files = [];
     $scope.picsUrls = [];
     $scope.showInfo = false;
+    $scope.product = {
+        images: []
+    };
 
     $scope.$on('$viewContentLoaded', function() {
         var categoriesUrl = $rootScope.apiUrl + '/CategoryService/categories';
@@ -46,7 +49,7 @@ angular.module('SquareMooseControllers')
         }
     };
 
-    $scope.modifyProduct = function() {
+    $scope.addProduct = function() {
         var apiForPicHost = 'http://uploads.im/api?upload';
 
         $scope.product.category = $scope.categoryAssigned;
@@ -73,7 +76,7 @@ angular.module('SquareMooseControllers')
                 headers: {
                     "Authorization": localStorage.getItem("Authorization")
                 },
-                url: $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId + '/update'
+                url: $rootScope.apiUrl + '/ProductService/product/add'
             }).then(function success(response) {
                 $scope.updateInfo = response.data;
                 $scope.showInfo = true;
@@ -97,12 +100,12 @@ angular.module('SquareMooseControllers')
                 });
 
                 $http({
-                    method: "PUT",
+                    method: "POST",
                     data: $scope.product,
                     headers: {
                         "Authorization": localStorage.getItem("Authorization")
                     },
-                    url: $rootScope.apiUrl + '/ProductService/product/' + $stateParams.productId + '/update'
+                    url: $rootScope.apiUrl + '/ProductService/product/add'
                 }).then(function success(response) {
                     $scope.updateInfo = response.data;
                     $scope.showInfo = true;

@@ -38,7 +38,7 @@ angular.module('SquareMooseControllers')
 
         $http.get(categoriesUrl)
             .then(function(response) {
-                $scope.categoriesList = response.data.content;
+                $scope.categoriesList = JSOG.decode(response.data.content);
                 $scope.lastPage = response.data.totalPages;
             }, function(response) {
                 $scope.error = true;

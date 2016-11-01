@@ -2,6 +2,7 @@ package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Bajtas on 18.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = OrderState.class)
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @Table(name = "btorderstate")
 public class OrderState {
     @Id

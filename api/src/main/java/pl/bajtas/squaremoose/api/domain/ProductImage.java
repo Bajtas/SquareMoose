@@ -3,6 +3,7 @@ package pl.bajtas.squaremoose.api.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope = ProductImage.class)
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @Table(name = "btproductimage")
 public class ProductImage {
 

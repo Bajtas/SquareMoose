@@ -199,10 +199,13 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
             }
             if (productImages != null) {
                 for (ProductImage image : productImages) {
+                    image.setAddedOn(new Date());
                     productImagesRepository.save(image);
                 }
             }
-
+            product.setCategory(category);
+            product.setImages(productImages);
+            
             productRepository.save(product);
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();

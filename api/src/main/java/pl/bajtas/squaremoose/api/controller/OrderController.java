@@ -38,6 +38,7 @@ public class OrderController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/orders/page/{number}")
+    @PermitAll
     public Page<Order> getPage(@PathParam("number") Integer page,
                                  @QueryParam("size") Integer size,
                                  @QueryParam("sortBy") String sortBy,

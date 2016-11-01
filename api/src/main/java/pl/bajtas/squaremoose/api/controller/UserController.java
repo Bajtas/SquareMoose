@@ -70,6 +70,7 @@ public class UserController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/users/page/{number}")
+    @PermitAll
     public Page<User> getPage(@PathParam("number") Integer page,
                               @QueryParam("size") Integer size,
                               @QueryParam("sortBy") String sortBy,

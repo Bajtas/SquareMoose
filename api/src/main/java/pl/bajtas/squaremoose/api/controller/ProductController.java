@@ -125,6 +125,7 @@ public class ProductController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/product/add")
+    @PermitAll
     public Response add(Product product) {
         return productService.add(product);
     }

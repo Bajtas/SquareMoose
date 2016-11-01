@@ -50,7 +50,7 @@ angular.module('SquareMooseControllers')
 
         $http.get(productsUrl)
             .then(function(response) {
-                $scope.productsList = response.data.content;
+                $scope.productsList = JSOG.decode(response.data.content);
                 $scope.lastPage = response.data.totalPages;
             }, function(response) {
                 $scope.error = true;
