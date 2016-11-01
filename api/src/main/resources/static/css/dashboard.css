@@ -56,3 +56,10 @@ li a:hover {
     left: 75px;
     font-size: 25px;
 }
+
+.removePic {
+position: relative;
+top: -65px;
+left:40px;
+font-size:30px;
+}

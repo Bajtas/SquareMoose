@@ -140,6 +140,7 @@ public class CategoryController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/stats")
+    @PermitAll
     public List<CategoryStats> getCategoryStats(@QueryParam("byId") boolean byId, @QueryParam("byName") boolean byName) throws Exception {
         return getService().getCategoryStats(byId, byName);
     }

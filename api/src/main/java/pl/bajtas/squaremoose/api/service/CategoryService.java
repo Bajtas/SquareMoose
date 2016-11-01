@@ -168,37 +168,6 @@ public class CategoryService implements GenericService<Category, CategoryReposit
         }
     }
 
-    public String deleteByIdOrName(Integer id, String name) {
-        LOG.info("Trying to delete Category.");
-        String info = "Deleted successfully!";
-
-        if (id == null && name == null) {
-            LOG.warn("Id and Name for Category to delete has not been specified!");
-
-            return "Please specify Id or Name of Category to delete it.";
-        } else if (id != null) {
-            LOG.info("Category with id: " + id + " will be deleted.");
-
-            try {
-                getRepository().delete(id);
-            } catch (Exception e) {
-                LOG.error("Category with id: " + id, e);
-                info = "Error occured!";
-            }
-        } else if (name != null) {
-            LOG.info("Category with name: " + name + " will be deleted.");
-
-            try {
-                getRepository().deleteByName(name);
-            } catch (Exception e) {
-                LOG.error("Category with name: " + name, e);
-                info = "Error occured!";
-            }
-        }
-
-        return info;
-    }
-
     /* Util method, to check if Category with given Id exist. */
     private boolean isCategoryExists(Integer id) {
         return id != null && getRepository().findOne(id) != null;

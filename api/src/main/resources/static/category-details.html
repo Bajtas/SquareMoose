@@ -16,9 +16,11 @@
                     <th rel="1" value="Number">Name</th>
                 </tr></thead>
                 <tbody>
-                <tr class="" ng-repeat="product in category.products track by $index">
+                <tr class="" ng-repeat="product in relatedProducts track by $index">
                     <td value="{{product.id}}">{{product.id}}</td>
-                    <td value="{{product.name}}">{{product.name}}</td>
+                    <td value="{{product.name}}">
+                        <a href="#/product-details/{{product.id}}">{{product.name}}</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

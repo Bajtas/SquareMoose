@@ -1,5 +1,6 @@
 var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "SquareMooseControllers",
-                        "ngFileUpload", "angularSpinner"]);
+    "ngFileUpload", "angularSpinner"
+]);
 
 app.run(function($rootScope) {
     $rootScope.hostUrl = 'http://squaremoose.ddns.net:4545';
@@ -37,19 +38,24 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'ProductDetailsCtrl',
         })
         .state('product-add', {
-                    url: "/product-add",
-                    templateUrl: '../product-add.html',
-                    controller: 'ProductAddCtrl',
-                })
+            url: "/product-add",
+            templateUrl: '../product-add.html',
+            controller: 'ProductAddCtrl',
+        })
         .state('categories', {
             url: "/categories",
             templateUrl: '../categories.html',
             controller: 'CategoriesCtrl'
         })
         .state('category-details', {
-                    url: "/category-details/:categoryId",
-                    templateUrl: '../category-details.html',
-                    controller: 'CategoryDetailsCtrl'
+            url: "/category-details/:categoryId",
+            templateUrl: '../category-details.html',
+            controller: 'CategoryDetailsCtrl'
+        })
+        .state('orders', {
+            url: "/orders",
+            templateUrl: '../orders.html',
+            controller: 'OrdersCtrl'
         });
 
     $urlRouterProvider.otherwise("/login");

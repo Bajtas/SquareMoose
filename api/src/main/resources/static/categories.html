@@ -35,9 +35,9 @@
         <div class="col_2">
             <button class="medium" ng-model="page" ng-click="previousPage()" ng-disabled="page == 0"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous page</button>
         </div>
-        <div class="col_2">
+        <div class="col_1">
         </div>
-        <div class="col_6">
+        <div class="col_7">
             <button class="medium" ng-click="addProduct()"><i class="fa fa-plus" aria-hidden="true"></i> Add new</button>
             <select ng-model="sortBy" ng-options="parameter.name for parameter in sortParameters" ng-change="sort()">
                 <option value="">-- Sort by --</option>

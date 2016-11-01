@@ -5,9 +5,9 @@ angular.module('SquareMooseControllers')
     $scope.showInfo = false;
 
     $scope.$on('$viewContentLoaded', function() {
-        var categoryIrl = $rootScope.apiUrl + '/CategoryService/category/' + $stateParams.categoryId;
-
-        $http.get(categoryIrl)
+        var categoryUrl = $rootScope.apiUrl + '/CategoryService/category/' + $stateParams.categoryId;
+        var relatedProducts = $rootScope.apiUrl + '/ProductService/products/category' + '?id=' + $stateParams.categoryId;
+        $http.get(categoryUrl)
             .then(function(response) {
                 $scope.category = response.data;
             }, function(response) {
@@ -15,23 +15,13 @@ angular.module('SquareMooseControllers')
                 $scope.errMsg = response.data;
             });
 
-        //        $http.get(categoriesUrl)
-        //            .then(function(response) {
-        //                $scope.categories = response.data;
-        //                if ($scope.category.category !== null) {
-        //                    for (var i = 0; i < $scope.categories.length; i++) {
-        //                        if ($scope.categories[i].id === $scope.product.category.id) {
-        //                            $scope.categoryAssigned = $scope.categories[i];
-        //                            break;
-        //                        }
-        //                    }
-        //                } else {
-        //                    $scope.noCategoryAssigned = true;
-        //                }
-        //            }, function(response) {
-        //                $scope.error = true;
-        //                $scope.errMsg = response.data;
-        //            });
+        $http.get(relatedProducts)
+            .then(function(response) {
+                $scope.relatedProducts = response.data;
+            }, function(response) {
+                $scope.error = true;
+                $scope.errMsg = response.data;
+            });
     });
 
     $scope.modifyCategory = function() {
