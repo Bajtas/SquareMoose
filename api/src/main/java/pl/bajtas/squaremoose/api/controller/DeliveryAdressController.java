@@ -3,9 +3,11 @@ package pl.bajtas.squaremoose.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import pl.bajtas.squaremoose.api.domain.DeliveryAdress;
 import pl.bajtas.squaremoose.api.service.DeliveryAdressService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -29,6 +31,7 @@ public class DeliveryAdressController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadresses")
+    @Transactional
     public Iterable<DeliveryAdress> getAll() {
         return getService().getAll();
     }
@@ -36,6 +39,7 @@ public class DeliveryAdressController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadresses/page/{number}")
+    @Transactional
     public Page<DeliveryAdress> getPage(@PathParam("number") Integer page,
                                  @QueryParam("size") Integer size,
                                  @QueryParam("sortBy") String sortBy,
@@ -46,6 +50,7 @@ public class DeliveryAdressController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/{id}")
+    @Transactional
     public DeliveryAdress getById(@NotNull @PathParam("id") Integer id) {
         return getService().getById(id);
     }
@@ -53,6 +58,7 @@ public class DeliveryAdressController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/name/{name}")
+    @Transactional
     public List<DeliveryAdress> getByNameContainsIgnoreCase(@NotNull @PathParam("name") String name) {
         return getService().getByNameContainsIgnoreCase(name);
     }
@@ -133,6 +139,8 @@ public class DeliveryAdressController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/user/login/{login}")
+    @PermitAll
+    @Transactional
     public List<DeliveryAdress> getByUserLogin(@NotNull @PathParam("login") String login) {
         return getService().getByUserLogin(login);
     }
