@@ -19,6 +19,7 @@ import pl.bajtas.squaremoose.api.util.search.SearchUtil;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -136,7 +137,8 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
     }
 
     public List<DeliveryAdress> getByUserLogin(String login) {
-        return getRepository().findByUsers_Login(login);
+        List<DeliveryAdress> addressRelatedToUser = getRepository().findByUsers_Login(login).stream().distinct().collect(Collectors.toList());
+        return addressRelatedToUser;
     }
 
     public List<DeliveryAdress> getByUserEmail(String email) {
@@ -161,13 +163,31 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
         return Response.status(Response.Status.OK).entity("Product added successfully!").build();
     }
 
+    public Response add(String login, DeliveryAdress deliveryAdress) {
+        try {
+            User user = userRepository.findByLogin(login);
+            if (user == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("User with id: " + user.getId() + " not exist! Add user first!").build();
+            }
+
+            getRepository().save(deliveryAdress);
+            user.getDeliveryAdresses().add(deliveryAdress);
+
+            userRepository.save(user);
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
+        }
+
+        return Response.status(Response.Status.OK).entity("Product added successfully!").build();
+    }
+
     @Override
     public Response update(int id, DeliveryAdress deliveryAdress) {
         LOG.info("Trying to save delivery adress with id: " + id);
 
         try {
-            DeliveryAdress old = getRepository().findOne(id);
-            if (old != null) {
+            DeliveryAdress original = getRepository().findOne(id);
+            if (original != null) {
                 deliveryAdress.setId(id);
 
                 getRepository().save(deliveryAdress);

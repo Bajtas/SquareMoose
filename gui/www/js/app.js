@@ -117,6 +117,25 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
                 controller: 'DeliveryAddressCtrl'
             }
         }
+    })
+    // Account - My orders controller
+    .state('app.my-orders', {
+        url: '/my-orders',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/account/my-orders.html',
+                controller: 'MyOrdersCtrl'
+            }
+        }
+    })
+    .state('app.my-order-details', {
+        url: '/my-order-details/:orderId',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/account/my-order-details.html',
+                controller: 'MyOrderDetailsCtrl'
+            }
+        }
     });
 
     // Default URL to go when URL is not set

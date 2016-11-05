@@ -53,14 +53,6 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
-        Product shirt = new Product();
-        shirt.setDescription("Spring Framework Guru Shirt");
-        shirt.setAddedOn(new Date());
-        shirt.setPrice(5);
-        shirt.setLmod(new Date());
-        shirt.setName("koszulka");
-
-        productRepository.save(shirt);
     }
 
     // Search by Product properties

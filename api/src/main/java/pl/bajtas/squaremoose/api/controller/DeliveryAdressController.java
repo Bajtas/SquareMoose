@@ -162,10 +162,19 @@ public class DeliveryAdressController {
         return getService().add(deliveryAdress);
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/deliveryadress/add/{login}")
+    public Response add(@NotNull @PathParam("login") String login, DeliveryAdress deliveryAdress) {
+        return getService().add(login, deliveryAdress);
+    }
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/deliveryadress/{id}/update")
+    @PermitAll
     public Response add(@NotNull @PathParam("id") int id, DeliveryAdress deliveryAdress) {
         return getService().update(id, deliveryAdress);
     }

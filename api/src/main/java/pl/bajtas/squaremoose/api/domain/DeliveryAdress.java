@@ -1,8 +1,6 @@
 package pl.bajtas.squaremoose.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
@@ -12,7 +10,7 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btdeliveryadress")
 public class DeliveryAdress {
     @Id
@@ -31,84 +29,84 @@ public class DeliveryAdress {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "deliveryAdresses")
     private List<User> users;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSurname() {
         return surname;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setTown(String town) {
-        this.town = town;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getTown() {
         return town;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setTown(String town) {
+        this.town = town;
     }
 
     public String getZipCode() {
         return zipCode;
     }
 
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getContactPhone() {
         return contactPhone;
     }
 
-    public void setCurrentlyAssigned(boolean currentlyAssigned) {
-        this.currentlyAssigned = currentlyAssigned;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public boolean isCurrentlyAssigned() {
         return currentlyAssigned;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setCurrentlyAssigned(boolean currentlyAssigned) {
+        this.currentlyAssigned = currentlyAssigned;
     }
 
     public List<Order> getOrders() {
         return orders;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public List<User> getUsers() {
         return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override

@@ -14,7 +14,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import pl.bajtas.squaremoose.api.SpringBootWebApplication;
 import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.Order;
-import pl.bajtas.squaremoose.api.domain.OrderState;
 import pl.bajtas.squaremoose.api.domain.OrderStateHistory;
 import pl.bajtas.squaremoose.api.repository.*;
 import pl.bajtas.squaremoose.api.util.TestPageImpl;
@@ -59,8 +58,6 @@ public class ActualOrderStateControllerTest {
     private OrderRepository orderRepository;
     @Autowired
     private OrderStateHistoryRepository orderStateHistoryRepository;
-    @Autowired
-    private OrderStateRepository orderStateRepository;
 
     private TestRestTemplate restTemplate = new TestRestTemplate();
 
@@ -422,160 +419,160 @@ public class ActualOrderStateControllerTest {
         assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
     }
 
-    @Test
-    public void addOneWithHistoryAndWithOrderStateTest() {
-        OrderState state = new OrderState("some state", "some description for state");
+//    @Test
+//    public void addOneWithHistoryAndWithOrderStateTest() {
+//        OrderState state = new OrderState("some state", "some description for state");
+//
+//        ActualOrderState actualState = new ActualOrderState("test", "test desc");
+//
+//        actualState.setOrderState(state);
+//
+//        List<OrderStateHistory> histories = new ArrayList<>();
+//        OrderStateHistory history = new OrderStateHistory();
+//        history.setName("history name");
+//        history.setDescription("history description");
+//        history.setLmod(new Date());
+//        histories.add(history);
+//
+//        actualState.setOrderStateHistories(histories);
+//        long allActualStatesCounterBefore = actualOrderStateRepository.count();
+//        long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
+//        long allorderStateCounterBefore = orderStateRepository.count();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity entity = new HttpEntity(actualState, headers);
+//
+//        ResponseEntity<String> out = restTemplate.exchange(ADD_ACTUAL_STATE_URL, HttpMethod.POST, entity, String.class);
+//        HttpStatus statusCode = out.getStatusCode();
+//        assertEquals(statusCode, HttpStatus.OK);
+//
+//        MediaType contentType = out.getHeaders().getContentType();
+//        assertEquals(contentType, MediaType.TEXT_PLAIN);
+//
+//        assertEquals(out.getBody(), "ActualOrderState added successfully!");
+//
+//        long allActualStatesCounterAfter = actualOrderStateRepository.count();
+//        long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
+//        long allorderStateCounterAfter = orderStateRepository.count();
+//
+//        assertEquals(allActualStatesCounterBefore + 1, allActualStatesCounterAfter);
+//        assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
+//        assertEquals(allorderStateCounterBefore + 1, allorderStateCounterAfter);
+//    }
 
-        ActualOrderState actualState = new ActualOrderState("test", "test desc");
+//    @Test
+//    public void updateOneWithHistoryAndOrderStateTest() {
+//        for (int i = 0; i < 20; i++) {
+//            Random random = new Random();
+//            int randomId = random.nextInt(150);
+//
+//            ActualOrderState actualOrderState = actualOrderStateRepository.findOne(randomId);
+//            if (actualOrderState != null) {
+//                if (actualOrderState.getOrderState() == null || actualOrderState.getOrderStateHistories().size() == 0) {
+//                    boolean orderStateAdded = actualOrderState.getOrderState() == null;
+//                    boolean historyAdded = actualOrderState.getOrderStateHistories().size() == 0;
+//
+//                    ActualOrderState updatedActualOrderState = new ActualOrderState("updatedActualState", "updatedDescription");
+//
+//                    if (orderStateAdded) {
+//                        OrderState state = new OrderState("updateOrderState", "updatedOrderStateDescription");
+//                        updatedActualOrderState.setOrderState(state);
+//                    }
+//
+//                    if (historyAdded) {
+//                        OrderStateHistory history = new OrderStateHistory("updated history name", "updated history desc");
+//                        List<OrderStateHistory> histories = new ArrayList<>();
+//                        histories.add(history);
+//
+//                        updatedActualOrderState.setOrderStateHistories(histories);
+//                    }
+//
+//                    long allActualStatesCounterBefore = actualOrderStateRepository.count();
+//                    long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
+//                    long allorderStateCounterBefore = orderStateRepository.count();
+//
+//                    HttpHeaders headers = new HttpHeaders();
+//                    headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//                    HttpEntity entity = new HttpEntity(updatedActualOrderState, headers);
+//
+//                    ResponseEntity<String> out = restTemplate.exchange(UPDATE_ACTUAL_STATE_URL, HttpMethod.PUT, entity, String.class, randomId);
+//
+//                    HttpStatus statusCode = out.getStatusCode();
+//                    assertEquals(statusCode, HttpStatus.OK);
+//
+//                    MediaType contentType = out.getHeaders().getContentType();
+//                    assertEquals(contentType, MediaType.TEXT_PLAIN);
+//
+//                    ActualOrderState actualState = actualOrderStateRepository.findOne(randomId);
+//                    assertEquals(actualState.getName(), "updatedActualState");
+//                    assertEquals(actualState.getDescription(), "updatedDescription");
+//
+//                    assertEquals(out.getBody(), "ActualOrderState with id: " + randomId + " updated successfully!");
+//
+//                    long allActualStatesCounterAfter = actualOrderStateRepository.count();
+//                    long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
+//                    long allorderStateCounterAfter = orderStateRepository.count();
+//
+//                    assertEquals(allActualStatesCounterBefore, allActualStatesCounterAfter);
+//                    if (orderStateAdded)
+//                        assertEquals(allorderStateCounterBefore + 1, allorderStateCounterAfter);
+//                    if (historyAdded)
+//                        assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
+//                }
+//            }
+//        }
+//    }
 
-        actualState.setOrderState(state);
-
-        List<OrderStateHistory> histories = new ArrayList<>();
-        OrderStateHistory history = new OrderStateHistory();
-        history.setName("history name");
-        history.setDescription("history description");
-        history.setLmod(new Date());
-        histories.add(history);
-
-        actualState.setOrderStateHistories(histories);
-        long allActualStatesCounterBefore = actualOrderStateRepository.count();
-        long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
-        long allorderStateCounterBefore = orderStateRepository.count();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity entity = new HttpEntity(actualState, headers);
-
-        ResponseEntity<String> out = restTemplate.exchange(ADD_ACTUAL_STATE_URL, HttpMethod.POST, entity, String.class);
-        HttpStatus statusCode = out.getStatusCode();
-        assertEquals(statusCode, HttpStatus.OK);
-
-        MediaType contentType = out.getHeaders().getContentType();
-        assertEquals(contentType, MediaType.TEXT_PLAIN);
-
-        assertEquals(out.getBody(), "ActualOrderState added successfully!");
-
-        long allActualStatesCounterAfter = actualOrderStateRepository.count();
-        long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
-        long allorderStateCounterAfter = orderStateRepository.count();
-
-        assertEquals(allActualStatesCounterBefore + 1, allActualStatesCounterAfter);
-        assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
-        assertEquals(allorderStateCounterBefore + 1, allorderStateCounterAfter);
-    }
-
-    @Test
-    public void updateOneWithHistoryAndOrderStateTest() {
-        for (int i = 0; i < 20; i++) {
-            Random random = new Random();
-            int randomId = random.nextInt(150);
-
-            ActualOrderState actualOrderState = actualOrderStateRepository.findOne(randomId);
-            if (actualOrderState != null) {
-                if (actualOrderState.getOrderState() == null || actualOrderState.getOrderStateHistories().size() == 0) {
-                    boolean orderStateAdded = actualOrderState.getOrderState() == null;
-                    boolean historyAdded = actualOrderState.getOrderStateHistories().size() == 0;
-
-                    ActualOrderState updatedActualOrderState = new ActualOrderState("updatedActualState", "updatedDescription");
-
-                    if (orderStateAdded) {
-                        OrderState state = new OrderState("updateOrderState", "updatedOrderStateDescription");
-                        updatedActualOrderState.setOrderState(state);
-                    }
-
-                    if (historyAdded) {
-                        OrderStateHistory history = new OrderStateHistory("updated history name", "updated history desc");
-                        List<OrderStateHistory> histories = new ArrayList<>();
-                        histories.add(history);
-
-                        updatedActualOrderState.setOrderStateHistories(histories);
-                    }
-
-                    long allActualStatesCounterBefore = actualOrderStateRepository.count();
-                    long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
-                    long allorderStateCounterBefore = orderStateRepository.count();
-
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_JSON);
-
-                    HttpEntity entity = new HttpEntity(updatedActualOrderState, headers);
-
-                    ResponseEntity<String> out = restTemplate.exchange(UPDATE_ACTUAL_STATE_URL, HttpMethod.PUT, entity, String.class, randomId);
-
-                    HttpStatus statusCode = out.getStatusCode();
-                    assertEquals(statusCode, HttpStatus.OK);
-
-                    MediaType contentType = out.getHeaders().getContentType();
-                    assertEquals(contentType, MediaType.TEXT_PLAIN);
-
-                    ActualOrderState actualState = actualOrderStateRepository.findOne(randomId);
-                    assertEquals(actualState.getName(), "updatedActualState");
-                    assertEquals(actualState.getDescription(), "updatedDescription");
-
-                    assertEquals(out.getBody(), "ActualOrderState with id: " + randomId + " updated successfully!");
-
-                    long allActualStatesCounterAfter = actualOrderStateRepository.count();
-                    long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
-                    long allorderStateCounterAfter = orderStateRepository.count();
-
-                    assertEquals(allActualStatesCounterBefore, allActualStatesCounterAfter);
-                    if (orderStateAdded)
-                        assertEquals(allorderStateCounterBefore + 1, allorderStateCounterAfter);
-                    if (historyAdded)
-                        assertEquals(allstatesHistoriesCounterBefore + 1, allStatesHistoriesCounterAfter);
-                }
-            }
-        }
-    }
-
-    @Test
-    public void deleteOneTest() {
-        for (int i = 0; i < 20; i++) {
-            Random random = new Random();
-            int randomId = random.nextInt(150);
-
-            ActualOrderState actualOrderState = actualOrderStateRepository.findOne(randomId);
-            if (actualOrderState != null) {
-                long allActualStatesCounterBefore = actualOrderStateRepository.count();
-                long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
-                long allorderStateCounterBefore = orderStateRepository.count();
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                boolean hasOrderState = false;
-                boolean hasOrderStateHistories = false;
-                int orderHistoriesSize = 0;
-                if (actualOrderState.getOrderState() != null)
-                    hasOrderState = true;
-                if (actualOrderState.getOrderStateHistories().size() != 0) {
-                    hasOrderStateHistories = true;
-                    orderHistoriesSize = actualOrderState.getOrderStateHistories().size();
-                }
-
-                ResponseEntity<String> out = restTemplate.exchange(DELETE_ACTUAL_STATE_URL, HttpMethod.DELETE, null, String.class, randomId);
-
-                HttpStatus statusCode = out.getStatusCode();
-                assertEquals(statusCode, HttpStatus.OK);
-
-                MediaType contentType = out.getHeaders().getContentType();
-                assertEquals(contentType, MediaType.TEXT_PLAIN);
-
-                ActualOrderState actualState = actualOrderStateRepository.findOne(randomId);
-                assertNull(actualState);
-
-                assertEquals(out.getBody(), "ActualOrderState with id: " + randomId + " deleted successfully!");
-
-                long allActualStatesCounterAfter = actualOrderStateRepository.count();
-                long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
-                long allorderStateCounterAfter = orderStateRepository.count();
-
-                assertEquals(allActualStatesCounterBefore - 1, allActualStatesCounterAfter);
-                if (hasOrderState)
-                    assertEquals(allorderStateCounterBefore, allorderStateCounterAfter);
-                if (hasOrderStateHistories)
-                    assertEquals(allstatesHistoriesCounterBefore - orderHistoriesSize, allStatesHistoriesCounterAfter);
-            }
-        }
-    }
+//    @Test
+//    public void deleteOneTest() {
+//        for (int i = 0; i < 20; i++) {
+//            Random random = new Random();
+//            int randomId = random.nextInt(150);
+//
+//            ActualOrderState actualOrderState = actualOrderStateRepository.findOne(randomId);
+//            if (actualOrderState != null) {
+//                long allActualStatesCounterBefore = actualOrderStateRepository.count();
+//                long allstatesHistoriesCounterBefore = orderStateHistoryRepository.count();
+//                long allorderStateCounterBefore = orderStateRepository.count();
+//
+//                HttpHeaders headers = new HttpHeaders();
+//                headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//                boolean hasOrderState = false;
+//                boolean hasOrderStateHistories = false;
+//                int orderHistoriesSize = 0;
+//                if (actualOrderState.getOrderState() != null)
+//                    hasOrderState = true;
+//                if (actualOrderState.getOrderStateHistories().size() != 0) {
+//                    hasOrderStateHistories = true;
+//                    orderHistoriesSize = actualOrderState.getOrderStateHistories().size();
+//                }
+//
+//                ResponseEntity<String> out = restTemplate.exchange(DELETE_ACTUAL_STATE_URL, HttpMethod.DELETE, null, String.class, randomId);
+//
+//                HttpStatus statusCode = out.getStatusCode();
+//                assertEquals(statusCode, HttpStatus.OK);
+//
+//                MediaType contentType = out.getHeaders().getContentType();
+//                assertEquals(contentType, MediaType.TEXT_PLAIN);
+//
+//                ActualOrderState actualState = actualOrderStateRepository.findOne(randomId);
+//                assertNull(actualState);
+//
+//                assertEquals(out.getBody(), "ActualOrderState with id: " + randomId + " deleted successfully!");
+//
+//                long allActualStatesCounterAfter = actualOrderStateRepository.count();
+//                long allStatesHistoriesCounterAfter = orderStateHistoryRepository.count();
+//                long allorderStateCounterAfter = orderStateRepository.count();
+//
+//                assertEquals(allActualStatesCounterBefore - 1, allActualStatesCounterAfter);
+//                if (hasOrderState)
+//                    assertEquals(allorderStateCounterBefore, allorderStateCounterAfter);
+//                if (hasOrderStateHistories)
+//                    assertEquals(allstatesHistoriesCounterBefore - orderHistoriesSize, allStatesHistoriesCounterAfter);
+//            }
+//        }
+//    }
 }

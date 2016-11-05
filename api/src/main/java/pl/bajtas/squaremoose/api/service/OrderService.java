@@ -14,6 +14,7 @@ import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -64,8 +65,33 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         return getRepository().findByUser_Id(id);
     }
 
-    public Order getByUserLogin(String login) {
-        return getRepository().findByUser_Login(login);
+    public List<Order> getByUserLogin(String login) {
+        List<Order> result = getRepository().findByUser_Login(login).stream().distinct().collect(Collectors.toList());
+        result.forEach(x -> {
+            x.getDeliveryType().getOrders().clear();
+            x.getPaymentMethod().getOrders().clear();
+            x.getDeliveryAdress().getOrders().clear();
+            x.getDeliveryAdress().getUsers().clear();
+            x.getUser().setUserRole(null);
+            x.getUser().getDeliveryAdresses().clear();
+        });
+        return result;
+    }
+
+    public Order getByUserLoginAndOrderId(String login, int id) {
+        Order result = getRepository().findByIdAndUser_Login(id, login);
+        result.setOrderItems(result.getOrderItems().stream().distinct().collect(Collectors.toList()));
+        result.getDeliveryType().getOrders().clear();
+        result.getPaymentMethod().getOrders().clear();
+        result.getDeliveryAdress().getOrders().clear();
+        result.getDeliveryAdress().getUsers().clear();
+        result.getUser().setUserRole(null);
+        result.getUser().getDeliveryAdresses().clear();
+        result.getOrderItems().forEach(p -> {
+            p.getProduct().getOrderItems().clear();
+            p.getProduct().setImages(p.getProduct().getImages().stream().distinct().collect(Collectors.toList()));
+        });
+        return result;
     }
 
     @Override

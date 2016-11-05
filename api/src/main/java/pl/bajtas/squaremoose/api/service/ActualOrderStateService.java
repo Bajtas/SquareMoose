@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.Order;
-import pl.bajtas.squaremoose.api.domain.OrderState;
+//import pl.bajtas.squaremoose.api.domain.OrderState;
 import pl.bajtas.squaremoose.api.domain.OrderStateHistory;
 import pl.bajtas.squaremoose.api.repository.*;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
@@ -17,6 +17,7 @@ import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -29,7 +30,7 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
     @Autowired private ProductRepository productRepository;
     @Autowired private OrderRepository orderRepository;
     @Autowired private OrderStateHistoryRepository orderStateHistoryRepository;
-    @Autowired private OrderStateRepository orderStateRepository;
+    //@Autowired private OrderStateRepository orderStateRepository;
 
     // Events
     @Override
@@ -86,16 +87,13 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
     @Override
     public Response add(ActualOrderState actualOrderState) {
         List<OrderStateHistory> orderStateHistories = actualOrderState.getOrderStateHistories();
-        OrderState state = actualOrderState.getOrderState();
+        //OrderState state = actualOrderState.getOrderState();
         try {
             if (orderStateHistories != null) {
                 for (OrderStateHistory history : orderStateHistories) {
                     orderStateHistoryRepository.save(history);
                 }
                 actualOrderState.setOrderStateHistories(orderStateHistories);
-            }
-            if (state != null) {
-                orderStateRepository.save(state);
             }
             getRepository().save(actualOrderState);
         } catch (Exception e) {
@@ -114,9 +112,9 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
             if (actualOrderState.getOrder() != null) {
                 orderRepository.save(actualOrderState.getOrder());
             }
-            if (actualOrderState.getOrderState() != null) {
-                orderStateRepository.save(actualOrderState.getOrderState());
-            }
+//            if (actualOrderState.getOrderState() != null) {
+//                orderStateRepository.save(actualOrderState.getOrderState());
+//            }
             if (actualOrderState.getOrderStateHistories() != null) {
                 List<OrderStateHistory> histories = actualOrderState.getOrderStateHistories();
                 for (OrderStateHistory history : histories)
@@ -139,7 +137,7 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
         LOG.info("ActualOrderState with id: " + id + " will be deleted.");
 
         ActualOrderState actualOrderState = getRepository().findOne(id);
-        OrderState state = actualOrderState.getOrderState();
+        //OrderState state = actualOrderState.getOrderState();
         List<OrderStateHistory> histories = actualOrderState.getOrderStateHistories();
         if (actualOrderState != null) {
             try {
@@ -149,12 +147,12 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
                     order.setActualOrderState(null);
                     orderRepository.save(order);
                 }
-                if (state != null) {
-                    List<ActualOrderState> actualOrderStates = new ArrayList<>();
-                    actualOrderStates.remove(actualOrderStates);
-                    state.setActualOrderStates(actualOrderStates);
-                    orderStateRepository.save(state);
-                }
+//                if (state != null) {
+//                    List<ActualOrderState> actualOrderStates = new ArrayList<>();
+//                    actualOrderStates.remove(actualOrderStates);
+//                    state.setActualOrderStates(actualOrderStates);
+//                    orderStateRepository.save(state);
+//                }
                 getRepository().delete(id);
                 if (histories.size() != 0) {
                     for (OrderStateHistory history : histories)

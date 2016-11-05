@@ -15,10 +15,11 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Page<Order> findAll(Pageable pageRequest);
 
     Order findByUser_Id(int id);
-    Order findByUser_Login(String login);
+    List<Order> findByUser_Login(String login);
     Order findByDeliveryAdress_Id(int id);
     Order findByDeliveryType_Id(int id);
     List<Order> findByPaymentMethod_Id(int id);
 
     Order findDistinctById(int id);
+    Order findByIdAndUser_Login(int id, String login);
 }

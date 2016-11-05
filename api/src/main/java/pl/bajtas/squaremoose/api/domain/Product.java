@@ -2,7 +2,6 @@ package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
@@ -10,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btproduct")
 public class Product {
     @Id
@@ -90,68 +89,68 @@ public class Product {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public void setAddedOn(Date addedOn) {
-        this.addedOn = addedOn;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public Date getAddedOn() {
         return addedOn;
     }
 
-    public void setLmod(Date lmod) {
-        this.lmod = lmod;
+    public void setAddedOn(Date addedOn) {
+        this.addedOn = addedOn;
     }
 
     public Date getLmod() {
         return lmod;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setLmod(Date lmod) {
+        this.lmod = lmod;
     }
 
     public Category getCategory() {
         return category;
     }
 
-    public void setImages(List<ProductImage> images) {
-        this.images = images;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public List<ProductImage> getImages() {
         return images;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
     }
 
     public List<OrderItem> getOrderItems() {
         return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override

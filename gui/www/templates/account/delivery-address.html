@@ -1,6 +1,7 @@
 ﻿<ion-view view-title="Delivery address">
     <ion-content>
         <ion-list>
+            <ion-spinner class="android-energized centered" ng-show="dataLoading"></ion-spinner>
             <form ng-submit="updateDeliveryAddress()" name="deliveryAddressForm">
                 <label class="item item-input">
                     <input type="text" placeholder="First Name" ng-model="deliveryAddress.name" name="name" required>
@@ -30,7 +31,7 @@
                 <span ng-show="deliveryAddressForm.phone.$touched && deliveryAddressForm.phone.$dirty && deliveryAddressForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>
 
                 <label class="item">
-                    <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="orderForm.$invalid"> Save delivery address</button>
+                    <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="deliveryAddressForm.$invalid"> Save delivery address</button>
                 </label>
             </form>
         </ion-list>

@@ -1,7 +1,6 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btorderitem")
 public class OrderItem {
     @Id
@@ -27,35 +26,35 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getAmount() {
         return amount;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Product getProduct() {
         return product;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Order getOrder() {
         return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

@@ -1,8 +1,12 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.sun.istack.internal.Nullable;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,7 +16,7 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btactualorderstate")
 public class ActualOrderState {
     @Id
@@ -22,16 +26,17 @@ public class ActualOrderState {
     private String description;
     private Date lmod;
     @OneToOne(fetch = FetchType.EAGER)
-    @PrimaryKeyJoinColumn
+    //@PrimaryKeyJoinColumn
+    @JoinColumn(name="order", nullable=true)
+    @Nullable
     private Order order;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_state_id")
-    private OrderState orderState;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "order_state_id")
+//    private OrderState orderState;
     @OneToMany(mappedBy = "actualOrderState", fetch = FetchType.EAGER)
     private List<OrderStateHistory> orderStateHistories;
 
-    public ActualOrderState(String name, String description, Date lmod, Order order, List<OrderStateHistory> orderStateHistories)
-    {
+    public ActualOrderState(String name, String description, Date lmod, Order order, List<OrderStateHistory> orderStateHistories) {
         this.name = name;
         this.description = description;
         this.lmod = lmod;
@@ -39,42 +44,27 @@ public class ActualOrderState {
         this.orderStateHistories = orderStateHistories;
     }
 
-    public ActualOrderState(String name, String description, Date lmod, Order order, OrderState orderState, List<OrderStateHistory> orderStateHistories)
-    {
+    public ActualOrderState(String name, String description, Date lmod, Order order) {
         this.name = name;
         this.description = description;
         this.lmod = lmod;
         this.order = order;
-        this.orderState = orderState;
-        this.orderStateHistories = orderStateHistories;
     }
 
-    public ActualOrderState(String name, String description, Date lmod, OrderState orderState, Order order)
-    {
-        this.name = name;
-        this.description = description;
-        this.lmod = lmod;
-        this.orderState = orderState;
-        this.order = order;
-    }
-
-    public ActualOrderState(String name, String description, Order order)
-    {
+    public ActualOrderState(String name, String description, Order order) {
         this.name = name;
         this.description = description;
         this.lmod = new Date();
         this.order = order;
     }
 
-    public ActualOrderState(String name, String description, Date lmod)
-    {
+    public ActualOrderState(String name, String description, Date lmod) {
         this.name = name;
         this.description = description;
         this.lmod = lmod;
     }
 
-    public ActualOrderState(String name, String description)
-    {
+    public ActualOrderState(String name, String description) {
         this.name = name;
         this.description = description;
         this.lmod = new Date();
@@ -84,59 +74,59 @@ public class ActualOrderState {
 
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setLmod(Date lmod) {
-        this.lmod = lmod;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getLmod() {
         return lmod;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setLmod(Date lmod) {
+        this.lmod = lmod;
     }
 
     public Order getOrder() {
         return order;
     }
 
-    public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public OrderState getOrderState() {
-        return orderState;
+//    public OrderState getOrderState() {
+//        return orderState;
+//    }
+//
+//    public void setOrderState(OrderState orderState) {
+//        this.orderState = orderState;
+//    }
+
+    public List<OrderStateHistory> getOrderStateHistories() {
+        return orderStateHistories;
     }
 
     public void setOrderStateHistories(List<OrderStateHistory> orderStateHistories) {
         this.orderStateHistories = orderStateHistories;
-    }
-
-    public List<OrderStateHistory> getOrderStateHistories() {
-        return orderStateHistories;
     }
 }

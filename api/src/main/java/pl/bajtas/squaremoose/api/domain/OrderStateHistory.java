@@ -1,7 +1,6 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
@@ -11,7 +10,7 @@ import java.util.Date;
  * Created by Bajtas on 04.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btorderstatehistory")
 public class OrderStateHistory {
     @Id
@@ -47,20 +46,20 @@ public class OrderStateHistory {
 
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -71,20 +70,20 @@ public class OrderStateHistory {
         this.description = description;
     }
 
-    public void setActualOrderState(ActualOrderState actualOrderStates) {
-        this.actualOrderState = actualOrderState;
-    }
-
     public ActualOrderState getActualOrderState() {
         return actualOrderState;
     }
 
-    public void setLmod(Date lmod) {
-        this.lmod = lmod;
+    public void setActualOrderState(ActualOrderState actualOrderStates) {
+        this.actualOrderState = actualOrderState;
     }
 
     public Date getLmod() {
         return lmod;
+    }
+
+    public void setLmod(Date lmod) {
+        this.lmod = lmod;
     }
 
     @Override

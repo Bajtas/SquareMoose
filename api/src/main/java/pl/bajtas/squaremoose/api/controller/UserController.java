@@ -15,7 +15,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.List;
 
 /**
@@ -25,8 +24,10 @@ import java.util.List;
 @Path("/UserService")
 public class UserController {
 
-    @Autowired UserService userService; // Product service bean for connection between controller and service layers
-    @Context HttpServletRequest request;
+    @Autowired
+    UserService userService; // Product service bean for connection between controller and service layers
+    @Context
+    HttpServletRequest request;
 
     public UserService getService() {
         return userService;
@@ -97,6 +98,7 @@ public class UserController {
     public User getByLogin(@NotNull @PathParam("login") String login) {
         return getService().getByLogin(login);
     }
+
     /* getByAllProperties(...)
     * Takes 4 parameters:
     *  - login

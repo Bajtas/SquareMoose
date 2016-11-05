@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 @EnableJpaRepositories(basePackages = {"pl.bajtas.squaremoose.api.repository", "pl.bajtas.squaremoose.api.dao"})
 @ComponentScan(basePackages = {"pl.bajtas.squaremoose.api.service", "pl.bajtas.squaremoose.api.dashboard", "pl.bajtas.squaremoose.api.controller"})
 public class AppConfig {
-  
-  private static final Logger LOG = Logger.getLogger(AppConfig.class);
 
-  public AppConfig() {
-    LOG.info("AppConfig init");
-    LOG.info("Scanning for repositories and domains.");
-  }
+    private static final Logger LOG = Logger.getLogger(AppConfig.class);
+
+    public AppConfig() {
+        LOG.info("AppConfig init");
+        LOG.info("Scanning for repositories and domains.");
+    }
 
 }

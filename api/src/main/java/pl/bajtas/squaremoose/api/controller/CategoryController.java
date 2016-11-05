@@ -48,9 +48,9 @@ public class CategoryController {
     @Path("/categories/page/{number}")
     @PermitAll
     public Page<Category> getPage(@PathParam("number") Integer page,
-                                 @QueryParam("size") Integer size,
-                                 @QueryParam("sortBy") String sortBy,
-                                 @QueryParam("dir") String direction) {
+                                  @QueryParam("size") Integer size,
+                                  @QueryParam("sortBy") String sortBy,
+                                  @QueryParam("dir") String direction) {
         return getService().getAll(page, size, sortBy, direction);
     }
 

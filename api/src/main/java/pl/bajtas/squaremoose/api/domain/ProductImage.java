@@ -1,8 +1,6 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
@@ -14,7 +12,7 @@ import java.util.List;
  */
 
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btproductimage")
 public class ProductImage {
 
@@ -46,28 +44,28 @@ public class ProductImage {
 
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setImageSrc(String imageSrc) {
-        this.imageSrc = imageSrc;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getImageSrc() {
         return imageSrc;
     }
 
-    public void setAddedOn(Date addedOn) {
-        this.addedOn = addedOn;
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 
     public Date getAddedOn() {
         return addedOn;
+    }
+
+    public void setAddedOn(Date addedOn) {
+        this.addedOn = addedOn;
     }
 
     public List<Product> getProducts() {

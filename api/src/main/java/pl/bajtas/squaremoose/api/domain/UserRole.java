@@ -1,7 +1,6 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btuserrole")
 public class UserRole {
     @Id
@@ -38,36 +37,36 @@ public class UserRole {
 
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setLmod(Date lmod) {
-        this.lmod = lmod;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getLmod() {
         return lmod;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setLmod(Date lmod) {
+        this.lmod = lmod;
     }
 
     public List<User> getUsers() {
         return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class ProductController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/search/page/{page}")
     @PermitAll
-    public Page<Product> getByAllProperties (
+    public Page<Product> getByAllProperties(
             @NotNull @PathParam("page") int page,
             @QueryParam("pageSize") int pageSize,
             @QueryParam("sortBy") String sortBy,

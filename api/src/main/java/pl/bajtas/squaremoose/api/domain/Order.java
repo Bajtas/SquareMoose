@@ -1,8 +1,9 @@
 package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by Bajtas on 04.09.2016.
  */
 @Entity
-@JsonIdentityInfo(generator=JSOGGenerator.class)
+@JsonIdentityInfo(generator = JSOGGenerator.class)
 @Table(name = "btorder")
 public class Order {
 
@@ -33,7 +34,7 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "order")
+    @OneToOne( mappedBy = "order") //fetch = FetchType.EAGER,
     private ActualOrderState actualOrderState;
     private float fullPrice;
     private int itemsAmount;
@@ -112,20 +113,20 @@ public class Order {
         this.user = user;
     }
 
-    public void setAddedOn(Date addedOn) {
-        this.addedOn = addedOn;
-    }
-
     public Date getAddedOn() {
         return addedOn;
     }
 
-    public void setLmod(Date lmod) {
-        this.lmod = lmod;
+    public void setAddedOn(Date addedOn) {
+        this.addedOn = addedOn;
     }
 
     public Date getLmod() {
         return lmod;
+    }
+
+    public void setLmod(Date lmod) {
+        this.lmod = lmod;
     }
 
     @Override

@@ -14,12 +14,13 @@ public enum ClassToRegisterEnum {
         return otherName != null && value.equals(otherName);
     }
 
-    public String toString() {
-        return this.value;
-    }
-
     public boolean contains(String str) {
         return value.contains(str);
 
+    }
+
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

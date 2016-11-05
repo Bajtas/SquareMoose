@@ -45,16 +45,12 @@ public class BListComparator implements Comparator<Object> {
                 String d2 = (String) field2.get(o2);
                 return (sortOrder.toLowerCase().equals("asc")) ? d1.compareTo(d2) : d2.compareTo(d1);
             }
-        } catch (SecurityException e) {
+        } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (NoSuchFieldException e) {
             throw new RuntimeException("Missing variable sortBy");
         } catch (ClassCastException e) {
             throw new RuntimeException("sortBy is not found in class list");
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 }

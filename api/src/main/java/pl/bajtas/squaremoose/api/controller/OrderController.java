@@ -21,7 +21,8 @@ import java.util.List;
 @Path("/OrderService")
 public class OrderController {
 
-    @Autowired private OrderService orderService;
+    @Autowired
+    private OrderService orderService;
 
     private OrderService getService() {
         return orderService;
@@ -40,9 +41,9 @@ public class OrderController {
     @Path("/orders/page/{number}")
     @PermitAll
     public Page<Order> getPage(@PathParam("number") Integer page,
-                                 @QueryParam("size") Integer size,
-                                 @QueryParam("sortBy") String sortBy,
-                                 @QueryParam("dir") String direction) {
+                               @QueryParam("size") Integer size,
+                               @QueryParam("sortBy") String sortBy,
+                               @QueryParam("dir") String direction) {
         return getService().getAll(page, size, sortBy, direction);
     }
 
@@ -64,10 +65,18 @@ public class OrderController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/order/user/login/{login}")
-    @RolesAllowed("User")
-    public Order getByUserLogin(@NotNull @PathParam("login") String login) {
+    @Path("/orders/user/login/{login}")
+    @PermitAll
+    public List<Order> getByUserLogin(@NotNull @PathParam("login") String login) {
         return getService().getByUserLogin(login);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/orders/user/login/{login}/order/{id}")
+    @PermitAll
+    public Order getByUserLogin(@NotNull @PathParam("login") String login, @NotNull @PathParam("id") int id) {
+        return getService().getByUserLoginAndOrderId(login, id);
     }
 
     @GET
