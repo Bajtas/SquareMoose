@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $timeout, $location, $http, $rootScope,
+.controller('AppCtrl', function ($scope, $ionicModal, $ionicPopup, $ionicSideMenuDelegate, $timeout, $location, $http, $rootScope,
     cartService, loginService, registerService) {
 
     // Root API URL
@@ -68,6 +68,10 @@ angular.module('starter.controllers', [])
     $scope.filterAndSort = function () {
         $scope.$broadcast('filterAndSort', $scope.optionsData);
         $scope.sortOptionsModal.hide();
+    };
+
+    $scope.toggleMenu = function () {
+        $ionicSideMenuDelegate.toggleLeft(true);
     };
     // End of sort modal
 })

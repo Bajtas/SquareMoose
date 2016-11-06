@@ -65,7 +65,8 @@
     };
 })
 
-.controller('ProductsListCtrl', function ($scope, $rootScope, $http, $ionicScrollDelegate, ProductsListService, cartService, alertsService) {
+.controller('ProductsListCtrl', function ($scope, $rootScope, $http, $location, $ionicScrollDelegate, $ionicNavBarDelegate,
+    $ionicHistory, ProductsListService, cartService, alertsService) {
     // Fields
     $scope.productsList = ProductsListService.productsList;
     $scope.page = ProductsListService.page;
@@ -79,11 +80,14 @@
 
     // Communication with other controllers events
     $scope.$on('$ionicView.loaded', function (event) {
+        $scope.currentPath = $location.path();
         $scope.refresh();
     });
 
     $scope.$on('$ionicView.enter', function (event) {
+        $scope.currentPath = $location.path();
         $scope.countItems();
+        $ionicHistory.clearHistory();
     });
 
     $scope.$on('filterAndSort', function (event, optionsData) {

@@ -17,7 +17,8 @@
     this.cartCalcData = _cartCalcData;
 })
 
-.controller('ProductCtrl', function ($scope, $rootScope, $http, $stateParams, cartService, ProductService, alertsService) {
+.controller('ProductCtrl', function ($scope, $rootScope, $http, $ionicNavBarDelegate,
+    $stateParams, $ionicHistory, $location, cartService, ProductService, alertsService) {
     // Fields
     $scope.priceCurrency = ProductService.priceCurrency;
     $scope.product = ProductService.product;
@@ -28,6 +29,13 @@
     // Communication with other controllers events
     $scope.$on('$ionicView.loaded', function (event) {
         $scope.refresh();
+    });
+
+    $scope.$on('$ionicView.enter', function (event) {
+        $ionicNavBarDelegate.showBackButton(true);
+
+        $scope.backView = $ionicHistory.backView();
+        $scope.currentPath = $location.path();
     });
     // End of communication
 

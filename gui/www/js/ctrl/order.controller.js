@@ -19,13 +19,13 @@
         }
 
         $http.get($rootScope.apiUrl + 'DeliveryTypeService/deliverytypes').then(function success(response) {
-            $scope.deliveryTypes = response.data;
+            $scope.deliveryTypes = JSOG.decode(response.data);
         }, function error(response) {
 
         });
 
         $http.get($rootScope.apiUrl + 'PaymentMethodService/methods').then(function success(response) {
-            $scope.paymentMethods = response.data;
+            $scope.paymentMethods = JSOG.decode(response.data);
         }, function error(response) {
 
         });
@@ -62,6 +62,9 @@
                 "product": $scope.productsInCart[0].product
             };
             itemsAmount += $scope.productsInCart[0].amount;
+            orderItem.product.images.forEach(function (element) {
+                element.products = null;
+            });
             orderItems.push(orderItem);
         }
 
@@ -70,7 +73,7 @@
             for (var i = 0; i < $scope.user.deliveryAdresses.length; i++) {
                 if ($scope.user.deliveryAdresses[i].currentlyAssigned === true) {
                     deliveryAdress = $scope.user.deliveryAdresses[i];
-                    deliveryAdress.user = null;
+                    deliveryAdress.users = null;
                     deliveryAdress.orders = null;
                     break;
                 }
@@ -105,6 +108,7 @@
             }
         }
         $scope.user.deliveryAdresses = null;
+        $scope.user.userRole = null;
 
         $scope.order = {
             'orderItems': orderItems,
@@ -117,7 +121,7 @@
 
         $scope.auth = localStorage.getItem("Authorization");
 
-        console.log(angular.toJson($scope.order));
+        console.log(angular.toJson(JSOG.encode($scope.order)));
 
         $scope.orderFinalizationLoader = true;
         $http({

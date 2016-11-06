@@ -26,7 +26,7 @@
                 <h2>{{item.product.name}}</h2>
                 <p>{{item.product.description}}</p>
                 <p>Amount: {{item.amount}}</p>
-                <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount | number : 2}} {{priceCurrency}}</p>
+                <p class="icon ion-ios-pricetags"> Total: {{ (item.price*item.amount) | number : 2}} {{priceCurrency}}</p>
                 <ion-option-button class="button-positive" ng-click="share(item)">
                     Share
                 </ion-option-button>
@@ -108,7 +108,9 @@
                     <ion-radio ng-model="form.choosenPaymentMethod" ng-value="paymentMethod.id" name="choosenPaymentMethod" required>
                         <i class="icon ion-card" ng-if="paymentMethod.name === 'Credit card'"></i>
                         <i class="icon ion-cash" ng-if="paymentMethod.name === 'Cash'"></i>
-                        <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'Cash transfer'"></i> {{paymentMethod.name}}
+                        <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'Cash transfer'"></i> 
+                        <i class="icon ion-social-usd-outline" ng-if="paymentMethod.name === 'PayPal'"></i> 
+                        {{paymentMethod.name}}
                     </ion-radio>
                 </div>
                 <span ng-show="orderForm.choosenPaymentMethod.$untouched"><i>Please choose payment type.</i></span>
