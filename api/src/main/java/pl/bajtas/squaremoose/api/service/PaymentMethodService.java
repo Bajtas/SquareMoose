@@ -24,12 +24,21 @@ public class PaymentMethodService implements GenericService<PaymentMethod, Payme
 
     private static final Logger LOG = Logger.getLogger(PaymentMethodService.class);
 
+    private static final String[] DEFAULT_PAYMENT_METHODS = {"Credit card", "Cash", "Cash transfer", "PayPal"};
+
     @Autowired private PaymentMethodRepository paymentMethodRepository;
     @Autowired private OrderRepository orderRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
+        for(String method: DEFAULT_PAYMENT_METHODS) {
+            PaymentMethod paymentMethod = getRepository().findByName(method);
+            if (paymentMethod == null) {
+                paymentMethod = new PaymentMethod();
+                paymentMethod.setName(method);
+                getRepository().save(paymentMethod);
+            }
+        }
     }
 
     @Override

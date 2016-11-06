@@ -22,7 +22,7 @@ public class DeliveryType {
 
     private String name;
 
-    private float price;
+    private double price;
 
     private String time;
 
@@ -42,11 +42,11 @@ public class DeliveryType {
         this.name = name;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

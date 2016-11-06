@@ -18,7 +18,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String login;
     private String email;
     @JsonIgnore
@@ -26,20 +25,31 @@ public class User {
     private Date addedOn;
     private boolean isOnline;
     private Date lmod;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_role")
     private UserRole userRole;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "btdeliveryadressrow", joinColumns = {
             @JoinColumn(name = "user_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "delivery_adress_id", nullable = false)})
     private List<DeliveryAdress> deliveryAdresses;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Order> orders;
+
+    public User(String login, String email, String password, UserRole userRole) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.userRole = userRole;
+        this.addedOn = new Date();
+        this.lmod = new Date();
+    }
+
+    public User() {
+        this.addedOn = new Date();
+        this.lmod = new Date();
+    }
 
     public Integer getId() {
         return id;

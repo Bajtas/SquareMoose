@@ -33,10 +33,18 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final String DEFAULT_USER_ROLE = "User";
 
+    private static final String DEFAULT_ADMIN_LOGIN = "admin";
+    private static final String DEFAULT_ADMIN_EMAIL = "admin@gmail.com";
+    private static final String DEFAULT_ADMIN_PASSWORD = "123";
+
     // Needs to be lazy, configuration needs to be done first
-    @Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;
-    @Autowired private UserRepository userRepository;
-    @Autowired private UserRoleRepository userRoleRepository;
+    @Autowired
+    @Lazy
+    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     public UserRepository getRepository() {
         return userRepository;
@@ -45,7 +53,15 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
     // Events
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
+        User admin = getRepository().findByLogin(DEFAULT_ADMIN_LOGIN);
+        if (admin == null) {
+            admin = new User();
+            admin.setLogin(DEFAULT_ADMIN_LOGIN);
+            admin.setEmail(DEFAULT_ADMIN_EMAIL);
+            admin.setUserRole(userRoleRepository.findByName("Admin"));
+            admin.setPassword(passwordEncoder.encode(DEFAULT_ADMIN_PASSWORD));
+            getRepository().save(admin);
+        }
     }
 
     // Search by User properties
@@ -141,7 +157,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     // Update existing
-    public Response update(User newUser, String authorization)  {
+    public Response update(User newUser, String authorization) {
         //Get encoded username and password
         final String encodedUserPassword = authorization.replaceFirst(AuthenticationFilter.AUTHENTICATION_SCHEME + " ", "");
 

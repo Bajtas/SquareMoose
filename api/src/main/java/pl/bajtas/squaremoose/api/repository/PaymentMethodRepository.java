@@ -7,4 +7,5 @@ import pl.bajtas.squaremoose.api.domain.PaymentMethod;
  * Created by Bajtas on 04.09.2016.
  */
 public interface PaymentMethodRepository extends CrudRepository<PaymentMethod, Integer> {
+    PaymentMethod findByName(String method);
 }

@@ -27,6 +27,8 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
     @Autowired private DeliveryTypeRepository deliveryTypeRepository;
     @Autowired private OrderRepository orderRepository;
 
+    private static final String[] DEFAULT_DELIVERY_TYPES = {"Recorded letter", "Economic letter", "Recorded delivery", "Special delivery", "Post office box", "Courier parcel"};
+
     @Override
     public DeliveryTypeRepository getRepository() {
         return deliveryTypeRepository;
@@ -34,7 +36,42 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        for (String type : DEFAULT_DELIVERY_TYPES) {
+            DeliveryType deliveryType = getRepository().findByName(type);
 
+            if (deliveryType == null) {
+                deliveryType = new DeliveryType();
+                deliveryType.setName(type);
+                switch (type) {
+                    case "Recorded letter":
+                        deliveryType.setPrice(3.25);
+                        deliveryType.setTime("3 Days");
+                        break;
+                    case "Economic letter":
+                        deliveryType.setPrice(2.00);
+                        deliveryType.setTime("5 Days");
+                        break;
+                    case "Recorded delivery":
+                        deliveryType.setPrice(4.25);
+                        deliveryType.setTime("3 Days");
+                        break;
+                    case "Special delivery":
+                        deliveryType.setPrice(5.20);
+                        deliveryType.setTime("2 Days");
+                        break;
+                    case "Post office box":
+                        deliveryType.setPrice(2.40);
+                        deliveryType.setTime("4 Days");
+                        break;
+                    case "Courier parcel":
+                        deliveryType.setPrice(6.40);
+                        deliveryType.setTime("1 Day");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     @Override

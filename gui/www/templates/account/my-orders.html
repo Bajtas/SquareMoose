@@ -1,0 +1,12 @@
+﻿<ion-view view-title="My orders">
+    <ion-content>
+        <ion-spinner class="android-energized centered" ng-show="dataLoading"></ion-spinner>
+        <ion-list>
+            <ion-item class="item" ng-repeat="order in orders track by $index" href="#/app/my-order-details/{{order.id}}">
+                <h2 class="icon ion-ios-box-outline"> Ord. Number: <b>{{order.id}}</b></h2>
+                <p class="icon ion-ios-compose-outline"> Created on: <b>{{order.addedOn | date:'M/d/yyyy HH:mm:ss'}}</b></p>
+                <p class="icon ion-information"> Actual order status: <b>{{order.actualOrderState.name}}</b></p>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

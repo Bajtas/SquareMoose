@@ -31,8 +31,8 @@
     this.login = function (credentials, modal) {
         var credentials = {
             login: 'admin',
-            password: '123456'
-        };
+            password: '123'
+        }; // TO DELETE 
 
         if (credentials !== 'undefined') {
             if (credentials.login !== 'undefined' && credentials.password !== 'undefined') {

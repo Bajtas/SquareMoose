@@ -31,13 +31,17 @@ angular.module('SquareMooseControllers')
 
         $http.get(categoriesUrl)
             .then(function(response) {
-                $scope.categories = JSOG.decode(response.data);
-                if ($scope.product.category !== null) {
-                    for (var i = 0; i < $scope.categories.length; i++) {
-                        if ($scope.categories[i].id === $scope.product.category.id) {
-                            $scope.categoryAssigned = $scope.categories[i];
-                            break;
+                if (response.data !== 0) {
+                    $scope.categories = JSOG.decode(response.data);
+                    if ($scope.product.category !== null) {
+                        for (var i = 0; i < $scope.categories.length; i++) {
+                            if ($scope.categories[i].id === $scope.product.category.id) {
+                                $scope.categoryAssigned = $scope.categories[i];
+                                break;
+                            }
                         }
+                    } else {
+                        $scope.noCategoryAssigned = true;
                     }
                 } else {
                     $scope.noCategoryAssigned = true;
@@ -98,7 +102,7 @@ angular.module('SquareMooseControllers')
         } else {
             $http({
                 method: "PUT",
-                data: $scope.product,
+                data: JSOG.encode($scope.product),
                 headers: {
                     "Authorization": localStorage.getItem("Authorization")
                 },
@@ -114,7 +118,6 @@ angular.module('SquareMooseControllers')
                 $scope.saveInProgress = false;
             });
         }
-
     };
 
     $scope.$watch('picsUrls', function(newValue, oldValue) {
@@ -129,7 +132,7 @@ angular.module('SquareMooseControllers')
 
                 $http({
                     method: "PUT",
-                    data: $scope.product,
+                    data: JSOG.encode($scope.product),
                     headers: {
                         "Authorization": localStorage.getItem("Authorization")
                     },

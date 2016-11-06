@@ -1,0 +1,84 @@
+﻿<ion-view view-title="Order details">
+    <ion-content>
+        <ion-spinner class="android-energized centered" ng-show="dataLoading"></ion-spinner>
+        <ion-list>
+            <div class="card">
+                <div class="item item-text-wrap">
+                    <h2 class="icon ion-ios-box-outline"> Ord. Number: <b>{{order.id}}</b></h2>
+                    <p class="icon ion-ios-compose-outline"> Created on: <b>{{order.addedOn | date:'M/d/yyyy HH:mm:ss'}}</b></p>
+                    <p class="icon ion-information"> Actual order status: <b>{{order.actualOrderState.name}}</b></p>
+                </div>
+                <div class="item item-divider">
+                    <i class="icon ion-ios-book"></i> Order state history:
+                </div>
+                <div class="item item-text-wrap" ng-repeat="historyState in order.actualOrderState.orderStateHistories track by $index">
+                    <p class="icon ion-information"> Actual order status: <b>{{historyState.name}}</b></p>
+                    <p class="icon ion-ios-compose-outline"> Created on: <b>{{historyState.lmod | date:'M/d/yyyy HH:mm:ss'}}</b></p>
+                    <p class="icon ion-information"> Description: <b>{{historyState.description}}</b></p>
+                </div>
+            </div>
+            <div class="item item-divider">
+                <i class="icon ion-ios-cart"></i> Ordered products
+            </div>
+            <ion-item class="item item-thumbnail-left" ng-repeat="item in order.orderItems track by $index" href="#/app/product/{{item.product.id}}">
+                <img ng-if="item.product.images[0].imageSrc" ng-src="{{item.product.images[0].imageSrc}}">
+                <h2>{{item.product.name}}</h2>
+                <p>{{item.product.description}}</p>
+                <p>Amount: {{item.amount}}</p>
+                <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount}} {{priceCurrency}}</p>
+                <ion-option-button class="button-positive" ng-click="share(item)">
+                    Share
+                </ion-option-button>
+            </ion-item>
+            <div class="item item-divider">
+                <i class="icon ion-home"></i> Delivery adress
+            </div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="text" placeholder="First Name" ng-model="order.deliveryAdress.name" name="name" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Last Name" ng-model="order.deliveryAdress.surname" name="surname" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Address" ng-model="order.deliveryAdress.address" name="address" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Zip-Code" ng-model="order.deliveryAdress.zipCode" name="zipCode" disabled>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Town" ng-model="order.deliveryAdress.town" name="town" disabled>
+                </label>
+
+                <label class="item item-input" ng-init="phoneRegex = '\\d{9}$'">
+                    <input ng-model="order.deliveryAdress.phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex" min="0" disabled>
+                </label>
+            </div>
+            <div class="item item-divider">
+                <i class="icon ion-ios-box"></i> Delivery type
+            </div>
+
+            <ion-radio ng-value="order.deliveryType.id" ng-disabled="true">
+                <a class="item item-avatar" href="#">
+                    <img ng-src="{{order.deliveryType.image}}">
+                    <h2>{{order.deliveryType.name}}</h2>
+                    <p>Price: {{order.deliveryType.price}} $</p>
+                    <p>Est. Delivery time: {{order.deliveryType.time}}</p>
+                </a>
+            </ion-radio>
+            <div class="item item-divider">
+                <i class="icon ion-social-usd"></i> Payment method
+            </div>
+            <div class="list radio-group">
+                <ion-radio ng-value="order.paymentMethod.id" ng-disabled="true">
+                    <i class="icon ion-card" ng-if="order.paymentMethod.name === 'Credit card'"></i>
+                    <i class="icon ion-cash" ng-if="order.paymentMethod.name === 'Cash'"></i>
+                    <i class="icon ion-social-usd-outline" ng-if="order.paymentMethod.name === 'Cash transfer'"></i> {{order.paymentMethod.name}}
+                </ion-radio>
+            </div>
+            <label class="item">
+                <button ng-click="backToMyOrders()" class="button icon-center ion-android-arrow-back button-block button-assertive"> Back to my orders</button>
+            </label>
+        </ion-list>
+    </ion-content>
+</ion-view>

@@ -10,4 +10,6 @@ import pl.bajtas.squaremoose.api.domain.DeliveryType;
  */
 public interface DeliveryTypeRepository extends CrudRepository<DeliveryType, Integer> {
     Page<DeliveryType> findAll(Pageable pageRequest);
+
+    DeliveryType findByName(String name);
 }

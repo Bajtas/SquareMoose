@@ -34,7 +34,7 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne( mappedBy = "order") //fetch = FetchType.EAGER,
+    @OneToOne( mappedBy = "order", fetch = FetchType.EAGER)
     private ActualOrderState actualOrderState;
     private float fullPrice;
     private int itemsAmount;
