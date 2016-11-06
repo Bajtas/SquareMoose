@@ -10,8 +10,10 @@
         $scope.dataLoading = true;
         $http.get($rootScope.apiUrl + 'DeliveryAdressService/deliveryadress/user/login/' + localStorage.getItem("UserLogin"))
             .then(function (response) {
-                $scope.deliveryAddress = JSOG.decode(response.data)[0];
-                $scope.deliveryAddress.contactPhone = parseInt($scope.deliveryAddress.contactPhone, 10);
+                if (response.data.length !== 0) {
+                    $scope.deliveryAddress = JSOG.decode(response.data)[0];
+                    $scope.deliveryAddress.contactPhone = parseInt($scope.deliveryAddress.contactPhone, 10);
+                }
                 $scope.dataLoading = false;
             }, function (response) {
                 alertsService.showDefaultAlert(response.data);
@@ -22,7 +24,7 @@
     $scope.updateDeliveryAddress = function () {
         $scope.dataLoading = true;
         $scope.deliveryAddress = JSOG.encode($scope.deliveryAddress);
-        if ($scope.deliveryAddress.id === null) {
+        if ($scope.deliveryAddress.id === null || $scope.deliveryAddress.id === undefined) {
             $http({
                 method: "POST",
                 headers: {

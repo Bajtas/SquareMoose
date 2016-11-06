@@ -64,13 +64,11 @@
     };
 
     this.countItems = function () {
-
         counter = 0;
         this.productsList.forEach(function (item) {
             counter += item.amount;
         });
         this.cartItemsAmount = counter;
-
     };
 
     this.recalculateTotalPrice = function (cart) {
