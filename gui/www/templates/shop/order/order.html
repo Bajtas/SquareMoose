@@ -26,7 +26,7 @@
                 <h2>{{item.product.name}}</h2>
                 <p>{{item.product.description}}</p>
                 <p>Amount: {{item.amount}}</p>
-                <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount}} {{priceCurrency}}</p>
+                <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount | number : 2}} {{priceCurrency}}</p>
                 <ion-option-button class="button-positive" ng-click="share(item)">
                     Share
                 </ion-option-button>
@@ -81,7 +81,7 @@
                     <span ng-show="orderForm.town.$touched && orderForm.town.$invalid">This field is required</span>
 
                     <label class="item item-input" ng-init="phoneRegex = '\\d{9}$'">
-                        <input ng-model="form.deliveryAdress.phone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex" min="0">
+                        <input ng-model="form.deliveryAdress.contactPhone" type="number" placeholder="Phone number" name="phone" ng-pattern="phoneRegex" min="0">
                     </label>
                     <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
                     <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>

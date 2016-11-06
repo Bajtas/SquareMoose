@@ -70,6 +70,7 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
                     default:
                         break;
                 }
+                getRepository().save(deliveryType);
             }
         }
     }

@@ -16,15 +16,12 @@ public class DeliveryType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @OneToMany(mappedBy = "deliveryType", fetch = FetchType.EAGER)
     private List<Order> orders;
-
     private String name;
-
     private double price;
-
     private String time;
+    private String imageSrc;
 
     public Integer getId() {
         return id;
@@ -64,6 +61,14 @@ public class DeliveryType {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 
     @Override

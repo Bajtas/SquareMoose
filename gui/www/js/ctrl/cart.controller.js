@@ -6,6 +6,7 @@
     $scope.priceCurrency = '$'; // Currency string
     $scope.cartItemsAmount = cartService.cartItemsAmount; // Items amount taken from CartService
     $scope.totalPrice = cartService.totalPrice; // Total price taken from CartService
+    $scope.toFixed = 
 
     $scope.$on('modal.shown', function () {
         $scope.productslist = cartService.cartProducts;
@@ -49,7 +50,7 @@
                 } else {
                     $rootScope.isLoggedIn = false;
                 }
-                $rootScope.user = response.data
+                $rootScope.user = JSOG.decode(response.data);
                 $rootScope.products = $scope.productslist;
 
                 $location.path("app/order");

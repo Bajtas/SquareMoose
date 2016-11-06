@@ -18,7 +18,7 @@
                 <p>{{product.description}}</p>
             </div>
             <div class="item item-divider">
-                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Price: {{product.price}} {{priceCurrency}}</h4>
+                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Price: {{product.price | number : 2}} {{priceCurrency}}</h4>
             </div>
             <div class="item item-text-wrap">
                 <label class="item item-input">
@@ -27,7 +27,7 @@
                 </label>
             </div>
             <div class="item item-divider">
-                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Total cost: {{cartCalcData.totalCost}} {{priceCurrency}}</h4>
+                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Total cost: {{product.price * cartCalcData.itemAmount | number : 2}} {{priceCurrency}}</h4>
             </div>
         </div>
 

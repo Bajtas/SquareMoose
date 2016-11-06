@@ -94,7 +94,8 @@ public class UserController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/login/{login}")
-    @RolesAllowed("User")
+    //@RolesAllowed("User")
+    @PermitAll
     public User getByLogin(@NotNull @PathParam("login") String login) {
         return getService().getByLogin(login);
     }

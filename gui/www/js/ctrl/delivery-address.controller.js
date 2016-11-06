@@ -24,6 +24,7 @@
     $scope.updateDeliveryAddress = function () {
         $scope.dataLoading = true;
         $scope.deliveryAddress = JSOG.encode($scope.deliveryAddress);
+        $scope.deliveryAddress.currentlyAssigned = true;
         if ($scope.deliveryAddress.id === null || $scope.deliveryAddress.id === undefined) {
             $http({
                 method: "POST",
