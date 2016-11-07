@@ -20,7 +20,8 @@ import java.util.List;
 @Controller
 @Path("/DeliveryAdressService")
 public class DeliveryAdressController {
-    @Autowired private DeliveryAdressService deliveryAdressService; // Product service bean for connection between controller and service layers
+    @Autowired
+    private DeliveryAdressService deliveryAdressService; // Product service bean for connection between controller and service layers
 
     private DeliveryAdressService getService() {
         return deliveryAdressService;
@@ -41,9 +42,9 @@ public class DeliveryAdressController {
     @Path("/deliveryadresses/page/{number}")
     @Transactional
     public Page<DeliveryAdress> getPage(@PathParam("number") Integer page,
-                                 @QueryParam("size") Integer size,
-                                 @QueryParam("sortBy") String sortBy,
-                                 @QueryParam("dir") String direction) {
+                                        @QueryParam("size") Integer size,
+                                        @QueryParam("sortBy") String sortBy,
+                                        @QueryParam("dir") String direction) {
         return getService().getAll(page, size, sortBy, direction);
     }
 
@@ -116,9 +117,9 @@ public class DeliveryAdressController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/unordered/page/{number}")
     public Page<DeliveryAdress> getByAdressWithOrderNull(@PathParam("number") Integer page,
-                                                            @QueryParam("size") Integer size,
-                                                            @QueryParam("sortBy") String sortBy,
-                                                            @QueryParam("dir") String direction) {
+                                                         @QueryParam("size") Integer size,
+                                                         @QueryParam("sortBy") String sortBy,
+                                                         @QueryParam("dir") String direction) {
         return getService().getByAdressWithOrderNull(page, size, sortBy, direction);
     }
 

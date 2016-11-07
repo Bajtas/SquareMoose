@@ -13,6 +13,8 @@ import java.util.List;
 public interface OrderItemRepository extends CrudRepository<OrderItem, Integer> {
 
     Page<OrderItem> findAll(Pageable pageRequest);
+
     List<OrderItem> findByOrder_Id(int id);
+
     List<OrderItem> findByOrder_User_Id(int id);
 }

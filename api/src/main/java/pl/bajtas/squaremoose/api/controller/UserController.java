@@ -8,7 +8,6 @@ import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.service.UserService;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;

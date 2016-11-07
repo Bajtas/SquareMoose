@@ -9,10 +9,16 @@ import javax.ws.rs.core.Response;
  */
 public interface GenericService<T, K> {
     K getRepository();
+
     Iterable<T> getAll();
+
     Page<T> getAll(Integer page, Integer size, String sortBy, String sortDirection);
+
     T getById(int id);
+
     Response add(T object);
+
     Response update(int id, T object);
+
     Response delete(int id);
 }

@@ -22,8 +22,10 @@ public class ProductImagesService implements ApplicationListener<ContextRefreshe
 
     private static final Logger LOG = Logger.getLogger(ProductImagesService.class);
 
-    @Autowired private ProductImagesRepository productImagesRepository;
-    @Autowired private ProductRepository productRepository;
+    @Autowired
+    private ProductImagesRepository productImagesRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public ProductImagesRepository getRepository() {
         return productImagesRepository;

@@ -2,11 +2,10 @@ package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class ActualOrderState {
     private String description;
     private Date lmod;
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     @Fetch(value = FetchMode.SELECT) // There is exception without this
     private Order order;
     @OneToMany(mappedBy = "actualOrderState", fetch = FetchType.EAGER)

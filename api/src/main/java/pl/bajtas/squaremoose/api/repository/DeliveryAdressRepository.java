@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Bajtas on 04.09.2016.
  */
-public interface DeliveryAdressRepository  extends CrudRepository<DeliveryAdress, Integer> {
+public interface DeliveryAdressRepository extends CrudRepository<DeliveryAdress, Integer> {
     /* Find by Product properties */
     // First method, by id is not needed
 //    Product findByName(String name);
@@ -42,19 +42,29 @@ public interface DeliveryAdressRepository  extends CrudRepository<DeliveryAdress
 //    long countDistinctByCategoryIsNull();
 
     Page<DeliveryAdress> findAll(Pageable pageable);
+
     Page<DeliveryAdress> findByOrdersIsNotNull(Pageable pageable);
+
     Page<DeliveryAdress> findByOrdersIsNull(Pageable pageable);
 
     List<DeliveryAdress> findByAddressContainsIgnoreCase(String address);
+
     List<DeliveryAdress> findByTownContainsIgnoreCase(String town);
+
     List<DeliveryAdress> findByZipCodeContainsIgnoreCase(String zipCode);
+
     List<DeliveryAdress> findByNameContainsIgnoreCase(String name);
+
     List<DeliveryAdress> findBySurnameContainsIgnoreCase(String surname);
+
     List<DeliveryAdress> findByContactPhoneContainsIgnoreCase(String phone);
 
     List<DeliveryAdress> findByOrders_Id(int id);
+
     List<DeliveryAdress> findByUsers_Id(int id);
+
     List<DeliveryAdress> findByUsers_Login(String login);
+
     List<DeliveryAdress> findByUsers_Email(String email);
 
 }

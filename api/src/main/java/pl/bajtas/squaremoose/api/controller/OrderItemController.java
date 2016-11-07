@@ -19,7 +19,8 @@ import java.util.List;
 @Path("/OrderItemService")
 public class OrderItemController {
 
-    @Autowired private OrderItemService orderItemService;
+    @Autowired
+    private OrderItemService orderItemService;
 
     private OrderItemService getService() {
         return orderItemService;

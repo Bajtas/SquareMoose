@@ -23,8 +23,10 @@ import java.util.List;
 public class OrderItemService implements GenericService<OrderItem, OrderItemRepository>, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = Logger.getLogger(OrderItemService.class);
 
-    @Autowired private OrderItemRepository orderItemRepository;
-    @Autowired private OrderRepository orderRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public OrderItemRepository getRepository() {

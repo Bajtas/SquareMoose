@@ -20,7 +20,8 @@ import javax.ws.rs.core.Response;
 @Path("/DeliveryTypeService")
 public class DeliveryTypeController {
 
-    @Autowired private DeliveryTypeService deliveryTypeService;
+    @Autowired
+    private DeliveryTypeService deliveryTypeService;
 
     private DeliveryTypeService getService() {
         return deliveryTypeService;

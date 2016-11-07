@@ -21,28 +21,26 @@ import java.util.*;
  * Created by Bajtas on 20.09.2016.
  */
 
-public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter{
-
-    @Context private ResourceInfo resourceInfo;
-    @Autowired private UserService userService;
+public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter {
 
     public static final String AUTHORIZATION_PROPERTY = "Authorization";
     public static final String AUTHENTICATION_SCHEME = "Basic";
-
     private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
             .entity("You cannot access this resource").build();
     private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
             .entity("Access blocked for all users !!").build();
+    @Context
+    private ResourceInfo resourceInfo;
+    @Autowired
+    private UserService userService;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         Method method = resourceInfo.getResourceMethod();
         //Access allowed for all
-        if(!method.isAnnotationPresent(PermitAll.class))
-        {
+        if (!method.isAnnotationPresent(PermitAll.class)) {
             //Access denied for all
-            if(method.isAnnotationPresent(DenyAll.class))
-            {
+            if (method.isAnnotationPresent(DenyAll.class)) {
                 requestContext.abortWith(ACCESS_FORBIDDEN);
                 return;
             }
@@ -54,8 +52,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
 
             //If no authorization information present; block access
-            if(authorization == null || authorization.isEmpty())
-            {
+            if (authorization == null || authorization.isEmpty()) {
                 requestContext.abortWith(ACCESS_DENIED);
                 return;
             }
@@ -78,14 +75,12 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
             }
 
             //Verify user access
-            if(method.isAnnotationPresent(RolesAllowed.class))
-            {
+            if (method.isAnnotationPresent(RolesAllowed.class)) {
                 RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
                 Set<String> rolesSet = new HashSet<>(Arrays.asList(rolesAnnotation.value()));
 
                 //Is user valid?
-                if( !userService.isUserAllowed(username, password, rolesSet))
-                {
+                if (!userService.isUserAllowed(username, password, rolesSet)) {
                     requestContext.abortWith(ACCESS_DENIED);
                 }
             }

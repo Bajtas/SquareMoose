@@ -19,9 +19,10 @@ import javax.ws.rs.core.Response;
 @Path("/PaymentMethodService")
 public class PaymentMethodController {
 
-    @Autowired PaymentMethodService paymentMethodService;
+    @Autowired
+    PaymentMethodService paymentMethodService;
 
-    private PaymentMethodService getService(){
+    private PaymentMethodService getService() {
         return paymentMethodService;
     }
 
@@ -37,9 +38,9 @@ public class PaymentMethodController {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/methods/page/{number}")
     public Page<PaymentMethod> getPage(@PathParam("number") Integer page,
-                               @QueryParam("size") Integer size,
-                               @QueryParam("sortBy") String sortBy,
-                               @QueryParam("dir") String direction) {
+                                       @QueryParam("size") Integer size,
+                                       @QueryParam("sortBy") String sortBy,
+                                       @QueryParam("dir") String direction) {
         return getService().getAll(page, size, sortBy, direction);
     }
 

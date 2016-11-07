@@ -2,8 +2,6 @@ package pl.bajtas.squaremoose.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -34,7 +32,7 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne( mappedBy = "order", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "order", fetch = FetchType.EAGER)
     private ActualOrderState actualOrderState;
     private float fullPrice;
     private int itemsAmount;

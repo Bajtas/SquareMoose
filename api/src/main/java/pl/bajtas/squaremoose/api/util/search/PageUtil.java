@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
  */
 public class PageUtil<T> {
     private static final Logger LOG = Logger.getLogger(PageUtil.class);
+
     public Page<T> getPage(Integer page, Integer size, String sortBy, String sortDirection, Object repository) {
         LOG.info("Getting page: " + page + " size: " + size + " sorted by: " + sortBy + " with sorting direction: " + sortDirection);
         Method method;
@@ -35,10 +36,9 @@ public class PageUtil<T> {
 
             if (!unsorted) {
                 direction = SearchUtil.determineSortDirection(sortDirection);
-                results = (Page<T>)method.invoke(repository, new PageRequest(page, size, direction, sortBy));
-            }
-            else
-                results = (Page<T>)method.invoke(repository, new PageRequest(page, size));
+                results = (Page<T>) method.invoke(repository, new PageRequest(page, size, direction, sortBy));
+            } else
+                results = (Page<T>) method.invoke(repository, new PageRequest(page, size));
         } catch (SecurityException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
             LOG.error("Error: ", ex);
         }

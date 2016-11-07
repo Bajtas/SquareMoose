@@ -18,7 +18,8 @@ public class OrderStateHistoryService {
     @Autowired
     private OrderStateHistoryRepository orderStateHistoryRepository;
     //@Autowired  private ProductRepository productRepository;
-    @Autowired  private EntityManager entityManager;
+    @Autowired
+    private EntityManager entityManager;
 
     public Iterable<OrderStateHistory> getAll() {
         return orderStateHistoryRepository.findAll();

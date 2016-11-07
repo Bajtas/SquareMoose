@@ -23,11 +23,11 @@ import java.util.List;
 @Service
 public class DeliveryTypeService implements GenericService<DeliveryType, DeliveryTypeRepository>, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = Logger.getLogger(DeliveryTypeService.class);
-
-    @Autowired private DeliveryTypeRepository deliveryTypeRepository;
-    @Autowired private OrderRepository orderRepository;
-
     private static final String[] DEFAULT_DELIVERY_TYPES = {"Recorded letter", "Economic letter", "Recorded delivery", "Special delivery", "Post office box", "Courier parcel"};
+    @Autowired
+    private DeliveryTypeRepository deliveryTypeRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public DeliveryTypeRepository getRepository() {

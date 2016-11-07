@@ -14,7 +14,6 @@ import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -24,13 +23,20 @@ import java.util.stream.Collectors;
 public class OrderService implements GenericService<Order, OrderRepository>, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = Logger.getLogger(OrderService.class);
 
-    @Autowired private OrderRepository orderRepository;
-    @Autowired private OrderItemRepository orderItemRepository;
-    @Autowired private DeliveryTypeRepository deliveryTypeRepository;
-    @Autowired private DeliveryAdressRepository deliveryAdressRepository;
-    @Autowired private OrderStateHistoryRepository orderStateHistoryRepository;
-    @Autowired private ActualOrderStateRepository actualOrderStateRepository;
-    @Autowired private UserRepository userRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private DeliveryTypeRepository deliveryTypeRepository;
+    @Autowired
+    private DeliveryAdressRepository deliveryAdressRepository;
+    @Autowired
+    private OrderStateHistoryRepository orderStateHistoryRepository;
+    @Autowired
+    private ActualOrderStateRepository actualOrderStateRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -187,7 +193,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
                     }
                 }
                 ActualOrderState actualOrderState = order.getActualOrderState();
-                if (actualOrderState != null ) {
+                if (actualOrderState != null) {
                     actualOrderState.setOrder(null);
                     actualOrderStateRepository.save(actualOrderState);
                 }

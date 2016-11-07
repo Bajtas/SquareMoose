@@ -44,8 +44,8 @@ public class RestClasses {
     private List<String> getAllClasses(ClassToRegisterEnum classType) {
         showInfo(classType);
 
-        List<String> classesToRegister = new ArrayList<String>();
-        List<Field> sortedFields = new ArrayList<Field>();
+        List<String> classesToRegister = new ArrayList<>();
+        List<Field> sortedFields = new ArrayList<>();
 
         try {
             LOG.info("Obtain all fields from this class.");

@@ -8,16 +8,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import pl.bajtas.squaremoose.api.domain.ActualOrderState;
 import pl.bajtas.squaremoose.api.domain.Order;
-//import pl.bajtas.squaremoose.api.domain.OrderState;
 import pl.bajtas.squaremoose.api.domain.OrderStateHistory;
-import pl.bajtas.squaremoose.api.repository.*;
+import pl.bajtas.squaremoose.api.repository.ActualOrderStateRepository;
+import pl.bajtas.squaremoose.api.repository.OrderRepository;
+import pl.bajtas.squaremoose.api.repository.OrderStateHistoryRepository;
+import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+//import pl.bajtas.squaremoose.api.domain.OrderState;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -26,10 +28,14 @@ import java.util.Set;
 public class ActualOrderStateService implements GenericService<ActualOrderState, ActualOrderStateRepository>, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = Logger.getLogger(ActualOrderStateService.class);
 
-    @Autowired private ActualOrderStateRepository actualOrderStateRepository;
-    @Autowired private ProductRepository productRepository;
-    @Autowired private OrderRepository orderRepository;
-    @Autowired private OrderStateHistoryRepository orderStateHistoryRepository;
+    @Autowired
+    private ActualOrderStateRepository actualOrderStateRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private OrderStateHistoryRepository orderStateHistoryRepository;
     //@Autowired private OrderStateRepository orderStateRepository;
 
     // Events
@@ -142,8 +148,7 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
         if (actualOrderState != null) {
             try {
                 Order order = actualOrderState.getOrder();
-                if (order != null)
-                {
+                if (order != null) {
                     order.setActualOrderState(null);
                     orderRepository.save(order);
                 }

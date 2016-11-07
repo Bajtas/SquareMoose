@@ -8,8 +8,8 @@ import java.util.Date;
  * Created by Bajtas on 05.10.2016.
  */
 public class BListComparator implements Comparator<Object> {
-    private String sortBy;
-    private String sortOrder;
+    private final String sortBy;
+    private final String sortOrder;
 
     public BListComparator(String sortBy, String sortOrder) {
         this.sortBy = sortBy.toLowerCase();

@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface UserRoleRepository extends CrudRepository<UserRole, Integer> {
     UserRole findByName(String name);
+
     List<UserRole> findByNameContainsIgnoreCase(String name);
 
     List<UserRole> findByUsers_LoginContainsIgnoreCase(String name);

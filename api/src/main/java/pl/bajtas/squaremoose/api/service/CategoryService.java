@@ -25,8 +25,10 @@ import java.util.List;
 public class CategoryService implements GenericService<Category, CategoryRepository>, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = Logger.getLogger(CategoryService.class);
 
-    @Autowired private CategoryRepository categoryRepository;
-    @Autowired private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public CategoryRepository getRepository() {
         return categoryRepository;
@@ -71,7 +73,7 @@ public class CategoryService implements GenericService<Category, CategoryReposit
         LOG.info("Getting stats for all Categories.");
 
         Iterable<Category> allCategories = categoryRepository.findAll(); // Get all categories from DB
-        List<CategoryStats> results = new ArrayList<CategoryStats>(); // New empty array for results
+        List<CategoryStats> results = new ArrayList<>(); // New empty array for results
         for (Category category : allCategories) {
             CategoryStats stats = new CategoryStats(); // Create new CategoryStats obj
             stats.setName(category.getName()); // populate it

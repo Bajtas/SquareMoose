@@ -29,8 +29,10 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
 
     private static final Logger LOG = Logger.getLogger(DeliveryAdressService.class);
 
-    @Autowired  private DeliveryAdressRepository deliveryAdressRepository;
-    @Autowired  private UserRepository userRepository;
+    @Autowired
+    private DeliveryAdressRepository deliveryAdressRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -98,8 +100,7 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
             direction = SearchUtil.determineSortDirection(sortDirection);
 
             result = getRepository().findByOrdersIsNotNull(new PageRequest(page, size, direction, sortBy));
-        }
-        else
+        } else
             result = getRepository().findByOrdersIsNotNull(new PageRequest(page, size));
 
         return result;
@@ -121,8 +122,7 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
             direction = SearchUtil.determineSortDirection(sortDirection);
 
             result = getRepository().findByOrdersIsNull(new PageRequest(page, size, direction, sortBy));
-        }
-        else
+        } else
             result = getRepository().findByOrdersIsNull(new PageRequest(page, size));
 
         return result;
@@ -137,8 +137,7 @@ public class DeliveryAdressService implements GenericService<DeliveryAdress, Del
     }
 
     public List<DeliveryAdress> getByUserLogin(String login) {
-        List<DeliveryAdress> addressRelatedToUser = getRepository().findByUsers_Login(login).stream().distinct().collect(Collectors.toList());
-        return addressRelatedToUser;
+        return getRepository().findByUsers_Login(login).stream().distinct().collect(Collectors.toList());
     }
 
     public List<DeliveryAdress> getByUserEmail(String email) {

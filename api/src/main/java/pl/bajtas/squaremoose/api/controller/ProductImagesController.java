@@ -88,7 +88,7 @@ public class ProductImagesController {
     @Path("/images/search")
     public List<ProductImage> getByAllProperties(
             @QueryParam("productId") Integer productId,
-           @QueryParam("productName") String productName) {
+            @QueryParam("productName") String productName) {
         return productImagesService.searchProductImage(productId, productName);
     }
 
@@ -111,13 +111,13 @@ public class ProductImagesController {
     }
 
     @PermitAll
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = "multipart/form-data" ,
-            produces = { "application/json", "application/xml" })
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = "multipart/form-data",
+            produces = {"application/json", "application/xml"})
     public String upload(@RequestParam("file") MultipartFile file) {
         String response = "ts";
         try {
             if (file.isEmpty()) {
-                response ="Failed to store empty file " + file.getOriginalFilename();
+                response = "Failed to store empty file " + file.getOriginalFilename();
             }
             Files.copy(file.getInputStream(), Paths.get(file.getOriginalFilename()), REPLACE_EXISTING);
         } catch (IOException e) {

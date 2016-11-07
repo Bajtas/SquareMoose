@@ -170,7 +170,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         final String password = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
 
         //Is user valid?
-        if (!isUserValid(username, password) && username.equals(newUser.getLogin()))
+        if (!isUserValid(username, password) && (username != null ? username.equals(newUser.getLogin()) : false))
             return Response.status(Response.Status.FORBIDDEN).entity("Access denied!").build();
 
         String login = newUser.getLogin(); // get login to find user for update
