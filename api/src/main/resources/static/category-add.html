@@ -1,0 +1,30 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" ng-show="saveInProgress">
+        <span us-spinner="{radius:30, width:8, length: 16}"></span>
+    </div>
+    <div class="col_12" ng-hide="error || saveInProgress">
+        <h5>Add category:</h5>
+        <div class="separator"></div>
+        <div class="col_4">
+
+        </div>
+        <div class="col_8">
+            <div class="notice success" ng-show="showInfo">
+                <i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}
+                <a href="#close" class="icon-remove"></a>
+            </div>
+            <form class="vertical">
+                <label for="name">Category name:</label>
+                <input id="name" type="text" ng-model="category.name">
+
+                <div class="col_12">
+                    <button type="submit" ng-click="addCategory()">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -238,9 +238,9 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
                 old.setLmod(new Date());
 
                 productRepository.save(old);
-                return Response.status(Response.Status.OK).entity("Category with id: " + id + " updated successfully!").build();
+                return Response.status(Response.Status.OK).entity("Product with id: " + id + " updated successfully!").build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Category with given id: " + id + " not found!").build();
+                return Response.status(Response.Status.BAD_REQUEST).entity("Product with given id: " + id + " not found!").build();
             }
         } catch (Exception e) {
             LOG.error("Error occured when saved: ", e);

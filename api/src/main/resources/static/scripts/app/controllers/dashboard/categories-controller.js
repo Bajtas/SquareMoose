@@ -85,7 +85,7 @@ angular.module('SquareMooseControllers')
         }
     };
 
-    $scope.deleteProduct = function(categoryId) {
+    $scope.deleteCategory = function(categoryId) {
         $http.delete($rootScope.apiUrl + '/CategoryService/category/' + categoryId + '/delete')
             .then(function(response) {
                 $scope.init();
@@ -95,7 +95,7 @@ angular.module('SquareMooseControllers')
             });
     };
 
-    $scope.modifyProduct = function() {
-        $state.go('app.category-details');
+    $scope.addCategory = function() {
+        $state.go('category-add');
     };
 });

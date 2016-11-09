@@ -18,13 +18,13 @@
     <ui-view></ui-view>
 
     <!-- SCRIPTS -->
+    <script type="text/javascript" src="../scripts/lib/underscore-min.js"></script>
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <!-- KICKSTART -->
     <script type="text/javascript" src="../scripts/lib/kickstart.js"></script>
     <!-- AngularJS -->
     <script type="text/javascript" src="../scripts/lib/angular.min.js"></script>
-    <!--<script type="text/javascript" src="../scripts/lib/angular-route.min.js"></script>-->
     <script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="../scripts/lib/angular-base64.min.js"></script>
     <script type="text/javascript" src="../scripts/lib/ng-file-upload.min.js"></script>
@@ -32,8 +32,8 @@
     <script type="text/javascript" src="../scripts/lib/angular-spinner.min.js"></script>
     <script type="text/javascript" src="../scripts/lib/JSOG.js"></script>
     <script type="text/javascript" src="../scripts/lib/angularSlideables.js"></script>
+    <script type="text/javascript" src="../scripts/lib/ng-map.min.js"></script>
 
-    <script src='https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCeHPra3cXS_2zKOK5TS34qdy5e2O3W4WQ'></script>
     <!-- SquareMoose -->
     <script type="text/javascript" src="../scripts/app/controllers/app-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/menu-controller.js"></script>
@@ -43,10 +43,15 @@
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/product-details-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/categories-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/category-details-controller.js"></script>
+    <script type="text/javascript" src="../scripts/app/controllers/dashboard/category-add-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/product-add-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/orders-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/order-details-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/app.js"></script>
+
+    <!-- Other scripts -->
+    <!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCeHPra3cXS_2zKOK5TS34qdy5e2O3W4WQ&libraries=placeses,visualization,drawing,geometry,places"></script>-->
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCeHPra3cXS_2zKOK5TS34qdy5e2O3W4WQ&libraries=placeses,visualization,drawing,geometry,places"></script>
 </body>
 
 </html>

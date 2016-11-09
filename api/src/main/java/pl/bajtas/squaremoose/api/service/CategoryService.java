@@ -1,5 +1,6 @@
 package pl.bajtas.squaremoose.api.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -105,10 +106,10 @@ public class CategoryService implements GenericService<Category, CategoryReposit
     /* Returns info about saving or updating Category */
     @Override
     public Response add(Category category) {
-        LOG.info("Trying to save category: " + category.getName() + category.getId());
+        LOG.info("Trying to save category: " + category.getName());
 
-        if (isCategoryExists(category.getId())) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category with id: " + category.getId() + " already exist.").build();
+        if (isCategoryExists(category.getName())) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Error: Category with name: " + category.getName() + " already exist.").build();
         }
 
         try {
@@ -171,7 +172,7 @@ public class CategoryService implements GenericService<Category, CategoryReposit
     }
 
     /* Util method, to check if Category with given Id exist. */
-    private boolean isCategoryExists(Integer id) {
-        return id != null && getRepository().findOne(id) != null;
+    private boolean isCategoryExists(String name) {
+        return StringUtils.isNotEmpty(name) && StringUtils.isNotBlank(name) != null && productRepository.findByName(name) != null;
     }
 }

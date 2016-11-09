@@ -61,37 +61,31 @@
                     </tr>
                     <tr>
                         <td value="Show on map">
-                            <button class="medium green"><i class="fa fa-map" aria-hidden="true"></i> Show on map</button>
+                            <button class="medium green" ng-model="showMap" ng-click="showMap = !showMap" ng-init="showMap = false"><i class="fa fa-map" aria-hidden="true"></i> Show on map</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <div id="gmap_canvas" style="height:400px;width:520px;"></div>
-                <style>#gmap_canvas img{max-width:none!important;background:none!important}</style>
-            </div>
-            <script type='text/javascript'>
-                    function init_map() {
-                    var myOptions = {
-                        zoom: 12,
-                        center: new google.maps.LatLng(49.9370052753317, 22.00884391250609),
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
-                    marker = new google.maps.Marker({
-                        map: map,
-                        position: new google.maps.LatLng(49.9370052753317, 22.00884391250609)
-                    });
-                    infowindow = new google.maps.InfoWindow({
-                        content: '<strong></strong><br><br> Tyczyn<br>'
-                    });
-                    google.maps.event.addListener(marker, 'click', function() {
-                        infowindow.open(map, marker);
-                    });
-                    infowindow.open(map, marker);
-                }
-                google.maps.event.addDomListener(window, 'load', init_map);
-        </script>
+
+            <ng-map default-style="true" center="{{map}}" zoom="16" ng-if="showMap">
+                <marker position="{{map}}"
+                        title="You are here"
+                        animation="Animation.BOUNCE"
+                        centered="true"
+                        id="bjts_marker"></marker>
+
+                <info-window id="bjts_info_window" visible-on-marker="bjts_marker">
+                    <div ng-non-bindable>
+                        <div id="bodyContent">
+                            <p><b>Name and surname</b>: {{order.deliveryAdress.name}} {{order.deliveryAdress.surname}}</p>
+                            <p><b>Address</b>: {{order.deliveryAdress.address}}</p>
+                            <p><b>Town</b>: {{order.deliveryAdress.town}}</p>
+                            <p><b>Zip code</b>: {{order.deliveryAdress.zipCode}}</p>
+                            <p><b>Contact phone</b>: {{order.deliveryAdress.contactPhone}}</p>
+                        </div>
+                    </div>
+                </info-window>
+            </ng-map>
         </div>
         <div class="col_6">
             <h6>Ordered items: </h6>
@@ -114,9 +108,9 @@
                             <a href="#/product-details/{{item.product.id}}">{{item.product.name}}</a>
                         </td>
                         <td value="{{item.product.category.name}}">{{item.product.category.name}}</td>
-                        <td value="{{item.product.category.name}}">{{item.product.price}}</td>
+                        <td value="{{item.product.category.name}}">{{item.product.price | number : 2}}</td>
                         <td value="{{item.amount}}">{{item.amount}}</td>
-                        <td value="Total">{{item.amount * item.product.price}}</td>
+                        <td value="Total">{{(item.amount * item.product.price) | number : 2}}</td>
                         <td value="">
                             <a href="#/order-details/{{order.id}}"><i class="fa fa-pencil"></i></a>
                             <a href="" ng-click="deleteOrderItem(item.id)"><i class="fa fa-minus-square"></i></a>
@@ -126,7 +120,7 @@
             </table>
             <h6>Sum up: </h6>
             <p><b>&nbsp;&nbsp;&nbsp;Items amount</b>: {{order.itemsAmount}}</p>
-            <p><b>&nbsp;&nbsp;&nbsp;Total price:</b> {{order.fullPrice}}</p>
+            <p><b>&nbsp;&nbsp;&nbsp;Total price:</b> {{order.fullPrice | number : 2}}</p>
         </div>
         <div class="col_12">
             <div class="separator"></div>

@@ -127,6 +127,14 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
             order.setAddedOn(new Date());
             order.setLmod(new Date());
 
+            ActualOrderState actualOrderState = new ActualOrderState();
+            actualOrderState.setName("Ordered");
+            actualOrderState.setLmod(new Date());
+            actualOrderState.setOrder(order);
+
+            actualOrderStateRepository.save(actualOrderState);
+
+            order.setActualOrderState(actualOrderState);
             getRepository().save(order);
 
             for (OrderItem item : orderItems) {

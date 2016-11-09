@@ -1,6 +1,6 @@
 angular.module('SquareMooseControllers')
 
-.controller('OrderDetailsCtrl', function($scope, $rootScope, $http, $state, $base64, $stateParams, $location, Upload) {
+.controller('OrderDetailsCtrl', function($scope, $rootScope, $http, $state, $base64, $stateParams, $location, Upload, GeoCoder) {
     $scope.error = false;
     $scope.selectedCategory = {};
     $scope.files = [];
@@ -13,10 +13,15 @@ angular.module('SquareMooseControllers')
         var orderUrl = $rootScope.apiUrl + '/OrderService/order/' + $stateParams.orderId;
         var categoriesUrl = $rootScope.apiUrl + '/CategoryService/categories';
 
+        GeoCoder.geocode({address: 'the cn tower'}).then(function(result) {
+            console.log(result);
+          });
+
         $http.get(orderUrl)
             .then(function(response) {
                 $scope.order = JSOG.decode(response.data);
                 $scope.loadingInProgress = false;
+                $scope.map = $scope.order.deliveryAdress.address + ',' + $scope.order.deliveryAdress.town;
             }, function(response) {
                 $scope.error = true;
                 $scope.errMsg = response.data;

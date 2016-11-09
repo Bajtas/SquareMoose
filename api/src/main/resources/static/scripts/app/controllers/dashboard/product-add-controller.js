@@ -71,7 +71,7 @@ angular.module('SquareMooseControllers')
             });
         } else {
             $http({
-                method: "PUT",
+                method: "POST",
                 data: $scope.product,
                 headers: {
                     "Authorization": localStorage.getItem("Authorization")

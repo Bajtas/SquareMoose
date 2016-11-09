@@ -33,7 +33,7 @@ angular.module('SquareMooseControllers')
             .then(function(response) {
                 if (response.data !== 0) {
                     $scope.categories = JSOG.decode(response.data);
-                    if ($scope.product.category !== null) {
+                    if ($scope.product !== null && $scope.product.category !== null) {
                         for (var i = 0; i < $scope.categories.length; i++) {
                             if ($scope.categories[i].id === $scope.product.category.id) {
                                 $scope.categoryAssigned = $scope.categories[i];

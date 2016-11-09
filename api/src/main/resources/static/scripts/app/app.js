@@ -1,5 +1,5 @@
 var app = angular.module("SquareMooseDashboard", ["ui.router", "base64", "SquareMooseControllers",
-    "ngFileUpload", "angularSpinner", "angularSlideables"
+    "ngFileUpload", "angularSpinner", "angularSlideables", "ngMap"
 ]);
 
 app.run(function($rootScope) {
@@ -51,6 +51,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/category-details/:categoryId",
             templateUrl: '../category-details.html',
             controller: 'CategoryDetailsCtrl'
+        })
+        .state('category-add', {
+            url: "/category-add",
+            templateUrl: '../category-add.html',
+            controller: 'CategoryAddCtrl'
         })
         .state('orders', {
             url: "/orders",
