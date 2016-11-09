@@ -173,6 +173,6 @@ public class CategoryService implements GenericService<Category, CategoryReposit
 
     /* Util method, to check if Category with given Id exist. */
     private boolean isCategoryExists(String name) {
-        return StringUtils.isNotEmpty(name) && StringUtils.isNotBlank(name) != null && productRepository.findByName(name) != null;
+        return StringUtils.isNotEmpty(name) && StringUtils.isNotBlank(name) && productRepository.findByName(name) != null;
     }
 }
