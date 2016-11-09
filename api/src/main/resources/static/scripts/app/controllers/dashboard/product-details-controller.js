@@ -22,30 +22,30 @@ angular.module('SquareMooseControllers')
 
                 if ($scope.mainImage === 'undefined')
                     $scope.mainImage = noPicUrl;
-                $scope.loadingInProgress = false;
-            }, function(response) {
-                $scope.error = true;
-                $scope.errMsg = response.data;
-                $scope.loadingInProgress = false;
-            });
 
-        $http.get(categoriesUrl)
-            .then(function(response) {
-                if (response.data !== 0) {
-                    $scope.categories = JSOG.decode(response.data);
-                    if ($scope.product !== null && $scope.product.category !== null) {
-                        for (var i = 0; i < $scope.categories.length; i++) {
-                            if ($scope.categories[i].id === $scope.product.category.id) {
-                                $scope.categoryAssigned = $scope.categories[i];
-                                break;
+                $http.get(categoriesUrl)
+                    .then(function(response) {
+                        if (response.data !== 0) {
+                            $scope.categories = JSOG.decode(response.data);
+                            if ($scope.product !== null && $scope.product.category !== null) {
+                                for (var i = 0; i < $scope.categories.length; i++) {
+                                    if ($scope.categories[i].id === $scope.product.category.id) {
+                                        $scope.categoryAssigned = $scope.categories[i];
+                                        break;
+                                    }
+                                }
+                            } else {
+                                $scope.noCategoryAssigned = true;
                             }
+                        } else {
+                            $scope.noCategoryAssigned = true;
                         }
-                    } else {
-                        $scope.noCategoryAssigned = true;
-                    }
-                } else {
-                    $scope.noCategoryAssigned = true;
-                }
+                    }, function(response) {
+                        $scope.error = true;
+                        $scope.errMsg = response.data;
+                        $scope.loadingInProgress = false;
+                    });
+                $scope.loadingInProgress = false;
             }, function(response) {
                 $scope.error = true;
                 $scope.errMsg = response.data;

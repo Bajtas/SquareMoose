@@ -12,7 +12,7 @@ angular.module('SquareMooseControllers')
     $scope.addCategory = function() {
         $http({
             method: "POST",
-            data: $scope.product,
+            data: $scope.category,
             headers: {
                 "Authorization": localStorage.getItem("Authorization")
             },

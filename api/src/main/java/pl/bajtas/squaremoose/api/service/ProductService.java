@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -79,7 +80,10 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
 
     @Transactional
     public Product getById(int id) {
-        return getRepository().findDistinctById(id);
+        Product product = getRepository().findDistinctById(id);
+        product.setImages(product.getImages().stream().distinct().collect(Collectors.toList()));
+        product.getCategory().setProducts(product.getCategory().getProducts().stream().distinct().collect(Collectors.toList()));
+        return product;
     }
 
     @Transactional

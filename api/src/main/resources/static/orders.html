@@ -25,8 +25,20 @@
                         {{$index+1}}. {{item.product.name}} - quantity:  {{item.amount}}
                     </p>
                 </td>
-                <td value="{{order.deliveryType.name}}">{{order.deliveryType.name}}</td>
-                <td value="{{order.paymentMethod.name}}">{{order.paymentMethod.name}}</td>
+                <td value="{{order.deliveryType.name}}">
+                    <i class="fa fa-archive" aria-hidden="true" ng-if="order.deliveryType.name === 'Post office box'"></i>
+                    <i class="fa fa-fighter-jet" aria-hidden="true" ng-if="order.deliveryType.name === 'Special delivery'"></i>
+                    <i class="fa fa-truck" aria-hidden="true" ng-if="order.deliveryType.name === 'Courier parcel'"></i>
+                    <i class="fa fa-envelope" aria-hidden="true" ng-if="order.deliveryType.name === 'Economic letter'"></i>
+                    <i class="fa fa-video-camera" aria-hidden="true" ng-if="order.deliveryType.name === 'Recorded delivery'"></i>
+                    {{order.deliveryType.name}}</td>
+                <td value="{{order.paymentMethod.name}}">
+                    <i class="fa fa-credit-card" aria-hidden="true" ng-if="order.paymentMethod.name === 'Credit card'"></i>
+                    <i class="fa fa-money" aria-hidden="true" ng-if="order.paymentMethod.name === 'Cash'"></i>
+                    <i class="fa fa-exchange" aria-hidden="true" ng-if="order.paymentMethod.name === 'Cash transfer'"></i>
+                    <i class="fa fa-paypal" aria-hidden="true" ng-if="order.paymentMethod.name === 'PayPal'"></i>
+                    {{order.paymentMethod.name}}
+                </td>
                 <td value="{{order.addedOn}}">{{order.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
                 <td value="{{order.lmod}}">{{order.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
                 <td value="">
