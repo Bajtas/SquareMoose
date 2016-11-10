@@ -36,7 +36,6 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
     private OrderRepository orderRepository;
     @Autowired
     private OrderStateHistoryRepository orderStateHistoryRepository;
-    //@Autowired private OrderStateRepository orderStateRepository;
 
     // Events
     @Override

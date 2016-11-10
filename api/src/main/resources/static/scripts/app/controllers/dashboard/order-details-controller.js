@@ -8,6 +8,9 @@ angular.module('SquareMooseControllers')
     $scope.showInfo = false;
     $scope.saveInProgress = false;
     $scope.loadingInProgress = true;
+    $scope.orderStates = [  {"state": "New"}, {"state": "Confirmed by user"}, {"state": "Accepted by shop"},
+    {"state": "Payment confirmed"}, {"state": "Preparing to delivery"}, {"state": "Prepared to delivery"},
+    {"state": "Sent to buyer"}, {"state": "Delivered"}];
 
     $scope.$on('$viewContentLoaded', function() {
         var orderUrl = $rootScope.apiUrl + '/OrderService/order/' + $stateParams.orderId;

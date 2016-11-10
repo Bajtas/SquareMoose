@@ -8,7 +8,7 @@
                 <img ng-src="{{product.images.length === 0 ? '../img/noimagefound.jpg': product.images[0].imageSrc}}">
                 <h2>{{product.name}}</h2>
                 <p>{{product.description}}</p>
-                <p class="icon ion-ios-pricetags"> {{product.price}} {{priceCurrency}}</p>
+                <p class="icon ion-ios-pricetags"> {{product.price | number : 2}} {{priceCurrency}}</p>
             </ion-item>
         </ion-list>
         <ion-infinite-scroll on-infinite="loadMore()"

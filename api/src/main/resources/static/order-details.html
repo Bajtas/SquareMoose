@@ -121,6 +121,42 @@
             <h6>Sum up: </h6>
             <p><b>&nbsp;&nbsp;&nbsp;Items amount</b>: {{order.itemsAmount}}</p>
             <p><b>&nbsp;&nbsp;&nbsp;Total price:</b> {{order.fullPrice | number : 2}}</p>
+            <p></p>
+            <label for="select1">Actual order state:</label>
+            <select id="select1"
+                    ng-model="actualOrderState"
+                    ng-options="s.state for s in orderStates">
+            </select>
+                <button type="submit" ng-click="changeStatus()"> Update status</button>
+
+            <h6>Order states history: </h6>
+            <table class="striped sortable" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr class="alt first last">
+                    <th rel="0" value="Id">Lp.<span class="arrow"></span></th>
+                    <th rel="1" value="Name">Name</th>
+                    <th rel="2" value="Category">Category</th>
+                    <th rel="3" value="Price">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="" ng-repeat="item in order.orderItems track by $index">
+                    <td value="Lp">{{$index + 1}}</td>
+                    <td value="{{item.product.name}}">
+                        <a href="#/product-details/{{item.product.id}}">{{item.product.name}}</a>
+                    </td>
+                    <td value="{{item.product.category.name}}">{{item.product.category.name}}</td>
+                    <td value="{{item.product.category.name}}">{{item.product.price | number : 2}}</td>
+                    <td value="{{item.amount}}">{{item.amount}}</td>
+                    <td value="Total">{{(item.amount * item.product.price) | number : 2}}</td>
+                    <td value="">
+                        <a href="#/order-details/{{order.id}}"><i class="fa fa-pencil"></i></a>
+                        <a href="" ng-click="deleteOrderItem(item.id)"><i class="fa fa-minus-square"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
         </div>
         <div class="col_12">
             <div class="separator"></div>
