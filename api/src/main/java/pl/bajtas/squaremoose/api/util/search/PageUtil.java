@@ -27,7 +27,7 @@ public class PageUtil<T> {
             page = 0;
         if (size == null)
             size = 20;
-        if (StringUtils.isEmpty(sortBy) || sortBy == null)
+        if (StringUtils.isEmpty(sortBy))
             unsorted = true;
 
         Page<T> results = null;
@@ -37,8 +37,9 @@ public class PageUtil<T> {
             if (!unsorted) {
                 direction = SearchUtil.determineSortDirection(sortDirection);
                 results = (Page<T>) method.invoke(repository, new PageRequest(page, size, direction, sortBy));
-            } else
+            } else {
                 results = (Page<T>) method.invoke(repository, new PageRequest(page, size));
+            }
         } catch (SecurityException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
             LOG.error("Error: ", ex);
         }

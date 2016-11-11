@@ -27,4 +27,6 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Order findDistinctById(int id);
 
     Order findByIdAndUser_Login(int id, String login);
+
+    Order findByActualOrderState_Id(Integer id);
 }

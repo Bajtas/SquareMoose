@@ -56,14 +56,22 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
     @Override
     public Page<Order> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
         PageUtil<Order> util = new PageUtil<>();
-        return util.getPage(page, size, sortBy, sortDirection, getRepository());
+        Page<Order> result = util.getPage(page, size, sortBy, sortDirection, getRepository());
+        List<Order> notDistinctResult = result.getContent();
+
+        for (Order order : notDistinctResult) {
+            order.setOrderItems(order.getOrderItems().stream().distinct().collect(Collectors.toList()));
+        }
+        return result;
     }
 
     @Override
     public Order getById(int id) {
-        Order order = getRepository().findDistinctById(id);
+        Order order = getRepository().findOne(id);
         List<OrderItem> distinctOrderItems = order.getOrderItems().stream().distinct().collect(Collectors.toList());
         order.setOrderItems(distinctOrderItems);
+        List<OrderStateHistory> distinctOrderStateHistory = order.getActualOrderState().getOrderStateHistories().stream().distinct().collect(Collectors.toList());
+        order.getActualOrderState().setOrderStateHistories(distinctOrderStateHistory);
         return order;
     }
 

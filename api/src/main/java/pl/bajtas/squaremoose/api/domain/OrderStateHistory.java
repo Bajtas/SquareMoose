@@ -74,7 +74,7 @@ public class OrderStateHistory {
         return actualOrderState;
     }
 
-    public void setActualOrderState(ActualOrderState actualOrderStates) {
+    public void setActualOrderState(ActualOrderState actualOrderState) {
         this.actualOrderState = actualOrderState;
     }
 

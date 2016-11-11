@@ -17,6 +17,7 @@ import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 //import pl.bajtas.squaremoose.api.domain.OrderState;
@@ -91,16 +92,31 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
     // Add new ActualOrderState to DB
     @Override
     public Response add(ActualOrderState actualOrderState) {
-        List<OrderStateHistory> orderStateHistories = actualOrderState.getOrderStateHistories();
-        //OrderState state = actualOrderState.getOrderState();
         try {
-            if (orderStateHistories != null) {
-                for (OrderStateHistory history : orderStateHistories) {
-                    orderStateHistoryRepository.save(history);
-                }
-                actualOrderState.setOrderStateHistories(orderStateHistories);
+            Order order = orderRepository.findOne(actualOrderState.getOrder().getId());
+            if (order.getActualOrderState() == null) {
+                actualOrderState.setOrder(order);
+                actualOrderState.setLmod(new Date());
+                actualOrderState.setDescription("");
+            } else {
+                OrderStateHistory oldState = new OrderStateHistory();
+                oldState.setActualOrderState(order.getActualOrderState());
+                oldState.setDescription("");
+                oldState.setLmod(order.getActualOrderState().getLmod());
+                oldState.setName(order.getActualOrderState().getName());
+                orderStateHistoryRepository.save(oldState);
+
+                order.getActualOrderState().setName(actualOrderState.getName());
+                order.getActualOrderState().setLmod(new Date());
+                order.getActualOrderState().getOrderStateHistories().add(oldState);
+                getRepository().save(order.getActualOrderState());
+
+                actualOrderState = order.getActualOrderState();
             }
-            getRepository().save(actualOrderState);
+
+            order.setActualOrderState(actualOrderState);
+            order.setLmod(new Date());
+            orderRepository.save(order);
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
