@@ -140,8 +140,7 @@
                     <td value="{{item.name}}">{{item.name}}</td>
                     <td value="{{item.lmod}}">{{item.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
                     <td value="">
-                        <a href="#/order-details/{{order.id}}"><i class="fa fa-pencil"></i></a>
-                        <a href="" ng-click="deleteOrderItem(item.id)"><i class="fa fa-minus-square"></i></a>
+                        <a href="" ng-click="deleteOrderHistoryItem(item.id)"><i class="fa fa-minus-square"></i></a>
                     </td>
                 </tr>
                 </tbody>

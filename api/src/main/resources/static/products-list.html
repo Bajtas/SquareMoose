@@ -7,29 +7,29 @@
         <h5>Products list:</h5>
         <table class="striped sortable" cellspacing="0" cellpadding="0">
             <thead>
-                <tr class="alt first last">
-                    <th rel="0" value="Id">Id</th>
-                    <th rel="1" value="Name">Name<span class="arrow"></span></th>
-                    <th rel="2" value="Category">Category</th>
-                    <th rel="3" value="Price">Price</th>
-                    <th rel="4" value="AddedOn">Added on</th>
-                    <th rel="5" value="Lmod">Last mod.</th>
-                    <th rel="6" value="Actions">Actions</th>
-                </tr>
+            <tr class="alt first last">
+                <th rel="0" value="Id">Id</th>
+                <th rel="1" value="Name">Name<span class="arrow"></span></th>
+                <th rel="2" value="Category">Category</th>
+                <th rel="3" value="Price">Price</th>
+                <th rel="4" value="AddedOn">Added on</th>
+                <th rel="5" value="Lmod">Last mod.</th>
+                <th rel="6" value="Actions">Actions</th>
+            </tr>
             </thead>
             <tbody>
-                <tr class="" ng-repeat="product in productsList track by $index">
-                    <td value="{{product.id}}">{{product.id}}</td>
-                    <td value="{{product.name}}">{{product.name}}</td>
-                    <td value="{{product.category.name}}">{{product.category.name}}</td>
-                    <td value="{{product.price | number : 2}}">{{product.price | number : 2}}</td>
-                    <td value="{{product.addedOn}}">{{product.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
-                    <td value="{{product.addedOn}}">{{product.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
-                    <td value="">
-                        <a href="#/product-details/{{product.id}}"><i class="fa fa-pencil"></i></a>
-                        <a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>
-                    </td>
-                </tr>
+            <tr class="" ng-repeat="product in productsList track by $index">
+                <td value="{{product.id}}">{{product.id}}</td>
+                <td value="{{product.name}}">{{product.name}}</td>
+                <td value="{{product.category.name}}">{{product.category.name}}</td>
+                <td value="{{product.price | number : 2}}">{{product.price | number : 2}}</td>
+                <td value="{{product.addedOn}}">{{product.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
+                <td value="{{product.addedOn}}">{{product.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
+                <td value="">
+                    <a href="#/product-details/{{product.id}}"><i class="fa fa-pencil"></i></a>
+                    <a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>
+                </td>
+            </tr>
             </tbody>
         </table>
 

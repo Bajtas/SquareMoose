@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.OrderStateHistory;
 import pl.bajtas.squaremoose.api.service.OrderStateHistoryService;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -24,5 +24,13 @@ public class OrderStateHistoryController {
     @Path("/histories")
     public Iterable<OrderStateHistory> getAll() {
         return orderStateHistoryService.getAll();
+    }
+
+
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/history/{id}")
+    public Response delete(@NotNull @PathParam("id") int id) {
+        return orderStateHistoryService.delete(id);
     }
 }

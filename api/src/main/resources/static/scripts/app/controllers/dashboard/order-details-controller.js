@@ -46,6 +46,26 @@ angular.module('SquareMooseControllers')
             });
     });
 
+    $scope.refresh = function() {
+        var orderUrl = $rootScope.apiUrl + '/OrderService/order/' + $stateParams.orderId;
+
+        $http.get(orderUrl)
+            .then(function(response) {
+                $scope.order = JSOG.decode(response.data);
+                $scope.loadingInProgress = false;
+                $scope.map = $scope.order.deliveryAdress.address + ',' + $scope.order.deliveryAdress.town;
+                $scope.orderStates.forEach(function(element) {
+                    if (element.state === $scope.order.actualOrderState.name) {
+                        $scope.orderStateAssigned = element;
+                    }
+                });
+            }, function(response) {
+                $scope.error = true;
+                $scope.errMsg = response.data;
+                $scope.loadingInProgress = false;
+            });
+    };
+
     $scope.changeStatus = function() {
         if ($scope.orderStateAssigned.state !== $scope.order.actualOrderState.name) {
             var orderState = {
@@ -64,11 +84,30 @@ angular.module('SquareMooseControllers')
             }).then(function success(response) {
                 $scope.updateInfo = response.data;
                 $scope.showInfo = true;
+                $scope.refresh();
             }, function error(response) {
                 $scope.showInfo = false;
                 $scope.error = true;
                 $scope.errMsg = response.data;
             });
         }
+    };
+
+    $scope.deleteOrderHistoryItem = function(item) {
+        $http({
+            method: "DELETE",
+            headers: {
+                "Authorization": localStorage.getItem("Authorization")
+            },
+            url: $rootScope.apiUrl + '/OrderStateHistoryService/history/' + item
+        }).then(function success(response) {
+            $scope.updateInfo = response.data;
+            $scope.showInfo = true;
+            $scope.refresh();
+        }, function error(response) {
+            $scope.showInfo = false;
+            $scope.error = true;
+            $scope.errMsg = response.data;
+        });
     };
 });
