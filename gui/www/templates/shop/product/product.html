@@ -20,13 +20,13 @@
             <div class="item item-divider">
                 <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Price: {{product.price | number : 2}} {{priceCurrency}}</h4>
             </div>
-            <div class="item item-text-wrap">
+            <div class="item item-text-wrap" ng-show="backView.url === '/app/productslist'">
                 <label class="item item-input">
                     <span class="input-label">Amount</span>
                     <input type="number" ng-model="cartCalcData.itemAmount" min="1">
                 </label>
             </div>
-            <div class="item item-divider">
+            <div class="item item-divider" ng-show="backView.url === '/app/productslist'">
                 <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Total cost: {{product.price * cartCalcData.itemAmount | number : 2}} {{priceCurrency}}</h4>
             </div>
         </div>
@@ -35,5 +35,5 @@
         <h4 style="clear:both; padding-top: 15px;">
         </h4>
     </ion-content>
-    <div ng-show="backView.url === '/app/productslist'"ng-include src="'templates/shop/cart/cart-bottom-bar.html'"></div>
+    <div ng-show="backView.url === '/app/productslist'" ng-include src="'templates/shop/cart/cart-bottom-bar.html'"></div>
 </ion-view>

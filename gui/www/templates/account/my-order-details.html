@@ -3,15 +3,23 @@
         <ion-spinner class="android-energized centered" ng-show="dataLoading"></ion-spinner>
         <ion-list>
             <div class="card">
+                <div class="item item-divider">
+                    <i class="icon ion-ios-book"></i> Actual order state:
+                </div>
                 <div class="item item-text-wrap">
                     <h2 class="icon ion-ios-box-outline"> Ord. Number: <b>{{order.id}}</b></h2>
                     <p class="icon ion-ios-compose-outline"> Created on: <b>{{order.addedOn | date:'M/d/yyyy HH:mm:ss'}}</b></p>
                     <p class="icon ion-information"> Actual order status: <b>{{order.actualOrderState.name}}</b></p>
+                    <button class="button button-full button-positive" 
+                            ng-model="showOrderStateHistory" 
+                            ng-init="showOrderStateHistoryInfo = 'Show state changes'; showOrderStateHistory = false;" 
+                            ng-click="showOrderStateHistory = !showOrderStateHistory; showOrderStateHistoryInfo = showOrderStateHistory ? 'Hide state changes' : 'Show state changes'">
+                    {{showOrderStateHistoryInfo}}</button>
                 </div>
-                <div class="item item-divider">
+                <div class="item item-divider" ng-show="showOrderStateHistory">
                     <i class="icon ion-ios-book"></i> Order state history:
                 </div>
-                <div class="item item-text-wrap" ng-repeat="historyState in order.actualOrderState.orderStateHistories track by $index">
+                <div class="item item-text-wrap" ng-show="showOrderStateHistory" ng-repeat="historyState in order.actualOrderState.orderStateHistories track by $index">
                     <p class="icon ion-information"> Actual order status: <b>{{historyState.name}}</b></p>
                     <p class="icon ion-ios-compose-outline"> Created on: <b>{{historyState.lmod | date:'M/d/yyyy HH:mm:ss'}}</b></p>
                     <p class="icon ion-information"> Description: <b>{{historyState.description}}</b></p>
@@ -25,7 +33,7 @@
                 <h2>{{item.product.name}}</h2>
                 <p>{{item.product.description}}</p>
                 <p>Amount: {{item.amount}}</p>
-                <p class="icon ion-ios-pricetags"> Total: {{item.price*item.amount}} {{priceCurrency}}</p>
+                <p class="icon ion-ios-pricetags"> Total: {{(item.product.price*item.amount) | number : 2}} {{priceCurrency}}</p>
                 <ion-option-button class="button-positive" ng-click="share(item)">
                     Share
                 </ion-option-button>

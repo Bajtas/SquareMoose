@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.Category;
 import pl.bajtas.squaremoose.api.service.CategoryService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
+import pl.bajtas.squaremoose.api.util.stats.CategoryUsages;
 
 import javax.annotation.security.PermitAll;
 import javax.validation.constraints.NotNull;
@@ -143,5 +144,20 @@ public class CategoryController {
     @PermitAll
     public List<CategoryStats> getCategoryStats(@QueryParam("byId") boolean byId, @QueryParam("byName") boolean byName) throws Exception {
         return getService().getCategoryStats(byId, byName);
+    }
+
+    /* Show usages for all categories
+    * Takes 2 parameters
+    *
+    * Returns stats for every category
+    *
+    * If all parameters are null, method will Excepction
+    * */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/categories/usages")
+    @PermitAll
+    public List<CategoryUsages> getAllCategoriesUsages() throws Exception {
+        return getService().getCategoriesUsages();
     }
 }

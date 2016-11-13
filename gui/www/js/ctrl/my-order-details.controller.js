@@ -4,6 +4,7 @@
     // Fields
     $scope.order = {};
     $scope.dataLoading = false;
+    $scope.priceCurrency = '$';
     // End of fields
 
     $scope.$on('$ionicView.loaded', function (event) {

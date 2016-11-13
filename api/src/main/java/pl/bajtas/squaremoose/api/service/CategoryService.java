@@ -14,10 +14,12 @@ import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
+import pl.bajtas.squaremoose.api.util.stats.CategoryUsages;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bajtas on 03.09.2016.
@@ -174,5 +176,19 @@ public class CategoryService implements GenericService<Category, CategoryReposit
     /* Util method, to check if Category with given Id exist. */
     private boolean isCategoryExists(String name) {
         return StringUtils.isNotEmpty(name) && StringUtils.isNotBlank(name) && productRepository.findByName(name) != null;
+    }
+
+    public List<CategoryUsages> getCategoriesUsages() {
+        List<Category> categories = getRepository().findAll().stream().distinct().collect(Collectors.toList());
+        List<CategoryUsages> usages = new ArrayList<>();
+        for (Category category : categories) {
+            CategoryUsages usage = new CategoryUsages();
+            usage.setName(category.getName());
+            usage.setUsedTimes(category.getProducts().stream().distinct().collect(Collectors.toList()).size());
+
+            usages.add(usage);
+        }
+
+        return usages;
     }
 }

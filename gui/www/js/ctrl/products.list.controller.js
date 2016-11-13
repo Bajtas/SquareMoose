@@ -23,22 +23,22 @@
 
     this.prepareParams = function (optionsData) {
         var title, description, price1, price2, categoryName, sortBy, sortDir;
-        if (typeof optionsData.title !== 'undefined') {
+        if (typeof optionsData.title !== 'undefined' && optionsData.title !== '') {
             title = optionsData.title;
         }
-        if (typeof optionsData.description !== 'undefined') {
+        if (typeof optionsData.description !== 'undefined' && optionsData.description !== '') {
             description = optionsData.description;
         }
-        if (typeof optionsData.minPrice !== 'undefined') {
+        if (typeof optionsData.minPrice !== 'undefined' && optionsData.minPrice !== '') {
             price1 = optionsData.minPrice;
         }
-        if (typeof optionsData.maxPrice !== 'undefined') {
+        if (typeof optionsData.maxPrice !== 'undefined' && optionsData.maxPrice !== '') {
             price2 = optionsData.maxPrice;
         }
-        if (typeof optionsData.categoryName !== 'undefined') {
+        if (typeof optionsData.categoryName !== 'undefined' && optionsData.categoryName !== '') {
             categoryName = optionsData.categoryName;
         }
-        if (typeof optionsData.sortBy !== 'undefined') {
+        if (typeof optionsData.sortBy !== 'undefined' && optionsData.sortBy !== '') {
             sortBy = optionsData.sortBy;
             if (sortBy == 'Title')
                 sortBy = 'name';
@@ -156,13 +156,13 @@
             method: "GET",
             params: sortAndFilterParams
         }).then(function (response) {
-            if ($scope.productsList !== null) {
+            if (response.status !== 204 && $scope.productsList !== null) {
                 var productsArrLen = response.data.content.length;
                 var products = response.data.content;
                 for (var i = 0; i < productsArrLen; i++) {
                     $scope.productsList.push(products[i]);
                 }
-            } else {
+            } else if (response.status !== 204) {
                 $scope.productsList = response.data.content;
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
