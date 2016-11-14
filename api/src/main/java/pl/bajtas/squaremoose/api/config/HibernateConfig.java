@@ -17,14 +17,13 @@ public class HibernateConfig {
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
-        builder.scanPackages("pl.bajtas.squaremoose.api.domain").addProperties(getHibernateProperties());
+        builder.scanPackages("pl.bajtas.squaremoose.api.domain");
 
         return builder.buildSessionFactory();
     }
 
     @Bean(name = "dataSource")
     public DataSource dataSource() {
-
         DataSource ds = new DataSource();
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUrl("jdbc:postgresql://localhost:5432/TriangleMoose");
@@ -33,10 +32,5 @@ public class HibernateConfig {
         return ds;
     }
 
-    private Properties getHibernateProperties() {
-        Properties prop = new Properties();
-        prop.put("hibernate.format_sql", "true");
-        prop.put("hibernate.show_sql", "true");
-        return prop;
-    }
+
 }

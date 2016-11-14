@@ -19,9 +19,7 @@ import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -159,7 +157,7 @@ public class ProductRepositoryTest {
                 assertNotNull(product.getId()); //not null after save
 
                 assertEquals(product.getCategory(), category);
-                List<Product> products = new ArrayList<Product>();
+                Set<Product> products = new HashSet<>();
                 products.add(product);
 
                 assertEquals(products.size(), 1);
@@ -168,7 +166,7 @@ public class ProductRepositoryTest {
 
                 categoryRepository.save(category);
 
-                assertEquals(category.getProducts().get(0), product);
+                assertEquals(category.getProducts().toArray()[0], product);
 
                 //fetch from DB
                 Product fetchedProduct = productRepository.findOne(product.getId());

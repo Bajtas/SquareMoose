@@ -19,6 +19,7 @@ import pl.bajtas.squaremoose.api.util.stats.CategoryUsages;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -156,7 +157,7 @@ public class CategoryService implements GenericService<Category, CategoryReposit
         Category category = getRepository().findOne(id);
         if (category != null) {
             try {
-                List<Product> assignedProducts = category.getProducts();
+                Set<Product> assignedProducts = category.getProducts();
                 for (Product product : assignedProducts) {
                     product.setCategory(null);
                     productRepository.save(product);

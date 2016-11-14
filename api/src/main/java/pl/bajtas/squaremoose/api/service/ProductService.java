@@ -82,7 +82,6 @@ public class ProductService implements ApplicationListener<ContextRefreshedEvent
     public Product getById(int id) {
         Product product = getRepository().findDistinctById(id);
         product.setImages(product.getImages().stream().distinct().collect(Collectors.toList()));
-        product.getCategory().setProducts(product.getCategory().getProducts().stream().distinct().collect(Collectors.toList()));
         return product;
     }
 

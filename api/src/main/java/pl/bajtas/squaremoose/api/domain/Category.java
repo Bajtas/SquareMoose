@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator = JSOGGenerator.class)
@@ -16,15 +16,15 @@ public class Category {
     private Integer id;
     private String name;
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-    private List<Product> products;
+    private Set<Product> products;
 
-    public Category(int id, String name, List<Product> products) {
+    public Category(int id, String name, Set<Product> products) {
         this.id = id;
         this.name = name;
         this.products = products;
     }
 
-    public Category(String name, List<Product> products) {
+    public Category(String name, Set<Product> products) {
         this.name = name;
         this.products = products;
     }
@@ -53,11 +53,11 @@ public class Category {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 

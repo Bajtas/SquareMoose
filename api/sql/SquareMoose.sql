@@ -17,8 +17,9 @@ CREATE TABLE "btdeliveryadress" (
 CREATE TABLE "btdeliverytype" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT NOT NULL,
-  "price" DOUBLE PRECISION NOT NULL,
-  "time" TEXT NOT NULL
+  "price" DECIMAL(12, 2) NOT NULL,
+  "time" TEXT NOT NULL,
+  "image_src" TEXT NOT NULL
 );
 
 CREATE TABLE "btpaymentmethod" (

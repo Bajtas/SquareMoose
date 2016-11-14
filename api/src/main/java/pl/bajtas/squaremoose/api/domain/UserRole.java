@@ -5,7 +5,7 @@ import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -20,7 +20,7 @@ public class UserRole {
     private String name;
     private Date lmod;
     @OneToMany(mappedBy = "userRole", fetch = FetchType.EAGER)
-    private List<User> users;
+    private Set<User> users;
 
     public UserRole(int id, String name, Date lmod) {
         this.id = id;
@@ -61,11 +61,11 @@ public class UserRole {
         this.lmod = lmod;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
