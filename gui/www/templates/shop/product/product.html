@@ -10,7 +10,7 @@
             <div class="item item-divider" style="clear:both;">
                 <h4 class="icon ion-images"> Gallery:</h4>
                 <div ng-repeat="image in product.images track by $index" class="gallery">
-                    <img class="bjtsicons" src="{{image.imageSrc}}" style="max-height:20vh; max-width:20vw; " ng-click="changePhoto($event)"/>
+                    <img class="bjtsicons" src="{{image.imageSrc}}" style="max-height:20vh; max-width:20vw; " ng-click="changePhoto($event)" />
                 </div>
             </div>
             <div class="item item-text-wrap">
@@ -18,7 +18,9 @@
                 <p>{{product.description}}</p>
             </div>
             <div class="item item-divider">
-                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Price: {{product.price | number : 2}} {{priceCurrency}}</h4>
+                <h4>
+                    <ion-icon class="icon ion-ios-pricetags"></ion-icon> Price: {{product.price | number : 2}} {{priceCurrency}}
+                </h4>
             </div>
             <div class="item item-text-wrap" ng-show="backView.url === '/app/productslist'">
                 <label class="item item-input">
@@ -27,13 +29,13 @@
                 </label>
             </div>
             <div class="item item-divider" ng-show="backView.url === '/app/productslist'">
-                <h4><ion-icon class="icon ion-ios-pricetags"></ion-icon> Total cost: {{product.price * cartCalcData.itemAmount | number : 2}} {{priceCurrency}}</h4>
+                <h4>
+                    <ion-icon class="icon ion-ios-pricetags"></ion-icon> Total cost: {{product.price * cartCalcData.itemAmount | number : 2}} {{priceCurrency}}
+                </h4>
             </div>
         </div>
 
-        
-        <h4 style="clear:both; padding-top: 15px;">
-        </h4>
+        <h4 style="clear:both; padding-top: 15px;"></h4>
     </ion-content>
     <div ng-show="backView.url === '/app/productslist'" ng-include src="'templates/shop/cart/cart-bottom-bar.html'"></div>
 </ion-view>

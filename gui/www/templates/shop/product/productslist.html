@@ -1,7 +1,6 @@
 ﻿<ion-view view-title="Our products">
     <ion-content>
-        <ion-refresher pulling-text="Pull to refresh..."
-                       on-refresh="refresh()">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="refresh()">
         </ion-refresher>
         <ion-list>
             <ion-item class="item item-thumbnail-left" ng-repeat="product in productsList track by $index" href="#/app/product/{{product.id}}">
@@ -11,9 +10,7 @@
                 <p class="icon ion-ios-pricetags"> {{product.price | number : 2}} {{priceCurrency}}</p>
             </ion-item>
         </ion-list>
-        <ion-infinite-scroll on-infinite="loadMore()"
-                             distance="1%"
-                             ng-if="moreDataCanBeLoaded()">
+        <ion-infinite-scroll on-infinite="loadMore()" distance="1%" ng-if="moreDataCanBeLoaded()">
         </ion-infinite-scroll>
     </ion-content>
     <ion-footer-bar align-title="left" class="bar-dark">
@@ -25,4 +22,4 @@
             <button class="button">Total items: {{cartItemsAmount}}</button>
         </div>
     </ion-footer-bar>
-</ion-view> 
+</ion-view>

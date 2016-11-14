@@ -53,6 +53,15 @@
             }
         }
 
+        if (title === undefined && description === undefined &&
+            (price1 === undefined || price1 === null) && (price2 === undefined || price2 === null) &&
+            categoryName === undefined) {
+            return {
+                'sortBy': sortBy !== undefined ? sortBy : '',
+                'sortDir': sortDir
+            };
+        }
+
         return {
             'name': title,
             'description': description,
@@ -101,7 +110,7 @@
 
     // Functions
     $scope.refresh = function () {
-        $http.get($rootScope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy)
+        $http.get($rootScope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy + '&sortDir=' + $scope.sortDir)
             .then(function (response) {
                 $scope.productsList = response.data.content;
                 $scope.lastPage = response.data.totalPages;
@@ -125,7 +134,7 @@
             $scope.page++;
             var url;
             if ($scope.optionsData === null) {
-                url = $rootScope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy;
+                url = $rootScope.apiUrl + 'ProductService/products/page/' + $scope.page + '?sortBy=' + $scope.sortBy + '&sortDir=' + $scope.sortDir;
 
                 $http.get(url)
                     .then(function (response) {
@@ -150,6 +159,12 @@
     $scope.sortAndFilter = function () {
         var URL = $rootScope.apiUrl + 'ProductService/products/search/page/' + $scope.page;
         var sortAndFilterParams = ProductsListService.prepareParams($scope.optionsData);
+
+        if (sortAndFilterParams === null) {
+            $scope.sortBy = sortAndFilterParams.sortBy;
+            $scope.sortDir = sortAndFilterParams.sortDir;
+            $scope.refresh();
+        }
 
         $http({
             url: URL,
