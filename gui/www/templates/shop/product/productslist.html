@@ -15,11 +15,11 @@
     </ion-content>
     <ion-footer-bar align-title="left" class="bar-dark">
         <div class="buttons">
-            <button class="button ion-bag button-clear button-white"> My bag</button>
+            <button class="button ion-bag button-clear button-white" ng-click="cartService.show()"> My cart</button>
         </div>
         <h6 class="title"></h6>
         <div class="buttons">
-            <button class="button">Total items: {{cartItemsAmount}}</button>
+            <button class="button">Total items: {{cartService.cartItemsAmount}}</button>
         </div>
     </ion-footer-bar>
 </ion-view>

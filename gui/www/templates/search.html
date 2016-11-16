@@ -1,5 +1,58 @@
 <ion-view view-title="Search">
-  <ion-content>
-    <h1>Search</h1>
-  </ion-content>
+    <ion-header-bar class="bar-dark">
+        <h1 class="title">Search for products</h1>
+        <div class="buttons">
+            <button class="button icon-left ion-chevron-left button-clear button-white" ng-click="hideSortOptions()"> Back</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+            <div class="item item-divider item-icon-left">
+                <i class="icon ion-ios-pricetags"></i> Categories
+            </div>
+            <ion-radio ng-repeat="category in categories" ng-model="optionsData.choosenCategory" ng-value="category.id" name="choosenCategory">
+                <p>{{category.name}}</p>
+            </ion-radio>
+            <div class="item item-divider item-icon-left">
+                <i class="icon ion-ios-cart"></i> Properties
+            </div>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Min price:</span>
+                <input type="number" min="0" placeholder="0" ng-model="optionsData.minPrice">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Max price:</span>
+                <input type="number" min="0" placeholder="&#x221e;" ng-model="optionsData.maxPrice">
+            </label>
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Product title" ng-model="optionsData.title">
+            </label>
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Product description" ng-model="optionsData.description">
+            </label>
+            <div class="item item-divider item-icon-left">
+                <i class="icon ion-toggle-filled"></i> Order by
+            </div>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Sort by:
+                </div>
+                <select ng-model="optionsData.sortBy">
+                    <option>Title</option>
+                    <option>Price</option>
+                    <option>Added date</option>
+                </select>
+            </label>
+            <ion-toggle ng-model="optionsData.sortDir" ng-checked="optionsData.sortDir">
+                Ascending/Descending
+            </ion-toggle>
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar align-title="center">
+        <button class="button button-full button-calm" ng-click="filterAndSort()">
+            Filter and sort
+        </button>
+    </ion-footer-bar>
 </ion-view>

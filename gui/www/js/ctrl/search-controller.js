@@ -1,80 +1,6 @@
 ﻿angular.module('starter.controllers')
 
-.service('ProductsListService', function () {
-    // private
-    var _productsList;
-    var _page = 0;
-    var _priceCurrency = '$';
-    var _cartItemsAmount = 0;
-    var _firstSiteLoaded = false;
-    var _sortBy = '';
-    var _sortDirection = '';
-    var _optionsData = null;
-
-    // public API
-    this.productsList = _productsList;
-    this.page = _page;
-    this.priceCurrency = _priceCurrency;
-    this.cartItemsAmount = _cartItemsAmount;
-    this.firstSiteLoaded = _firstSiteLoaded;
-    this.sortBy = _sortBy;
-    this.sortDirection = _sortDirection;
-    this.optionsData = _optionsData;
-
-    this.prepareParams = function (optionsData) {
-        var title, description, price1, price2, categoryName, sortBy, sortDir;
-        if (typeof optionsData.title !== 'undefined' && optionsData.title !== '') {
-            title = optionsData.title;
-        }
-        if (typeof optionsData.description !== 'undefined' && optionsData.description !== '') {
-            description = optionsData.description;
-        }
-        if (typeof optionsData.minPrice !== 'undefined' && optionsData.minPrice !== '') {
-            price1 = optionsData.minPrice;
-        }
-        if (typeof optionsData.maxPrice !== 'undefined' && optionsData.maxPrice !== '') {
-            price2 = optionsData.maxPrice;
-        }
-        if (typeof optionsData.categoryName !== 'undefined' && optionsData.categoryName !== '') {
-            categoryName = optionsData.categoryName;
-        }
-        if (typeof optionsData.sortBy !== 'undefined' && optionsData.sortBy !== '') {
-            sortBy = optionsData.sortBy;
-            if (sortBy == 'Title')
-                sortBy = 'name';
-            else if (sortBy == 'Price')
-                sortBy = 'price';
-        }
-        if (typeof optionsData.sortDir !== 'undefined') {
-            if (optionsData.sortDir === false) {
-                sortDir = 'asc';
-            } else {
-                sortDir = 'desc';
-            }
-        }
-
-        if (title === undefined && description === undefined &&
-            (price1 === undefined || price1 === null) && (price2 === undefined || price2 === null) &&
-            categoryName === undefined) {
-            return {
-                'sortBy': sortBy !== undefined ? sortBy : '',
-                'sortDir': sortDir
-            };
-        }
-
-        return {
-            'name': title,
-            'description': description,
-            'price1': price1,
-            'price2': price2,
-            'categoryName': categoryName,
-            'sortBy': sortBy,
-            'sortDir': sortDir
-        };
-    };
-})
-
-.controller('ProductsListCtrl', function ($scope, $rootScope, $http, $location, $ionicScrollDelegate, $ionicNavBarDelegate,
+.controller('SearchCtrl', function ($scope, $rootScope, $http, $location, $ionicScrollDelegate, $ionicNavBarDelegate,
     $ionicHistory, ProductsListService, cartService, alertsService) {
     // Fields
     $scope.productsList = ProductsListService.productsList;
@@ -90,13 +16,21 @@
 
     // Communication with other controllers events
     $scope.$on('$ionicView.loaded', function (event) {
-        $scope.currentPath = $location.path();
-        $scope.refresh();
+        $http.get($rootScope.apiUrl + 'CategoryService/categories/')
+            .then(function (response) {
+                $scope.categories = response.data;
+            }, function (response) {
+                $scope.content = "Something went wrong";
+            });
     });
 
     $scope.$on('$ionicView.enter', function (event) {
-        $scope.currentPath = $location.path();
-        $ionicHistory.clearHistory();
+        $http.get($rootScope.apiUrl + 'CategoryService/categories/')
+            .then(function (response) {
+                $scope.categories = response.data;
+            }, function (response) {
+                $scope.content = "Something went wrong";
+            });
     });
 
     $scope.$on('filterAndSort', function (event, optionsData) {
@@ -184,4 +118,4 @@
         return true;
     };
     // End of functions
-})
+});

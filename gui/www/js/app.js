@@ -35,16 +35,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
         url: '/search',
         views: {
             'menuContent': {
-                templateUrl: 'templates/search.html'
-            }
-        }
-    })
-    // Browser controller
-    .state('app.browse', {
-        url: '/browse',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/browse.html'
+                templateUrl: 'templates/search.html',
+                controller: 'SearchCtrl'
             }
         }
     })
