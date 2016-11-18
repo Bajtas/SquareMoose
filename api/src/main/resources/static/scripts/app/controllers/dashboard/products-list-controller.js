@@ -92,11 +92,11 @@ angular.module('SquareMooseControllers')
     };
 
     $scope.toPage = function() {
-        $scope.page = $scope.pageToGo - 1;
-        if ($scope.page > 0 || $scope.page > $scope.lastPage) {
-            localStorage.setItem("page", $scope.page);
-            $scope.init();
-        }
+            if ($scope.pageToGo > 0 && $scope.pageToGo <= $scope.lastPage) {
+                $scope.page = $scope.pageToGo - 1;
+                localStorage.setItem("page", $scope.page);
+                $scope.init();
+            }
     };
 
     $scope.deleteProduct = function(productId) {

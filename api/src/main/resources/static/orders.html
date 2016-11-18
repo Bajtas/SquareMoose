@@ -51,32 +51,32 @@
 
         <div class="separator"></div>
 
-        <!--<div class="col_10">-->
-            <!--<h6>Page: {{page + 1}}</h6>-->
-        <!--</div>-->
-        <!--<div class="col_2">-->
-            <!--<h6>TotalPages: {{lastPage }}</h6>-->
-        <!--</div>-->
+        <div class="col_10">
+            <h6>Page: {{page + 1}}</h6>
+        </div>
+        <div class="col_2">
+            <h6>TotalPages: {{lastPage }}</h6>
+        </div>
 
-        <!--<div class="col_2">-->
-            <!--<button class="medium" ng-model="page" ng-click="previousPage()" ng-disabled="page == 0"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous page</button>-->
-        <!--</div>-->
-        <!--<div class="col_1">-->
-        <!--</div>-->
-        <!--<div class="col_7">-->
-            <!--<button class="medium" ng-click="addNew()"><i class="fa fa-plus" aria-hidden="true"></i> Add new</button>-->
-            <!--<select ng-model="sortBy" ng-options="parameter.name for parameter in sortParameters" ng-change="sort()">-->
-                <!--<option value="">&#45;&#45; Sort by &#45;&#45;</option>-->
-            <!--</select>-->
-            <!--<select ng-model="sortDir" ng-options="direction.name for direction in sortDirections" ng-change="sort()">-->
-                <!--<option value="">&#45;&#45; Sort direction &#45;&#45;</option>-->
-            <!--</select>-->
-            <!--<label for="goToPage">Go to page: </label>-->
-            <!--<input id="goToPage" type="number" min="1" placeholder="Go to page" ng-model="pageToGo" ng-init="1">-->
-            <!--<button class="medium" ng-click="toPage()" ng-disabled="pageToGo < 0"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go</button>-->
-        <!--</div>-->
-        <!--<div class="col_2">-->
-            <!--<button class="medium" ng-click="nextPage()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Next page</button>-->
-        <!--</div>-->
+        <div class="col_2">
+            <button class="medium" ng-model="page" ng-click="previousPage()" ng-disabled="page == 0"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous page</button>
+        </div>
+        <div class="col_1">
+        </div>
+        <div class="col_7">
+            <button class="medium" ng-click="addNew()"><i class="fa fa-plus" aria-hidden="true"></i> Add new</button>
+            <select ng-model="sortBy" ng-options="parameter.name for parameter in sortParameters" ng-change="sort()">
+                <option value="">-- Sort by --</option>
+            </select>
+            <select ng-model="sortDir" ng-options="direction.name for direction in sortDirections" ng-change="sort()">
+                <option value="">-- Sort direction --</option>
+            </select>
+            <label for="goToPage">Go to page: </label>
+            <input id="goToPage" type="number" min="1" placeholder="Go to page" ng-model="pageToGo" ng-init="1">
+            <button class="medium" ng-click="toPage()" ng-disabled="pageToGo < 0"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go</button>
+        </div>
+        <div class="col_2">
+            <button class="medium" ng-click="nextPage()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Next page</button>
+        </div>
     </div>
 </div>

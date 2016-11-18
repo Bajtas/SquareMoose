@@ -78,11 +78,11 @@ angular.module('SquareMooseControllers')
     };
 
     $scope.toPage = function() {
-        if ($scope.pageToGo > 0 || $scope.pageToGo < $scope.lastPage) {
-            $scope.page = $scope.pageToGo - 1;
-            localStorage.setItem("pageCategories", $scope.page);
-            $scope.init();
-        }
+            if ($scope.pageToGo > 0 && $scope.pageToGo <= $scope.lastPage) {
+                $scope.page = $scope.pageToGo - 1;
+                localStorage.setItem("pageCategories", $scope.page);
+                $scope.init();
+            }
     };
 
     $scope.deleteCategory = function(categoryId) {

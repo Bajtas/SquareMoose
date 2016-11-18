@@ -6,7 +6,7 @@ $scope.sortBy = {};
     $scope.ordersList = [];
     $scope.lastPage = 0;
     $scope.page = 0;
-    $scope.pageToGo = 0;
+    $scope.pageToGo = 1;
     $scope.error = false;
     $scope.sortParameters = [{
         name: 'Id',
@@ -92,8 +92,8 @@ $scope.sortBy = {};
     };
 
     $scope.toPage = function() {
-        $scope.page = $scope.pageToGo - 1;
-        if ($scope.page > 0 || $scope.page > $scope.lastPage) {
+        if ($scope.pageToGo > 0 && $scope.pageToGo <= $scope.lastPage) {
+            $scope.page = $scope.pageToGo - 1;
             localStorage.setItem("pageOrders", $scope.page);
             $scope.init();
         }

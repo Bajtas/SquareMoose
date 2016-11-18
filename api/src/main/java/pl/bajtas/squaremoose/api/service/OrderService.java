@@ -70,8 +70,10 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         Order order = getRepository().findOne(id);
         List<OrderItem> distinctOrderItems = order.getOrderItems().stream().distinct().collect(Collectors.toList());
         order.setOrderItems(distinctOrderItems);
-        List<OrderStateHistory> distinctOrderStateHistory = order.getActualOrderState().getOrderStateHistories().stream().distinct().collect(Collectors.toList());
-        order.getActualOrderState().setOrderStateHistories(distinctOrderStateHistory);
+        if (order.getActualOrderState() != null) {
+            List<OrderStateHistory> distinctOrderStateHistory = order.getActualOrderState().getOrderStateHistories().stream().distinct().collect(Collectors.toList());
+            order.getActualOrderState().setOrderStateHistories(distinctOrderStateHistory);
+        }
         return order;
     }
 
