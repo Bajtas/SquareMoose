@@ -9,34 +9,42 @@ h4 {
 .full-width {
     width: 100% !important;
 }
+
 /* Navigation bar */
-ul {
+.menu {
+    font-family: 'Open Sans', serif !important;
     list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
     background-color: #333;
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
     width: 100%;
     z-index: 1000;
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 1) 0%,rgba(83, 52, 109, 1) 100%) !important;
+    border: 1px solid #000 !important;
+    text-shadow: 2px 2px black;
 }
+
 li {
     float: left;
 }
+
+.menu li a:hover, .menu li.hover>a {
+    background: #1c265a !important;
+}
 li a {
+    color: #f1f1f1 !important;
+    text-decoration: none !important;
     display: block;
-    color: white;
     padding: 16px;
-    text-decoration: none;
 }
-li a:hover {
-    display: block;
-    color: #D6CBC9;
-    padding: 16px;
-    text-decoration: none;
+
+.menu ul {
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 1) 0%,rgba(83, 52, 109, 1) 100%) !important;
 }
+
 .main {
     margin-top: 70px !important;
 }
