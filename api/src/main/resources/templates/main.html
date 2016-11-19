@@ -14,52 +14,54 @@
 </head>
 
 <body ng-app="SquareMooseDashboard">
-    <ul class="menu" ng-controller="MenuCtrl" ng-show="showMenu">
-        <li>
-            <a href="#/app">SquareMoose - Dashboard</a>
-        </li>
-        <li class="current">
-            <a href="#/app"><i class="fa fa-home" aria-hidden="true"></i> App</a>
-        </li>
-        <li>
-            <a href=""><i class="fa fa-archive" aria-hidden="true"></i> Products</a>
-            <ul>
-                <li>
-                    <a href="#/products-list"><i class="fa fa-list" aria-hidden="true"></i> Show all</a>
-                </li>
-                <li>
-                    <a href="#/product-add"><i class="fa fa-plus" aria-hidden="true"></i> Add new</a>
-                </li>
-                <li class="divider"><a href=""><i class="fa fa-object-group"></i> Categories</a>
-                    <ul>
-                        <li><a href="#/categories"><i class="fa fa-list" aria-hidden="true"></i> Show all</a></li>
-                        <li><a href="#/category-add"><i class="fa fa-plus" aria-hidden="true"></i> Add new</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href=""><i class="fa fa-handshake-o" aria-hidden="true"></i> Orders</a>
-            <ul>
-                <li><a href="#/orders"><i class="fa fa-list" aria-hidden="true"></i> Show all</a></li>
-                <li class="divider"><a href="">Payment methods</a></li>
-                    <ul>
-                        <li><a href="#/payment-methods"><i class="fa list"></i> Show all</a></li>
-                        <li><a href=""><i class="fa fa-plus"></i> Add new</a></li>
-                    </ul>
-                </li>
-                <li class="divider"><a href="">Delivery methods</a></li>
-                    <ul>
-                        <li><a href="#/delivery-methods"><i class="fa list"></i> Show all</a></li>
-                        <li><a href=""><i class="fa fa-plus"></i> Add new</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li><a href="#/users">Users</a>
+    <div ng-controller="MenuCtrl" ng-show="!location.path().includes('login')">
+        <ul class="menu" ng-cloak>
+            <li>
+                <a href="#/app">SquareMoose - Dashboard</a>
+            </li>
+            <li class="current">
+                <a href="#/app"><i class="fa fa-home" aria-hidden="true"></i> App</a>
+            </li>
+            <li>
+                <a href=""><i class="fa fa-archive" aria-hidden="true"></i> Products</a>
+                <ul>
+                    <li>
+                        <a href="#/products-list"><i class="fa fa-list" aria-hidden="true"></i> Show all</a>
+                    </li>
+                    <li>
+                        <a href="#/product-add"><i class="fa fa-plus" aria-hidden="true"></i> Add new</a>
+                    </li>
+                    <li class="divider"><a href=""><i class="fa fa-object-group"></i> Categories</a>
+                        <ul>
+                            <li><a href="#/categories"><i class="fa fa-list" aria-hidden="true"></i> Show all</a></li>
+                            <li><a href="#/category-add"><i class="fa fa-plus" aria-hidden="true"></i> Add new</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href=""><i class="fa fa-handshake-o" aria-hidden="true"></i> Orders</a>
+                <ul>
+                    <li><a href="#/orders"><i class="fa fa-list" aria-hidden="true"></i> Show all</a></li>
+                    <li class="divider"><a href=""><i class="fa fa-object-group"></i> Payment methods</a>
+                        <ul>
+                            <li><a href="#/payment-methods"><i class="fa fa-list" aria-hidden="true"></i> Show all</a></li>
+                            <li><a href="#/category-add"><i class="fa fa-plus" aria-hidden="true"></i> Add new</a></li>
+                        </ul>
+                    </li>
+                    <li class="divider"><a href=""><i class="fa fa-object-group"></i> Delivery methods</a>
+                        <ul>
+                            <li><a href="#/delivery-methods"><i class="fa fa-list" aria-hidden="true"></i> Show all</a></li>
+                            <li><a href="#/delivery-add"><i class="fa fa-plus" aria-hidden="true"></i> Add new</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#/users">Users</a>
 
-        </li>
-    </ul>
+            </li>
+        </ul>
+    </div>
 
     <ui-view></ui-view>
 

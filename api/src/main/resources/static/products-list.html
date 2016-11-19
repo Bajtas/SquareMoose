@@ -24,7 +24,7 @@
                 <td value="{{product.category.name}}">{{product.category.name}}</td>
                 <td value="{{product.price | number : 2}}">{{product.price | number : 2}}</td>
                 <td value="{{product.addedOn}}">{{product.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
-                <td value="{{product.addedOn}}">{{product.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
+                <td value="{{product.lmod}}">{{product.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
                 <td value="">
                     <a href="#/product-details/{{product.id}}"><i class="fa fa-pencil"></i></a>
                     <a href="" ng-click="deleteProduct(product.id)"><i class="fa fa-minus-square"></i></a>
