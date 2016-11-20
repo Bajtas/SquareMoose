@@ -14,8 +14,15 @@ angular.module('SquareMooseControllers')
                     }
                 };
 
+                var authHeader = {
+                    headers: {
+                        "Authorization": "Basic " + $base64.encode($scope.credentials.login + ":" + $scope.credentials.password)
+                    }
+                };
+
                 localStorage.setItem("Authorization", config.header.Authorization);
                 localStorage.setItem("UserLogin", $scope.credentials.login);
+                localStorage.setItem("AuthHeader", JSON.stringify(authHeader));
 
                 $http({
                     method: "GET",

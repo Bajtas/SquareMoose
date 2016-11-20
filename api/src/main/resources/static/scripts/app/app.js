@@ -63,10 +63,15 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'OrdersCtrl'
         })
         .state('order-details', {
-                    url: "/order-details/:orderId",
-                    templateUrl: '../order-details.html',
-                    controller: 'OrderDetailsCtrl'
-         });
+            url: "/order-details/:orderId",
+            templateUrl: '../order-details.html',
+            controller: 'OrderDetailsCtrl'
+         })
+         .state('payment-methods', {
+             url: "/payment-methods",
+             templateUrl: '../payment-methods.html',
+             controller: 'PaymentMethodsCtrl'
+          });
 
     $urlRouterProvider.otherwise("/login");
 });

@@ -48,7 +48,7 @@ $scope.sortBy = {};
         if (localStorage.getItem("sortDirOrders") !== null && localStorage.getItem("sortDirOrders") !== 'undefined')
             productsUrl += '&dir=' + localStorage.getItem("sortDirOrders");
 
-        $http.get(ordersUrl)
+        $http.get(ordersUrl, JSON.parse(localStorage.getItem("AuthHeader")))
             .then(function(response) {
                 $scope.ordersList = JSOG.decode(response.data.content);
                 $scope.lastPage = response.data.totalPages;
@@ -99,7 +99,7 @@ $scope.sortBy = {};
         }
     };
 
-    $scope.deleteProduct = function(orderId) {
+    $scope.deleteOrder = function(orderId) {
         $http.delete($rootScope.apiUrl + '/OrderService/order/' + orderId + '/delete')
             .then(function(response) {
                 $scope.init();

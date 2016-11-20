@@ -35,7 +35,7 @@ angular.module('SquareMooseControllers')
                 $scope.loadingInProgress = false;
                 $scope.map = $scope.order.deliveryAdress.address + ',' + $scope.order.deliveryAdress.town;
                 $scope.orderStates.forEach(function(element) {
-                    if (element.state === $scope.order.actualOrderState.name) {
+                    if ($scope.order.actualOrderState !== null && element.state === $scope.order.actualOrderState.name) {
                         $scope.orderStateAssigned = element;
                     }
                 });
@@ -67,7 +67,7 @@ angular.module('SquareMooseControllers')
     };
 
     $scope.changeStatus = function() {
-        if ($scope.orderStateAssigned.state !== $scope.order.actualOrderState.name) {
+        if ($scope.order.actualOrderState === null || $scope.orderStateAssigned.state !== $scope.order.actualOrderState.name) {
             var orderState = {
                 'name': $scope.orderStateAssigned.state,
                 'order': {

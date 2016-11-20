@@ -114,6 +114,9 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
                 actualOrderState = order.getActualOrderState();
             }
 
+            if (order.getActualOrderState() == null)
+                getRepository().save(actualOrderState);
+
             order.setActualOrderState(actualOrderState);
             order.setLmod(new Date());
             orderRepository.save(order);

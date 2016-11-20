@@ -37,6 +37,7 @@ public class PaymentMethodController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/methods/page/{number}")
+    @PermitAll
     public Page<PaymentMethod> getPage(@PathParam("number") Integer page,
                                        @QueryParam("size") Integer size,
                                        @QueryParam("sortBy") String sortBy,

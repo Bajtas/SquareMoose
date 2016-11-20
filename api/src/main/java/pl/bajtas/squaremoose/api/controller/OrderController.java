@@ -7,6 +7,7 @@ import pl.bajtas.squaremoose.api.domain.Order;
 import pl.bajtas.squaremoose.api.service.OrderService;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -38,7 +39,7 @@ public class OrderController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/orders/page/{number}")
-    @PermitAll
+    @RolesAllowed("Admin")
     public Page<Order> getPage(@PathParam("number") Integer page,
                                @QueryParam("size") Integer size,
                                @QueryParam("sortBy") String sortBy,
