@@ -5,6 +5,10 @@
     </div>
     <div class="col_12" data-ng-init="init()" ng-hide="error">
         <h5>Orders:</h5>
+        <div class="notice success" ng-show="showInfo">
+            <i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}
+            <a href="#close" class="icon-remove"></a>
+        </div>
         <table class="striped sortable" cellspacing="0" cellpadding="0">
             <thead>
             <tr class="alt first last">
@@ -16,9 +20,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="" ng-repeat="method in methodsList track by $index">
+            <tr class="" ng-repeat="method in methodsList track by $index" id="methodsList">
                 <td value="{{method.id}}">{{method.id}}</td>
-                <td value="{{method.name}}">{{method.name}}</td>
+                <td value="{{method.name}}" id="method-{{method.id}}">{{method.name}}</td>
                 <td value="{{method.addedOn}}">{{method.addedOn}}</td>
                 <td value="{{method.lmod}}">{{method.lmod}}</td>
                 <td value="">

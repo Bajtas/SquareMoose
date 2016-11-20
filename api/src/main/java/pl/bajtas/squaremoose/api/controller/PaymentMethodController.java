@@ -7,6 +7,7 @@ import pl.bajtas.squaremoose.api.domain.PaymentMethod;
 import pl.bajtas.squaremoose.api.service.PaymentMethodService;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -64,8 +65,9 @@ public class PaymentMethodController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/method/{id}/update")
+    @RolesAllowed("Admin")
     public Response update(@NotNull @PathParam("id") int id, PaymentMethod paymentMethod) {
-        return getService().update(id, paymentMethod); // false for update old
+        return getService().update(id, paymentMethod);
     }
 
     @DELETE

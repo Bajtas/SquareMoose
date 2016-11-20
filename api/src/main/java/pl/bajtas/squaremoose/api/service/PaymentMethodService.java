@@ -89,9 +89,9 @@ public class PaymentMethodService implements GenericService<PaymentMethod, Payme
         try {
             PaymentMethod old = getRepository().findOne(id);
             if (old != null) {
-                paymentMethod.setId(id);
+                old.setName(paymentMethod.getName());
 
-                getRepository().save(paymentMethod);
+                getRepository().save(old);
                 return Response.status(Response.Status.OK).entity("PaymentMethod with id: " + id + " updated successfully!").build();
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).entity("PaymentMethod with given id: " + id + " not found!").build();

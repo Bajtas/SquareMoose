@@ -109,10 +109,6 @@ $scope.sortBy = {};
             });
     };
 
-    $scope.modifyProduct = function() {
-        $state.go('');
-    };
-
     $scope.addNew = function() {
         $state.go('product-add');
     };
