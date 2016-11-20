@@ -12,9 +12,12 @@ import pl.bajtas.squaremoose.api.repository.OrderRepository;
 import pl.bajtas.squaremoose.api.repository.PaymentMethodRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
+import pl.bajtas.squaremoose.api.util.stats.StatsUsages;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -130,8 +133,25 @@ public class PaymentMethodService implements GenericService<PaymentMethod, Payme
     }
 
     private boolean isPaymentMethodExists(Integer id) {
+        if (id == null)
+            return false;
+
         PaymentMethod paymentMethod = getRepository().findOne(id);
         return paymentMethod != null;
     }
 
+    public List<StatsUsages> usageStats() {
+        List<PaymentMethod> methods = getRepository().findAll();
+        List<StatsUsages> stats = new ArrayList<>();
+        for (PaymentMethod method : methods) {
+            method.setOrders(method.getOrders().stream().distinct().collect(Collectors.toList()));
+
+            StatsUsages stat = new StatsUsages();
+            stat.setName(method.getName());
+            stat.setUsedTimes(method.getOrders().size());
+            stats.add(stat);
+        }
+
+        return stats;
+    }
 }

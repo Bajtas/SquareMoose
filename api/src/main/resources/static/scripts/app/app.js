@@ -71,6 +71,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
              url: "/payment-methods",
              templateUrl: '../payment-methods.html',
              controller: 'PaymentMethodsCtrl'
+          })
+          .state('payment-methods-stats', {
+               url: "/payment-methods/stats",
+               templateUrl: '../payment-methods-stats.html',
+               controller: 'PaymentMethodsCtrl'
           });
 
     $urlRouterProvider.otherwise("/login");

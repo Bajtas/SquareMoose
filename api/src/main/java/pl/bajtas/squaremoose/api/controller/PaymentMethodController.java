@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.PaymentMethod;
 import pl.bajtas.squaremoose.api.service.PaymentMethodService;
+import pl.bajtas.squaremoose.api.util.stats.StatsUsages;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -57,6 +59,7 @@ public class PaymentMethodController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/method/add")
+    @RolesAllowed("Admin")
     public Response add(PaymentMethod paymentMethod) {
         return getService().add(paymentMethod);
     }
@@ -73,7 +76,16 @@ public class PaymentMethodController {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/method/{id}/delete")
+    @RolesAllowed("Admin")
     public Response delete(@NotNull @PathParam("id") Integer id) {
         return getService().delete(id);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/method/usage/stats")
+    @RolesAllowed("Admin")
+    public List<StatsUsages> usageStats() {
+        return getService().usageStats();
     }
 }

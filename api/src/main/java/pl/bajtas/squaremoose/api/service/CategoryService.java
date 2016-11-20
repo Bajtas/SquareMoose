@@ -14,7 +14,7 @@ import pl.bajtas.squaremoose.api.repository.ProductRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.CategoryStats;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
-import pl.bajtas.squaremoose.api.util.stats.CategoryUsages;
+import pl.bajtas.squaremoose.api.util.stats.StatsUsages;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -179,11 +179,11 @@ public class CategoryService implements GenericService<Category, CategoryReposit
         return StringUtils.isNotEmpty(name) && StringUtils.isNotBlank(name) && productRepository.findByName(name) != null;
     }
 
-    public List<CategoryUsages> getCategoriesUsages() {
+    public List<StatsUsages> getCategoriesUsages() {
         List<Category> categories = getRepository().findAll().stream().distinct().collect(Collectors.toList());
-        List<CategoryUsages> usages = new ArrayList<>();
+        List<StatsUsages> usages = new ArrayList<>();
         for (Category category : categories) {
-            CategoryUsages usage = new CategoryUsages();
+            StatsUsages usage = new StatsUsages();
             usage.setName(category.getName());
             usage.setUsedTimes(category.getProducts().stream().distinct().collect(Collectors.toList()).size());
 
