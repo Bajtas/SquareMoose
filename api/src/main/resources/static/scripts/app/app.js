@@ -73,9 +73,19 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
              controller: 'PaymentMethodsCtrl'
           })
           .state('payment-methods-stats', {
-               url: "/payment-methods/stats",
-               templateUrl: '../payment-methods-stats.html',
-               controller: 'PaymentMethodsCtrl'
+             url: "/payment-methods/stats",
+             templateUrl: '../payment-methods-stats.html',
+             controller: 'PaymentMethodsCtrl'
+          })
+          .state('delivery-methods', {
+             url: "/delivery-methods",
+             templateUrl: '../delivery-methods.html',
+             controller: 'DeliveryMethodsCtrl'
+          })
+          .state('DeliveryMethodDetailsCtrl', {
+            url: "/delivery-method-details/:methodId",
+            templateUrl: '../delivery-method-details.html',
+            controller: 'DeliveryMethodDetailsCtrl'
           });
 
     $urlRouterProvider.otherwise("/login");

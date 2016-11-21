@@ -36,43 +36,43 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-//        for (String type : DEFAULT_DELIVERY_TYPES) {
-//            DeliveryType deliveryType = getRepository().findByName(type);
-//
-//            if (deliveryType == null) {
-//                deliveryType = new DeliveryType();
-//                deliveryType.setName(type);
-//                switch (type) {
-//                    case "Recorded letter":
-//                        deliveryType.setPrice(3.25);
-//                        deliveryType.setTime("3 Days");
-//                        break;
-//                    case "Economic letter":
-//                        deliveryType.setPrice(2.00);
-//                        deliveryType.setTime("5 Days");
-//                        break;
-//                    case "Recorded delivery":
-//                        deliveryType.setPrice(4.25);
-//                        deliveryType.setTime("3 Days");
-//                        break;
-//                    case "Special delivery":
-//                        deliveryType.setPrice(5.20);
-//                        deliveryType.setTime("2 Days");
-//                        break;
-//                    case "Post office box":
-//                        deliveryType.setPrice(2.40);
-//                        deliveryType.setTime("4 Days");
-//                        break;
-//                    case "Courier parcel":
-//                        deliveryType.setPrice(6.40);
-//                        deliveryType.setTime("1 Day");
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                getRepository().save(deliveryType);
-//            }
-//        }
+        for (String type : DEFAULT_DELIVERY_TYPES) {
+            DeliveryType deliveryType = getRepository().findByName(type);
+
+            if (deliveryType == null) {
+                deliveryType = new DeliveryType();
+                deliveryType.setName(type);
+                switch (type) {
+                    case "Recorded letter":
+                        deliveryType.setPrice(3.25);
+                        deliveryType.setTime("3 Days");
+                        break;
+                    case "Economic letter":
+                        deliveryType.setPrice(2.00);
+                        deliveryType.setTime("5 Days");
+                        break;
+                    case "Recorded delivery":
+                        deliveryType.setPrice(4.25);
+                        deliveryType.setTime("3 Days");
+                        break;
+                    case "Special delivery":
+                        deliveryType.setPrice(5.20);
+                        deliveryType.setTime("2 Days");
+                        break;
+                    case "Post office box":
+                        deliveryType.setPrice(2.40);
+                        deliveryType.setTime("4 Days");
+                        break;
+                    case "Courier parcel":
+                        deliveryType.setPrice(6.40);
+                        deliveryType.setTime("1 Day");
+                        break;
+                    default:
+                        break;
+                }
+                getRepository().save(deliveryType);
+            }
+        }
     }
 
     @Override
@@ -117,9 +117,12 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
         try {
             DeliveryType old = getRepository().findOne(id);
             if (old != null) {
-                deliveryType.setId(id);
+                old.setName(deliveryType.getName());
+                old.setTime(deliveryType.getTime());
+                old.setPrice(deliveryType.getPrice());
+                old.setImageSrc(deliveryType.getImageSrc());
 
-                getRepository().save(deliveryType);
+                getRepository().save(old);
                 return Response.status(Response.Status.OK).entity("DeliveryType with id: " + id + " updated successfully!").build();
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).entity("DeliveryType with given id: " + id + " not found!").build();

@@ -7,6 +7,7 @@ import pl.bajtas.squaremoose.api.domain.DeliveryType;
 import pl.bajtas.squaremoose.api.service.DeliveryTypeService;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -38,6 +39,7 @@ public class DeliveryTypeController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliverytypes/page/{number}")
+    @PermitAll
     public Page<DeliveryType> getPage(@PathParam("number") Integer page,
                                       @QueryParam("size") Integer size,
                                       @QueryParam("sortBy") String sortBy,
@@ -48,6 +50,7 @@ public class DeliveryTypeController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliverytypes/{id}")
+    @PermitAll
     public DeliveryType getById(@NotNull @PathParam("id") Integer id) {
         return getService().getById(id);
     }
@@ -67,7 +70,7 @@ public class DeliveryTypeController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/deliverytypes/{id}/update")
-    public Response add(@NotNull @PathParam("id") int id, DeliveryType deliveryType) {
+    public Response update(@NotNull @PathParam("id") int id, DeliveryType deliveryType) {
         return getService().update(id, deliveryType);
     }
 
@@ -75,7 +78,8 @@ public class DeliveryTypeController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/deliverytypes/{id}/delete")
-    public Response add(@NotNull @PathParam("id") int id) {
+    @RolesAllowed("Admin")
+    public Response delete(@NotNull @PathParam("id") int id) {
         return getService().delete(id);
     }
 

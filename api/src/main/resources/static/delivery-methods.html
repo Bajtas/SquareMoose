@@ -4,7 +4,7 @@
         <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
     </div>
     <div class="col_12" data-ng-init="init()" ng-hide="error">
-        <h5>Payment methods:</h5>
+        <h5>Delivery types:</h5>
         <div class="notice success" ng-show="showInfo">
             <i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}
             <a href="#close" class="icon-remove"></a>
@@ -14,22 +14,22 @@
             <tr class="alt first last">
                 <th rel="0" value="Id">Id</th>
                 <th rel="1" value="Name">Name<span class="arrow"></span></th>
-                <th rel="2" value="AddedOn">Added on</th>
-                <th rel="3" value="Lmod">Last mod.</th>
+                <th rel="2" value="Price">Price</th>
+                <th rel="3" value="Est. time">Est. time</th>
                 <th rel="4" value="Actions">Actions</th>
             </tr>
             </thead>
-            <tbody id="methodsList">
-                <tr class="" ng-repeat="method in methodsList track by $index">
-                    <td value="{{method.id}}">{{method.id}}</td>
-                    <td value="{{method.name}}" id="method-{{method.id}}">{{method.name}}</td>
-                    <td value="{{method.addedOn}}">{{method.addedOn}}</td>
-                    <td value="{{method.lmod}}">{{method.lmod}}</td>
-                    <td value="">
-                        <a href="" ng-click="modifyMethodName(method.id)"><i class="fa fa-pencil"></i></a>
-                        <a href="" ng-click="deleteMethod(method.id)"><i class="fa fa-minus-square"></i></a>
-                    </td>
-                </tr>
+            <tbody>
+            <tr class="" ng-repeat="method in methodsList track by $index">
+                <td value="{{method.id}}">{{method.id}}</td>
+                <td value="{{method.name}}">{{method.name}}</td>
+                <td value="{{method.price}}">{{method.price}}</td>
+                <td value="{{method.time}}">{{method.time}}</td>
+                <td value="">
+                    <a href="#/delivery-method-details/{{method.id}}"><i class="fa fa-pencil"></i></a>
+                    <a href="" ng-click="deleteMethod(method.id)"><i class="fa fa-minus-square"></i></a>
+                </td>
+            </tr>
             </tbody>
         </table>
 
