@@ -27,7 +27,7 @@ angular.module('SquareMooseControllers')
 
     $scope.stats = function() {
         var element = angular.element("#deliveryMethodsStats");
-        var paymentsMethodsStatsUrl = $rootScope.apiUrl + '/DeliveryMethodService/method/usage/stats/';
+        var paymentsMethodsStatsUrl = $rootScope.apiUrl + '/DeliveryTypeService/type/usage/stats/';
         var labels = [];
         var usedTimes = [];
         var colors = [];

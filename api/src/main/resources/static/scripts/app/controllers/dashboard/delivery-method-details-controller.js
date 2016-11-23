@@ -63,7 +63,7 @@ angular.module('SquareMooseControllers')
         } else {
             $http({
                 method: "PUT",
-                data: JSOG.encode($scope.product),
+                data: JSOG.encode($scope.deliveryType),
                 headers: {
                     "Authorization": localStorage.getItem("Authorization")
                 },

@@ -12,9 +12,12 @@ import pl.bajtas.squaremoose.api.repository.DeliveryTypeRepository;
 import pl.bajtas.squaremoose.api.repository.OrderRepository;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
+import pl.bajtas.squaremoose.api.util.stats.StatsUsages;
 
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bajtas on 21.09.2016.
@@ -164,7 +167,24 @@ public class DeliveryTypeService implements GenericService<DeliveryType, Deliver
     }
 
     private boolean isDeliveryTypeExists(Integer id) {
+        if (id == null) return false;
+
         DeliveryType deliveryType = deliveryTypeRepository.findOne(id);
         return deliveryType != null;
+    }
+
+    public List<StatsUsages> usageStats() {
+        List<DeliveryType> methods = getRepository().findAll();
+        List<StatsUsages> stats = new ArrayList<>();
+        for (DeliveryType method : methods) {
+            method.setOrders(method.getOrders().stream().distinct().collect(Collectors.toList()));
+
+            StatsUsages stat = new StatsUsages();
+            stat.setName(method.getName());
+            stat.setUsedTimes(method.getOrders().size());
+            stats.add(stat);
+        }
+
+        return stats;
     }
 }

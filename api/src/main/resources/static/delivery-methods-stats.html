@@ -1,0 +1,15 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" data-ng-init="stats()" ng-hide="error">
+        <h5>Delivery methods usage statistic:</h5>
+        <div class="separator"></div>
+        <div class="col_4"></div>
+        <div class="col_4">
+            <canvas id="deliveryMethodsStats" width="300" height="300"></canvas>
+        </div>
+        <div class="col_4"></div>
+    </div>
+</div>

@@ -66,27 +66,37 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/order-details/:orderId",
             templateUrl: '../order-details.html',
             controller: 'OrderDetailsCtrl'
-         })
-         .state('payment-methods', {
-             url: "/payment-methods",
-             templateUrl: '../payment-methods.html',
-             controller: 'PaymentMethodsCtrl'
-          })
-          .state('payment-methods-stats', {
-             url: "/payment-methods/stats",
-             templateUrl: '../payment-methods-stats.html',
-             controller: 'PaymentMethodsCtrl'
-          })
-          .state('delivery-methods', {
-             url: "/delivery-methods",
-             templateUrl: '../delivery-methods.html',
-             controller: 'DeliveryMethodsCtrl'
-          })
-          .state('DeliveryMethodDetailsCtrl', {
+        })
+        .state('payment-methods', {
+            url: "/payment-methods",
+            templateUrl: '../payment-methods.html',
+            controller: 'PaymentMethodsCtrl'
+        })
+        .state('payment-methods-stats', {
+            url: "/payment-methods/stats",
+            templateUrl: '../payment-methods-stats.html',
+            controller: 'PaymentMethodsCtrl'
+        })
+        .state('delivery-methods', {
+            url: "/delivery-methods",
+            templateUrl: '../delivery-methods.html',
+            controller: 'DeliveryMethodsCtrl'
+        })
+        .state('delivery-method-details', {
             url: "/delivery-method-details/:methodId",
             templateUrl: '../delivery-method-details.html',
             controller: 'DeliveryMethodDetailsCtrl'
-          });
+        })
+        .state('delivery-method-add', {
+            url: "/delivery-method-add",
+            templateUrl: '../delivery-method-add.html',
+            controller: 'DeliveryMethodAddCtrl'
+        })
+        .state('delivery-methods-stats', {
+            url: "/delivery-methods/stats",
+            templateUrl: '../delivery-methods-stats.html',
+            controller: 'DeliveryMethodsCtrl'
+        });
 
     $urlRouterProvider.otherwise("/login");
 });

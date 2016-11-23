@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.DeliveryType;
 import pl.bajtas.squaremoose.api.service.DeliveryTypeService;
+import pl.bajtas.squaremoose.api.util.stats.StatsUsages;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Created by Bajtas on 18.09.2016.
@@ -62,6 +64,7 @@ public class DeliveryTypeController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/deliverytypes/add")
+    @RolesAllowed("Admin")
     public Response add(DeliveryType deliveryType) {
         return getService().add(deliveryType);
     }
@@ -83,4 +86,11 @@ public class DeliveryTypeController {
         return getService().delete(id);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/type/usage/stats")
+    @RolesAllowed("Admin")
+    public List<StatsUsages> usageStats() {
+        return getService().usageStats();
+    }
 }

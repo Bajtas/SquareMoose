@@ -5,11 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import pl.bajtas.squaremoose.api.domain.DeliveryType;
 
+import java.util.List;
+
 /**
  * Created by Bajtas on 18.09.2016.
  */
 public interface DeliveryTypeRepository extends CrudRepository<DeliveryType, Integer> {
     Page<DeliveryType> findAll(Pageable pageRequest);
+    List<DeliveryType> findAll();
 
     DeliveryType findByName(String name);
 }

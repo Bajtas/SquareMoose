@@ -11,9 +11,6 @@
         <div class="separator"></div>
         <div class="col_4">
             <img class="caption" title="This is the image caption" ng-src="{{mainImage}}" />
-            <h6>Added on: {{deliveryType.addedOn | date:'MM/dd/yyyy @ h:mma'}}</h6>
-            <h6>Last modification on: {{deliveryType.lmod | date:'MM/dd/yyyy @ h:mma'}}</h6>
-            <h6>Id: {{deliveryType.id}}</h6>
         </div>
         <div class="col_8">
             <div class="notice success" ng-show="showInfo">
@@ -23,6 +20,9 @@
             <form class="vertical">
                 <label for="name">Dlivery type name:</label>
                 <input id="name" type="text" ng-model="deliveryType.name">
+
+                <label for="est-time">Est. time:</label>
+                <input id="est-time" type="text" ng-model="deliveryType.time">
 
                 <div class="col_2">
                     <label for="price">Price:</label>
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="col_12">
-                    <button type="submit" ng-click="modifyDeliveryType()">Save changes</button>
+                    <button type="submit" ng-click="addDeliveryType()">Save changes</button>
                 </div>
             </form>
         </div>
