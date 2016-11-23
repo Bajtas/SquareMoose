@@ -21,7 +21,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
     });
 })
 
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $cordovaInAppBrowserProvider) {
     $stateProvider
       // Menu controller
      .state('app', {

@@ -35,6 +35,7 @@
         }; // TO DELETE 
 
         if (credentials !== 'undefined') {
+            var getRoleUrl = this.serviceUrl + credentials.login + '/role';
             if (credentials.login !== 'undefined' && credentials.password !== 'undefined') {
                 var config = {
                     header: {
@@ -58,7 +59,20 @@
 
                         modal.hide();
 
-                        $rootScope.$broadcast('loggedIn');
+                        $http.get(getRoleUrl)
+                        .then(function success(response) {
+                            localStorage.setItem("UserRole", response.data.name);
+                            $rootScope.$broadcast('loggedIn');
+                        }, function error(response) {
+                            var alertPopup = $ionicPopup.alert({
+                                title: "Looks like unexpected problem occured!",
+                                template: "Please contact with app developer."
+                            });
+
+                            localStorage.setItem("Authorization", "undefined");
+                            localStorage.setItem("UserLogin", "undefined");
+                            $rootScope.$broadcast('loggedIn');
+                        });
                     }
                 }, function error(response) {
                     var alertPopup = $ionicPopup.alert({

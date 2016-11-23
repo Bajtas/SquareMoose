@@ -21,6 +21,8 @@ import pl.bajtas.squaremoose.api.util.search.PageUtil;
 import javax.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -295,5 +297,11 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         return ret;
+    }
+
+    public UserRole getUserRoleByLogin(String login) {
+        UserRole role = getRepository().findByLogin(login).getUserRole();
+        role.getUsers().forEach(p -> p.setDeliveryAdresses(p.getDeliveryAdresses().stream().distinct().collect(Collectors.toList())));
+        return role;
     }
 }

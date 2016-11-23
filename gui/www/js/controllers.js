@@ -5,6 +5,7 @@ angular.module('starter.controllers', [])
 
     // Root API URL
     $rootScope.apiUrl = 'http://squaremoose.ddns.net:4545/bjts/API/';
+    $rootScope.dashboardUrl = 'http://squaremoose.ddns.net:4545/bjts/dashboard/';
     $scope.cart = [];
     $scope.loginData = {};
     $scope.optionsData = {

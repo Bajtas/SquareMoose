@@ -35,15 +35,24 @@
                 <div class="item item-divider">
                     Account
                 </div>
+
                 <ion-item class="item item-icon-left" menu-close ng-click="loginService.show()" ng-hide="isLoggedIn === true">
                     <i class="icon ion-log-in"></i> Login
                 </ion-item>
+
                 <ion-item class="item item-icon-left" menu-close ng-click="registerService.show()" ng-hide="isLoggedIn === true">
                     <i class="icon ion-person-add"></i> Register
                 </ion-item>
+
                 <ion-item class="item item-icon-left" menu-close href="#/app/my-account" ng-show="isLoggedIn === true">
                     <i class="icon ion-person"></i> My account
                 </ion-item>
+
+                <!--ADMIN DASHBOARD-->
+                <ion-item class="item item-icon-left" menu-close ng-click="dashboard()" ng-show="userRole === 'Admin' && isLoggedIn === true">
+                    <i class="icon ion-aperture"></i> Dashboard
+                </ion-item>
+
                 <ion-item class="item item-icon-left" menu-close ng-click="logout()" ng-show="isLoggedIn === true">
                     <i class="icon ion-log-out"></i> Logout
                 </ion-item>

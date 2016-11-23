@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.config.AuthenticationFilter;
 import pl.bajtas.squaremoose.api.domain.User;
+import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.service.UserService;
 
 import javax.annotation.security.PermitAll;
@@ -56,6 +57,14 @@ public class UserController {
     @Path("/users/role/{name}")
     public List<User> getByAllWithRoleName(@NotNull @PathParam("name") String name) {
         return getService().getAllWithRoleName(name);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/{login}/role")
+    @PermitAll
+    public UserRole getByRoleAssignedToUser(@NotNull @PathParam("login") String login) {
+        return getService().getUserRoleByLogin(login);
     }
 
     /* getPage(...)
