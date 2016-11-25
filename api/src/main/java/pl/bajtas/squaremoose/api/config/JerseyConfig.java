@@ -14,7 +14,7 @@ public class JerseyConfig extends ResourceConfig {
     private static final Logger LOG = Logger.getLogger(JerseyConfig.class);
 
     public JerseyConfig() {
-        LOG.info("Jersey initialization.");
+        LOG.info("==> Starting Jersey initialization.");
 
         ClassToRegisterEnum[] packages =
                 {ClassToRegisterEnum.CONTROLLER_CLASS_PACKAGE, ClassToRegisterEnum.SERVICE_CLASS_PACKAGE};
@@ -29,10 +29,10 @@ public class JerseyConfig extends ResourceConfig {
 
             for (String className : classToRegister) {
                 try {
-                    LOG.info("Class registered: " + className + ".java");
+                    LOG.info("Class registered: " + className + ".java - Successfully!");
                     registerInstances(Class.forName(pack.toString() + className).newInstance());
                 } catch (Exception e) {
-                    LOG.error("Could not register class!", e);
+                    LOG.error("Could not register class! - Error!", e);
                 }
             }
 
@@ -41,6 +41,6 @@ public class JerseyConfig extends ResourceConfig {
             register(AuthenticationFilter.class);
         }
 
-        LOG.info("All class registered without errors!");
+        LOG.info("Jersey has been configured correctly!");
     }
 }

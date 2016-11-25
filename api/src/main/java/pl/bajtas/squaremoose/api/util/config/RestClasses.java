@@ -29,7 +29,7 @@ public class RestClasses {
     private static String classToRegisterInfo = "";
 
     public List<String> getClassesToRegister(ClassToRegisterEnum classType) {
-        LOG.info("Obtain classess from package: " + classType.toString());
+        LOG.info("Getting classess from package: " + classType.toString());
 
         List<String> classesToRegister = getAllClasses(classType);
         if (classesToRegister != null)
@@ -38,7 +38,7 @@ public class RestClasses {
         LOG.warn("ClassType has not been specified! There is no case for " + classType.toString());
         LOG.warn("Method will return null");
 
-        return classesToRegister;
+        return null;
     }
 
     private List<String> getAllClasses(ClassToRegisterEnum classType) {
@@ -74,7 +74,7 @@ public class RestClasses {
         }
         String classesInfo = classesToRegister.stream().map(Object::toString).collect(Collectors.joining("\n\t\t\t -->"));
 
-        LOG.info("Fields loaded:\n\t\t\t -->" + classesInfo);
+        LOG.info("Fields loaded:\n\t\t\t\t -->" + classesInfo);
         return classesToRegister;
     }
 
