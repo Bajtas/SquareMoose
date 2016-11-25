@@ -31,7 +31,6 @@
     };
 
     $scope.dashboard = function () {
-
         var options = {
             location: 'yes',
             clearcache: 'yes',
