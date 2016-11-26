@@ -25,6 +25,7 @@ public class RestClasses {
     private static final String userController = "UserController";
     private static final String userRoleController = "UserRoleController";
     private static final String deliveryTypeController = "DeliveryTypeController";
+    private static final String mailController = "MailController";
 
     private static String classToRegisterInfo = "";
 
