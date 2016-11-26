@@ -46,7 +46,7 @@
             <div class="item item-divider">
                 <i class="icon ion-home"></i> Delivery adress
             </div>
-            <div class="list">
+            <div class="list" ng-hide="!isLoggedIn">
                 <label class="item item-input item-select">
                     <label class="input-label">
                         Choose delivery adress
@@ -58,7 +58,7 @@
                 </label>
             </div>
             <form ng-submit="createOrder()" name="orderForm">
-                <div class="list list-inset" ng-show="form.deliveryAddress === 'Other' || form.deliveryAddress === 'My address'">
+                <div class="list list-inset" ng-show="form.deliveryAddress === 'Other' || form.deliveryAddress === 'My address' || isLoggedIn === false">
                     <label class="item item-input">
                         <input type="text" placeholder="First Name" ng-model="form.deliveryAdress.name" name="name" required>
                     </label>

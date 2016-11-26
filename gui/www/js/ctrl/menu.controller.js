@@ -5,8 +5,8 @@
     $scope.isLoggedIn = false; // Indicator to tell if user is logged in
 
     // Event on view loaded
-    $scope.$on('$ionicView.loaded', function (event) {
-        if (localStorage.getItem("Authorization") !== 'undefined') {
+    $scope.$on('$ionicView.enter', function (event) {
+        if (localStorage.getItem("Authorization") !== 'undefined' && localStorage.getItem("UserLogin") !== null) {
             $scope.isLoggedIn = true;
         }
     });

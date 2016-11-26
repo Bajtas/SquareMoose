@@ -16,6 +16,8 @@
         if ($rootScope.isLoggedIn === true) {
             $scope.productsInCart = $rootScope.products;
             $scope.user = $rootScope.user;
+        } else {
+
         }
 
         $http.get($rootScope.apiUrl + 'DeliveryTypeService/deliverytypes').then(function success(response) {
@@ -44,12 +46,13 @@
                 }
             }
         } else if (deliveryAddress === 'Other') {
-            $scope.deliveryAdress.name = '';
-            $scope.deliveryAdress.surname = '';
-            $scope.deliveryAdress.address = '';
-            $scope.deliveryAdress.town = '';
-            $scope.deliveryAdress.zipCode = '';
-            $scope.deliveryAdress.phone = '';
+            $scope.form.deliveryAdress = {};
+            $scope.form.deliveryAdress.name = '';
+            $scope.form.deliveryAdress.surname = '';
+            $scope.form.deliveryAdress.address = '';
+            $scope.form.deliveryAdress.town = '';
+            $scope.form.deliveryAdress.zipCode = '';
+            $scope.form.deliveryAdress.phone = '';
         }
     };
 
@@ -69,7 +72,7 @@
         }
 
         var deliveryAddress = {};
-        if ($scope.form.deliveryAddress === 'My address') {
+        if ($scope.form.deliveryAddress === 'My address' && $scope.user.deliveryAdresses !== undefined) {
             for (var i = 0; i < $scope.user.deliveryAdresses.length; i++) {
                 if ($scope.user.deliveryAdresses[i].currentlyAssigned === true) {
                     deliveryAdress = $scope.user.deliveryAdresses[i];
@@ -80,14 +83,14 @@
             }
         } else if ($scope.form.deliveryAddress === 'Other') {
             deliveryAdress = {
-                "name": deliveryAdress.name,
-                "surname": deliveryAdress.surname,
-                "address": deliveryAdress.address,
-                "town": deliveryAdress.town,
-                "zipCode": deliveryAdress.zipCode,
-                "contactPhone": deliveryAdress.contactPhone,
+                "name": $scope.form.deliveryAdress.name,
+                "surname": $scope.form.deliveryAdress.surname,
+                "address": $scope.form.deliveryAdress.address,
+                "town": $scope.form.deliveryAdress.town,
+                "zipCode": $scope.form.deliveryAdress.zipCode,
+                "contactPhone": $scope.form.deliveryAdress.contactPhone,
                 "currentlyAssigned": false,
-            }
+            };
         }
 
         var deliveryType = {};
