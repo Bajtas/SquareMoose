@@ -38,6 +38,9 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
     private static final String DEFAULT_ADMIN_LOGIN = "admin";
     private static final String DEFAULT_ADMIN_EMAIL = "admin@gmail.com";
     private static final String DEFAULT_ADMIN_PASSWORD = "123";
+    private static final String DEFAULT_GUEST_LOGIN = "Guest";
+    private static final String DEFAULT_GUEST_EMAIL = "NoEmail@gmail.com";
+    private static final String DEFAULT_GUEST_PASSWORD = "123456789";
 
     // Needs to be lazy, configuration needs to be done first
     @Autowired
@@ -63,6 +66,16 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
             admin.setUserRole(userRoleRepository.findByName("Admin"));
             admin.setPassword(passwordEncoder.encode(DEFAULT_ADMIN_PASSWORD));
             getRepository().save(admin);
+        }
+
+        User guest = getRepository().findByLogin(DEFAULT_GUEST_LOGIN);
+        if (guest == null) {
+            guest = new User();
+            guest.setLogin(DEFAULT_GUEST_LOGIN);
+            guest.setEmail(DEFAULT_GUEST_EMAIL);
+            guest.setUserRole(userRoleRepository.findByName("Guest"));
+            guest.setPassword(passwordEncoder.encode(DEFAULT_GUEST_PASSWORD));
+            getRepository().save(guest);
         }
     }
 

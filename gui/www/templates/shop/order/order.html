@@ -85,6 +85,11 @@
                     </label>
                     <span ng-show="orderForm.phone.$touched && !orderForm.phone.$dirty">Phone isn't required, but it helps delivery guy.</span>
                     <span ng-show="orderForm.phone.$touched && orderForm.phone.$dirty && orderForm.phone.$invalid">If you decided to give us your number, please make it correct or blank.</span>
+
+                    <label class="item item-input" ng-show="!isLoggedIn">
+                        <input ng-model="form.user.email" type="email" placeholder="Email" name="email" required>
+                    </label>
+                    <span ng-show="orderForm.email.$touched && orderForm.email.$invalid">This field is required</span>
                 </div>
                 <div class="item item-divider">
                     <i class="icon ion-ios-box"></i> Delivery type

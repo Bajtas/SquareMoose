@@ -17,7 +17,11 @@
             $scope.productsInCart = $rootScope.products;
             $scope.user = $rootScope.user;
         } else {
-
+            $scope.user = {
+                name: "Guest",
+                password: "123456789",
+                email: ""
+            };
         }
 
         $http.get($rootScope.apiUrl + 'DeliveryTypeService/deliverytypes').then(function success(response) {
@@ -81,7 +85,7 @@
                     break;
                 }
             }
-        } else if ($scope.form.deliveryAddress === 'Other') {
+        } else if ($scope.form.deliveryAddress === 'Other' || $scope.isLoggedIn === false) {
             deliveryAdress = {
                 "name": $scope.form.deliveryAdress.name,
                 "surname": $scope.form.deliveryAdress.surname,
@@ -113,6 +117,9 @@
         $scope.user.deliveryAdresses = null;
         $scope.user.userRole = null;
 
+        if (!$scope.isLoggedIn)
+            $scope.user = { email: $scope.form.user.email };
+
         $scope.order = {
             'orderItems': orderItems,
             'deliveryType': deliveryType,
@@ -124,12 +131,10 @@
 
         $scope.auth = localStorage.getItem("Authorization");
 
-        console.log(angular.toJson(JSOG.encode($scope.order)));
-
         $scope.orderFinalizationLoader = true;
         $http({
             method: "POST",
-            data: $scope.order,
+            data: JSOG.encode($scope.order),
             headers: {
                 Authorization: $scope.auth
             },
@@ -146,6 +151,8 @@
                 'choosenDeliveryType': $scope.form.choosenDeliveryType,
                 'choosenPaymentMethod': $scope.form.choosenPaymentMethod
             };
+
+            localStorage.setItem("OrderId", parseInt(response.data.replace(/[^0-9\.]/g, ''), 10));
 
             $location.path('/app/order-summary');
         }, function error(response) {

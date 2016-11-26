@@ -29,7 +29,7 @@ public class MailService {
             helper.setReplyTo(email.getSender());
             helper.setFrom(email.getSender());
             helper.setSubject(email.getSubject());
-            helper.setText(email.getText());
+            helper.setText(email.getText(), true);
 
             javaMailSender.send(mail);
         } catch (MessagingException e) {

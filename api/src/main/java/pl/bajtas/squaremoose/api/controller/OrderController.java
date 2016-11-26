@@ -104,6 +104,7 @@ public class OrderController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/order/add")
+    @PermitAll
     public Response add(Order order) {
         return getService().add(order);
     }

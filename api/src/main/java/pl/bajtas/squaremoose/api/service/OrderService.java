@@ -6,15 +6,19 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.bajtas.squaremoose.api.domain.*;
 import pl.bajtas.squaremoose.api.repository.*;
 import pl.bajtas.squaremoose.api.service.generic.GenericService;
+import pl.bajtas.squaremoose.api.util.email.EmailFactory;
 import pl.bajtas.squaremoose.api.util.search.PageUtil;
 
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static pl.bajtas.squaremoose.api.util.email.EmailFactory.EMAIL_TEMPLATE.ORDER_CREATED;
 
 /**
  * Created by Bajtas on 04.09.2016.
@@ -37,6 +41,8 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
     private ActualOrderStateRepository actualOrderStateRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MailService mailService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -54,6 +60,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
     }
 
     @Override
+    @Transactional
     public Page<Order> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
         PageUtil<Order> util = new PageUtil<>();
         Page<Order> result = util.getPage(page, size, sortBy, sortDirection, getRepository());
@@ -66,6 +73,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
     }
 
     @Override
+    @Transactional
     public Order getById(int id) {
         Order order = getRepository().findOne(id);
         List<OrderItem> distinctOrderItems = order.getOrderItems().stream().distinct().collect(Collectors.toList());
@@ -81,6 +89,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         return getRepository().findByUser_Id(id);
     }
 
+    @Transactional
     public List<Order> getByUserLogin(String login) {
         List<Order> result = getRepository().findByUser_Login(login).stream().distinct().collect(Collectors.toList());
         result.forEach(x -> {
@@ -94,6 +103,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         return result;
     }
 
+    @Transactional
     public Order getByUserLoginAndOrderId(String login, int id) {
         Order result = getRepository().findByIdAndUser_Login(id, login);
         result.setOrderItems(result.getOrderItems().stream().distinct().collect(Collectors.toList()));
@@ -111,6 +121,7 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
     }
 
     @Override
+    @Transactional
     public Response add(Order order) {
         List<OrderItem> orderItems = order.getOrderItems();
         DeliveryAdress deliveryAdress = order.getDeliveryAdress();
@@ -120,8 +131,9 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
         if (user == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("User is not specified please specify user!").build();
         }
-        if (user.getId() < 1) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User with id: " + user.getId() + " not exist. Please specify user with proper id!").build();
+        if (user.getId() == null) {
+            User guest = userRepository.findByLogin("Guest");
+            order.setUser(guest);
         }
 
         try {
@@ -137,25 +149,27 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
             order.setAddedOn(new Date());
             order.setLmod(new Date());
 
+            getRepository().save(order);
+
             ActualOrderState actualOrderState = new ActualOrderState();
             actualOrderState.setName("Ordered");
             actualOrderState.setLmod(new Date());
+            actualOrderState.setDescription(" ");
             actualOrderState.setOrder(order);
 
             actualOrderStateRepository.save(actualOrderState);
-
-            order.setActualOrderState(actualOrderState);
-            getRepository().save(order);
 
             for (OrderItem item : orderItems) {
                 item.setOrder(order);
                 orderItemRepository.save(item);
             }
+
+            mailService.sendEmail(new EmailFactory(ORDER_CREATED).mailTo(user.getEmail()).build(order));
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
 
-        return Response.status(Response.Status.OK).entity("Product added successfully! Id: " + order.getId()).build();
+        return Response.status(Response.Status.OK).entity("Order added successfully! Id: " + order.getId()).build();
     }
 
     @Override
