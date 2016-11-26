@@ -1,0 +1,27 @@
+﻿<ion-view view-title="Contact form">
+    <ion-content>
+        <form ng-submit="sendEmail()" name="contactForm">
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="email" placeholder="Email" ng-model="form.email.sender" name="sender" required>
+                </label>
+                <span ng-show="contactForm.sender.$touched && contactForm.sender.$invalid">This field is required</span>
+                <label class="item item-input">
+                    <input type="text" placeholder="Subject" ng-model="form.email.subject" name="subject" required>
+                </label>
+                <span ng-show="contactForm.subject.$touched && contactForm.subject.$invalid">This field is required</span>
+                
+                <label class="item item-input floating">
+                    <textarea placeholder="..." 
+                              ng-model="form.email.text" 
+                              id="txtnotes" 
+                              ng-keyup="expandText()"
+	                          ng-keydown="expandText()"></textarea>
+                </label>
+            </div>
+            <label class="item">
+                <button class="button icon-center ion-log-in button-block button-positive" type="submit" ng-disabled="contactForm.$invalid"> Send message</button>
+            </label>
+        </form>
+    </ion-content>
+</ion-view>

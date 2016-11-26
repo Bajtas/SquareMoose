@@ -128,6 +128,15 @@ angular.module('starter', ['ionic', 'ngCordova', 'base64', 'starter.controllers'
                 controller: 'MyOrderDetailsCtrl'
             }
         }
+    })
+    .state('app.contact', {
+        url: '/contact',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/contact.html',
+                controller: 'ContactCtrl'
+            }
+        }
     });
 
     // Default URL to go when URL is not set

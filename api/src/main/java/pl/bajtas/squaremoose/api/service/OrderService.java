@@ -148,6 +148,11 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
 
             order.setAddedOn(new Date());
             order.setLmod(new Date());
+            float fullPrice = 0;
+            for (OrderItem item : order.getOrderItems())
+                fullPrice += item.getAmount() * item.getProduct().getPrice();
+
+            order.setFullPrice(fullPrice);
 
             getRepository().save(order);
 
