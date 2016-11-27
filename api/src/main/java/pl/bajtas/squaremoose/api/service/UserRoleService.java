@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static pl.bajtas.squaremoose.api.consts.Globals.DEFAULT_ROLES;
+
 /**
  * Created by Bajtas on 04.09.2016.
  */
@@ -36,9 +38,9 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // Insert default roles to DB if they does not exist.
         LOG.info("Check if there are proper roles defined in DB.");
-        String roleNames[] = {"Admin", "Moderator", "User", "Guest"};
+
         int rolesInDBCounter = 0;
-        for (String name : roleNames) {
+        for (String name : DEFAULT_ROLES) {
             if (getRepository().findByName(name) == null) {
                 LOG.info("-> Role with name: " + name + " not found!\n\t-> Adding this role to DB...");
                 UserRole role = new UserRole();
@@ -51,8 +53,8 @@ public class UserRoleService implements ApplicationListener<ContextRefreshedEven
                 rolesInDBCounter++;
         }
 
-        if (rolesInDBCounter == roleNames.length) {
-            LOG.info("Success! Roles: " + Arrays.toString(roleNames) + " are in DB!");
+        if (rolesInDBCounter == DEFAULT_ROLES.length) {
+            LOG.info("Success! Roles: " + Arrays.toString(DEFAULT_ROLES) + " are in DB!");
         }
     }
 

@@ -24,6 +24,8 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import static pl.bajtas.squaremoose.api.consts.Globals.*;
+
 /**
  * Created by Bajtas on 04.09.2016.
  */
@@ -32,15 +34,6 @@ import java.util.stream.Collectors;
 public class UserService implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger LOG = Logger.getLogger(UserService.class);
-
-    private static final String DEFAULT_USER_ROLE = "User";
-
-    private static final String DEFAULT_ADMIN_LOGIN = "admin";
-    private static final String DEFAULT_ADMIN_EMAIL = "admin@gmail.com";
-    private static final String DEFAULT_ADMIN_PASSWORD = "123";
-    private static final String DEFAULT_GUEST_LOGIN = "Guest";
-    private static final String DEFAULT_GUEST_EMAIL = "NoEmail@gmail.com";
-    private static final String DEFAULT_GUEST_PASSWORD = "123456789";
 
     // Needs to be lazy, configuration needs to be done first
     @Autowired
@@ -185,7 +178,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         final String password = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
 
         //Is user valid?
-        if (!isUserValid(username, password) && (username != null ? username.equals(newUser.getLogin()) : false))
+        if (!isUserValid(username, password) && (username != null && username.equals(newUser.getLogin())))
             return Response.status(Response.Status.FORBIDDEN).entity("Access denied!").build();
 
         String login = newUser.getLogin(); // get login to find user for update

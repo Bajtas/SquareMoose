@@ -18,7 +18,6 @@ public class OrderStateHistoryService {
 
     @Autowired
     private OrderStateHistoryRepository orderStateHistoryRepository;
-    //@Autowired  private ProductRepository productRepository;
     @Autowired
     private EntityManager entityManager;
 

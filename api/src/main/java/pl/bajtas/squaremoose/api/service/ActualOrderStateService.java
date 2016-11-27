@@ -81,12 +81,6 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
         return getRepository().findByOrder_Id(id);
     }
 
-    // Search by User properties /* TO DO */
-    public List<ActualOrderState> getByUserId(int id) {
-        //orderRepository.
-        return null;
-    }
-
     /* --------------------------------------------------------------------------------------------- */
 
     // Add new ActualOrderState to DB
@@ -136,9 +130,6 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
             if (actualOrderState.getOrder() != null) {
                 orderRepository.save(actualOrderState.getOrder());
             }
-//            if (actualOrderState.getOrderState() != null) {
-//                orderStateRepository.save(actualOrderState.getOrderState());
-//            }
             if (actualOrderState.getOrderStateHistories() != null) {
                 List<OrderStateHistory> histories = actualOrderState.getOrderStateHistories();
                 for (OrderStateHistory history : histories)
@@ -161,33 +152,22 @@ public class ActualOrderStateService implements GenericService<ActualOrderState,
         LOG.info("ActualOrderState with id: " + id + " will be deleted.");
 
         ActualOrderState actualOrderState = getRepository().findOne(id);
-        //OrderState state = actualOrderState.getOrderState();
         List<OrderStateHistory> histories = actualOrderState.getOrderStateHistories();
-        if (actualOrderState != null) {
-            try {
-                Order order = actualOrderState.getOrder();
-                if (order != null) {
-                    order.setActualOrderState(null);
-                    orderRepository.save(order);
-                }
-//                if (state != null) {
-//                    List<ActualOrderState> actualOrderStates = new ArrayList<>();
-//                    actualOrderStates.remove(actualOrderStates);
-//                    state.setActualOrderStates(actualOrderStates);
-//                    orderStateRepository.save(state);
-//                }
-                getRepository().delete(id);
-                if (histories.size() != 0) {
-                    for (OrderStateHistory history : histories)
-                        orderStateHistoryRepository.delete(history.getId());
-                }
-                return Response.status(Response.Status.OK).entity("ActualOrderState with id: " + id + " deleted successfully!").build();
-            } catch (Exception e) {
-                LOG.error("ActualOrderState with id: " + id, e);
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
+        try {
+            Order order = actualOrderState.getOrder();
+            if (order != null) {
+                order.setActualOrderState(null);
+                orderRepository.save(order);
             }
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("ActualOrderState with given id: " + id + " not found!").build();
+            getRepository().delete(id);
+            if (histories.size() != 0) {
+                for (OrderStateHistory history : histories)
+                    orderStateHistoryRepository.delete(history.getId());
+            }
+            return Response.status(Response.Status.OK).entity("ActualOrderState with id: " + id + " deleted successfully!").build();
+        } catch (Exception e) {
+            LOG.error("ActualOrderState with id: " + id, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error: " + e).build();
         }
     }
 
