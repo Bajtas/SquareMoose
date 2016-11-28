@@ -59,8 +59,18 @@
                     </li>
                 </ul>
             </li>
-            <li><a href="#/users">Users</a>
-
+            <li>
+                <a href=""><i class="fa fa-users" aria-hidden="true"></i> Users</a>
+                <ul>
+                    <li><a href="#/users"><i class="fa fa-list" aria-hidden="true"></i> Show all</a></li>
+                    <li class="divider"><a href=""><i class="fa fa-object-group"></i> Management</a>
+                        <ul>
+                            <li><a href="#/payment-methods"><i class="fa fa-list" aria-hidden="true"></i> Add new</a></li>
+                            <li><a href="#/category-add"><i class="fa fa-plus" aria-hidden="true"></i> Remove</a></li>
+                            <li><a href="#/payment-methods/stats"><i class="fa fa-pie-chart" aria-hidden="true"></i> Change role</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>
@@ -101,6 +111,7 @@
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/delivery-methods-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/delivery-method-details-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/controllers/dashboard/delivery-method-add-controller.js"></script>
+    <script type="text/javascript" src="../scripts/app/controllers/dashboard/users-controller.js"></script>
     <script type="text/javascript" src="../scripts/app/app.js"></script>
 
     <!-- Other scripts -->

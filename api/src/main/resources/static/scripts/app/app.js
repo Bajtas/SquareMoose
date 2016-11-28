@@ -96,6 +96,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/delivery-methods/stats",
             templateUrl: '../delivery-methods-stats.html',
             controller: 'DeliveryMethodsCtrl'
+        })
+        .state('users', {
+            url: "/users",
+            templateUrl: '../users.html',
+            controller: 'UsersCtrl'
         });
 
     $urlRouterProvider.otherwise("/login");

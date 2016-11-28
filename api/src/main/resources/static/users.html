@@ -1,0 +1,75 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" data-ng-init="init()" ng-hide="error">
+        <h5>Products list:</h5>
+        <table class="striped sortable" cellspacing="0" cellpadding="0">
+            <thead>
+            <tr class="alt first last">
+                <th rel="0" value="Id">Id</th>
+                <th rel="1" value="Login">Login<span class="arrow"></span></th>
+                <th rel="2" value="Email">Email</th>
+                <th rel="3" value="Role">Role</th>
+                <th rel="4" value="AddedOn">Added on</th>
+                <th rel="5" value="Lmod">Last mod.</th>
+                <th rel="5" value="IsOnline">Is online</th>
+                <th rel="6" value="Actions">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="" ng-repeat="user in usersList track by $index">
+                <td value="{{user.id}}">{{user.id}}</td>
+                <td value="{{user.login}}">{{user.login}}</td>
+                <td value="{{user.email}}">{{user.email}}</td>
+                <td value="{{user.userRole.name}}">{{user.userRole.name}}</td>
+                <td value="{{user.addedOn}}">{{user.addedOn | date:'MM/dd/yyyy @ h:mma'}}</td>
+                <td value="{{user.lmod}}">{{user.lmod | date:'MM/dd/yyyy @ h:mma'}}</td>
+                <td value="{{user.isOnline}}">
+                    <i class="fa fa-arrow-circle-up" aria-hidden="true" ng-if="user.isOnline"></i>
+                    <i class="fa fa-arrow-circle-down" aria-hidden="true" ng-if="!user.isOnline"></i>
+                </td>
+                <td value="">
+                    <a href="#/user-details/{{user.id}}">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                    <a href="" ng-click="deleteUser(user.id)">
+                        <i class="fa fa-minus-square"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="separator"></div>
+
+        <div class="col_10">
+            <h6>Page: {{page + 1}}</h6>
+        </div>
+        <div class="col_2">
+            <h6>TotalPages: {{lastPage }}</h6>
+        </div>
+
+        <div class="col_2">
+            <button class="medium" ng-model="page" ng-click="previousPage()" ng-disabled="page == 0"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous page</button>
+        </div>
+        <div class="col_1">
+        </div>
+        <div class="col_7">
+            <button class="medium" ng-click="addNew()"><i class="fa fa-plus" aria-hidden="true"></i> Add new</button>
+            <select ng-model="sortBy" ng-options="parameter.name for parameter in sortParameters" ng-change="sort()">
+                <option value="">-- Sort by --</option>
+            </select>
+            <select ng-model="sortDir" ng-options="direction.name for direction in sortDirections" ng-change="sort()">
+                <option value="">-- Sort direction --</option>
+            </select>
+            <label for="goToPage">Go to page: </label>
+            <input id="goToPage" type="number" min="1" placeholder="Go to page" ng-model="pageToGo" ng-init="1">
+            <button class="medium" ng-click="toPage()" ng-disabled="pageToGo < 0"><i class="fa fa-arrow-right" aria-hidden="true"></i> Go</button>
+        </div>
+        <div class="col_2">
+            <button class="medium" ng-click="nextPage()"><i class="fa fa-arrow-right" aria-hidden="true"></i> Next page</button>
+        </div>
+    </div>
+</div>
