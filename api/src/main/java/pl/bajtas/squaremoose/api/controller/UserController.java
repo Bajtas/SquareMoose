@@ -144,11 +144,6 @@ public class UserController {
         return getService().add(user);
     }
 
-    /*  Add new User to DB
-    * Takes 1 parameter : User object
-    *
-    * Returns info with error or success if remove is successful.
-    * */
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)

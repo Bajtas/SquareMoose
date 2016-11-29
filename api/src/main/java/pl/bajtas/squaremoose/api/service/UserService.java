@@ -140,21 +140,17 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
                 return Response.status(Response.Status.CONFLICT).entity("User with same email exist in system, please choose another email.").build();
             }
 
-            if (password.length() >= 6) {
-                String hashedPassword = passwordEncoder.encode(password);
+            String hashedPassword = passwordEncoder.encode(password);
 
-                user.setAddedOn(new Date());
-                user.setLmod(new Date());
-                user.setPassword(hashedPassword);
+            user.setAddedOn(new Date());
+            user.setLmod(new Date());
+            user.setPassword(hashedPassword);
 
-                UserRole roleForNewUser = userRoleRepository.findByName(DEFAULT_USER_ROLE);
-                user.setUserRole(roleForNewUser);
+            UserRole roleForNewUser = userRoleRepository.findByName(DEFAULT_USER_ROLE);
+            user.setUserRole(roleForNewUser);
 
-                getRepository().save(user);
-                return Response.status(Response.Status.OK).entity("Registered successfully!").build();
-            } else {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Password length is to small. Min. 6 characters.").build();
-            }
+            getRepository().save(user);
+            return Response.status(Response.Status.OK).entity("Registered successfully!").build();
         } else if (StringUtils.isNotEmpty(login)) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Login has been not specified!").build();
         } else if (StringUtils.isNotEmpty(email)) {

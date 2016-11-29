@@ -1,0 +1,42 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" ng-show="saveInProgress">
+        <span us-spinner="{radius:30, width:8, length: 16}"></span>
+    </div>
+    <div class="col_12" ng-hide="error || saveInProgress">
+        <h5>Add new user:</h5>
+        <div class="separator"></div>
+        <div class="col_4"></div>
+        <div class="col_4">
+            <div class="notice success" ng-show="showInfo">
+                <i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}
+                <a href="#close" class="icon-remove"></a>
+            </div>
+            <form class="vertical">
+                <label for="login">Login:</label>
+                <input id="login" type="text" ng-model="user.login">
+
+                <label for="email">Email:</label>
+                <input id="email" type="email" ng-model="user.email">
+
+                <label for="password">Password:</label>
+                <input id="password" type="password" ng-model="user.password">
+
+                <label for="select1">Role:</label>
+                <select id="select1"
+                        ng-int="selectedRole = roles[0]"
+                        ng-model="selectedRole"
+                        ng-options="role.name for role in roles">
+                </select>
+
+                <div class="col_12">
+                    <button type="submit" ng-click="addUser()">Save changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="col_4"></div>
+    </div>
+</div>

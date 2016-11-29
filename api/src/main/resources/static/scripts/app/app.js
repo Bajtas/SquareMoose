@@ -101,6 +101,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
             url: "/users",
             templateUrl: '../users.html',
             controller: 'UsersCtrl'
+        })
+        .state('users-add', {
+            url: "/users/add",
+            templateUrl: '../user-add.html',
+            controller: 'UserAddCtrl'
         });
 
     $urlRouterProvider.otherwise("/login");

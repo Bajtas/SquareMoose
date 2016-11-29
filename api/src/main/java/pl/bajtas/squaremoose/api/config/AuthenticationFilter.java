@@ -3,6 +3,7 @@ package pl.bajtas.squaremoose.api.config;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import pl.bajtas.squaremoose.api.service.UserService;
 
 import javax.annotation.security.DenyAll;
@@ -35,6 +36,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
     private UserService userService;
 
     @Override
+    @Transactional
     public void filter(ContainerRequestContext requestContext) throws IOException {
         Method method = resourceInfo.getResourceMethod();
         //Access allowed for all

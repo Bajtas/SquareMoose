@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.service.UserRoleService;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,6 +30,7 @@ public class UserRoleController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/roles")
+    @PermitAll
     public Iterable<UserRole> getAll() {
         return userRoleService.getAll();
     }
