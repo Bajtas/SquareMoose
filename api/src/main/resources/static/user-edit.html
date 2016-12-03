@@ -1,0 +1,83 @@
+<div class="main">
+    <div class="col_12" ng-show="error">
+        <i class="fa fa-exclamation" aria-hidden="true"></i> Error:
+        <pre id="default-spacing">{{errMsg | json : spacing}}</pre>
+    </div>
+    <div class="col_12" ng-show="saveInProgress">
+        <span us-spinner="{radius:30, width:8, length: 16}"></span>
+    </div>
+    <div class="col_12" ng-hide="error || saveInProgress">
+        <h5>Edit user:</h5>
+        <div class="separator"></div>
+        <div class="col_3">
+            <form class="vertical">
+                <label for="name">Name:</label>
+                <input id="name" type="text" ng-model="address.name">
+
+                <label for="surname">Surname:</label>
+                <input id="surname" type="text" ng-model="address.surname">
+
+                <label for="address">Address:</label>
+                <input id="address" type="text" ng-model="address.address">
+
+                <label for="ZipCode">Zip code:</label>
+                <input id="ZipCode" type="text" ng-model="address.zipCode">
+
+                <label for="town">Town:</label>
+                <input id="town" type="text" ng-model="address.town">
+
+                <label for="phone">Phone:</label>
+                <input id="phone" type="text" ng-model="address.phone">
+
+                <div class="col_12">
+                    <button type="submit" ng-click="editAddress()">Save changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="col_6">
+            <div class="notice success" ng-show="showInfo">
+                <i class="fa fa-check" aria-hidden="true"></i> {{updateInfo}}
+                <a href="#close" class="icon-remove"></a>
+            </div>
+            <table class="striped sortable" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr class="alt first last">
+                    <th rel="0" value="Ordered by"><i class="fa fa-user" aria-hidden="true"></i> Info</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="first">
+                    <td value="Login"><b>Register on:</b>: {{user.addedOn}}</td>
+                </tr>
+                <tr class="alt">
+                    <td value="Email"><b>Last mod.</b>: {{user.lmod}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <form class="vertical">
+                <label for="login">Login:</label>
+                <input id="login" type="text" ng-model="user.login">
+
+                <label for="email">Email:</label>
+                <input id="email" type="email" ng-model="user.email">
+
+                <label for="password">Password:</label>
+                <input id="password" type="password" ng-model="user.password">
+
+                <label for="select1">Role:</label>
+                <select id="select1"
+                        ng-int="selectedRole = roles[0]"
+                        ng-model="selectedRole"
+                        ng-options="role.name for role in roles">
+                </select>
+
+                <div class="col_12">
+                    <button type="submit" ng-click="editUser()">Save changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="col_3">
+
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ import pl.bajtas.squaremoose.api.domain.UserRole;
 import pl.bajtas.squaremoose.api.service.UserService;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -95,6 +96,7 @@ public class UserController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/id/{id}")
+    @RolesAllowed("Admin")
     public User getById(@NotNull @PathParam("id") int id) {
         return getService().getById(id);
     }

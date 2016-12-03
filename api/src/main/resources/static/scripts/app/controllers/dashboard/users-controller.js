@@ -105,6 +105,6 @@ angular.module('SquareMooseControllers')
     };
 
     $scope.addNew = function() {
-        $state.go('product-add');
+        $state.go('users-add');
     };
 });

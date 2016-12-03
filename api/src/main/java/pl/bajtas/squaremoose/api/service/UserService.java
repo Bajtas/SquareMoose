@@ -10,6 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.bajtas.squaremoose.api.config.AuthenticationFilter;
 import pl.bajtas.squaremoose.api.domain.User;
 import pl.bajtas.squaremoose.api.domain.UserRole;
@@ -93,7 +94,9 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
 
     public User getById(int id) {
         LOG.info("Getting user assigned to id: " + id);
-        return getRepository().findOne(id);
+        User user = getRepository().findOne(id);
+        user.setDeliveryAdresses(user.getDeliveryAdresses().stream().distinct().collect(Collectors.toList()));
+        return user;
     }
 
     public User getByLogin(String login) {
@@ -101,6 +104,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         return getRepository().findByLogin(login);
     }
 
+    @Transactional
     public Page<User> getAll(Integer page, Integer size, String sortBy, String sortDirection) {
         PageUtil<User> util = new PageUtil<>();
         return util.getPage(page, size, sortBy, sortDirection, getRepository());
@@ -146,7 +150,10 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
             user.setLmod(new Date());
             user.setPassword(hashedPassword);
 
-            UserRole roleForNewUser = userRoleRepository.findByName(DEFAULT_USER_ROLE);
+
+            UserRole roleForNewUser = userRoleRepository.findByName(user.getUserRole() == null ? DEFAULT_USER_ROLE : user.getUserRole().getName());
+            if (roleForNewUser == null)
+                return Response.status(Response.Status.CONFLICT).entity("There is no role with name: " + user.getUserRole().getName()).build();
             user.setUserRole(roleForNewUser);
 
             getRepository().save(user);
