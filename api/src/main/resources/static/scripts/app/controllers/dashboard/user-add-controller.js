@@ -13,7 +13,7 @@ angular.module('SquareMooseControllers')
     $scope.$on('$viewContentLoaded', function() {
         var rolesUrl = $rootScope.apiUrl + '/UserRoleService/roles';
 
-        if ($stateParams.userId !== null) {
+        if ($stateParams.userId !== null && $stateParams.userId != undefined) {
             $http({
                 method: "GET",
                 headers: {
@@ -42,6 +42,19 @@ angular.module('SquareMooseControllers')
                 $scope.error = true;
                 $scope.errMsg = response.data;
             });
+        } else {
+            $http.get(rolesUrl)
+                .then(function(response) {
+                    $scope.roles = JSOG.decode(response.data);
+                    $scope.roles.forEach(function(item) {
+                        if (item.name === $scope.user.userRole.name) {
+                            $scope.selectedRole = item;
+                        }
+                    });
+                }, function(response) {
+                    $scope.error = true;
+                    $scope.errMsg = response.data;
+                });
         }
     });
 
