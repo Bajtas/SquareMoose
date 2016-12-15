@@ -14,6 +14,7 @@
 
     $scope.$on('$ionicView.loaded', function (event) {
         if ($rootScope.isLoggedIn === true) {
+            $scope.isLoggedIn = true;
             $scope.productsInCart = $rootScope.products;
             $scope.user = $rootScope.user;
         } else {

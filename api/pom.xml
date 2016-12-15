@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.bajtas</groupId>
 	<artifactId>squaremoose.api</artifactId>
-	<version>0.6.2</version>
+	<version>1.0</version>
 	<packaging>war</packaging>
 	<name>SquareMoose</name>
-	<description>Demo project for Spring Boot</description>
+	<description>SquareMoose project</description>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
