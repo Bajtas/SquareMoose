@@ -113,6 +113,7 @@ public class OrderController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/order/{id}/update")
+    @RolesAllowed("Admin")
     public Response update(@NotNull @PathParam("id") int id, Order updatedOrder) {
         return getService().update(id, updatedOrder); // false for update old
     }
@@ -120,6 +121,7 @@ public class OrderController {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/order/{id}/delete")
+    @RolesAllowed("Admin")
     public Response delete(@NotNull @PathParam("id") Integer id) {
         return getService().delete(id);
     }

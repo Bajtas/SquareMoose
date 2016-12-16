@@ -100,7 +100,7 @@ $scope.sortBy = {};
     };
 
     $scope.deleteOrder = function(orderId) {
-        $http.delete($rootScope.apiUrl + '/OrderService/order/' + orderId + '/delete')
+        $http.delete($rootScope.apiUrl + '/OrderService/order/' + orderId + '/delete', JSON.parse(localStorage.getItem("AuthHeader")))
             .then(function(response) {
                 $scope.init();
             }, function(response) {
