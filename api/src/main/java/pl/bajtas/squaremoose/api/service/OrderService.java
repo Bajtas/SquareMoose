@@ -92,14 +92,18 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
     @Transactional
     public List<Order> getByUserLogin(String login) {
         List<Order> result = getRepository().findByUser_Login(login).stream().distinct().collect(Collectors.toList());
-        result.forEach(x -> {
-            x.getDeliveryType().getOrders().clear();
-            x.getPaymentMethod().getOrders().clear();
-            x.getDeliveryAdress().getOrders().clear();
-            x.getDeliveryAdress().getUsers().clear();
-            x.getUser().setUserRole(null);
-            x.getUser().getDeliveryAdresses().clear();
-        });
+        for (Order order : result) {
+            if (order.getDeliveryType() != null && order.getDeliveryType().getOrders() != null)
+                order.getDeliveryType().getOrders().clear();
+            if (order.getPaymentMethod() != null && order.getPaymentMethod().getOrders() != null)
+                order.getPaymentMethod().getOrders().clear();
+            if (order.getDeliveryAdress() != null && order.getDeliveryAdress().getOrders() != null)
+                order.getDeliveryAdress().getOrders().clear();
+            if (order.getDeliveryAdress() != null && order.getDeliveryAdress().getUsers() != null)
+                order.getDeliveryAdress().getUsers().clear();
+            if (order.getUser() != null && order.getUser().getDeliveryAdresses() != null)
+                order.getUser().getDeliveryAdresses().clear();
+        }
         return result;
     }
 
@@ -107,15 +111,22 @@ public class OrderService implements GenericService<Order, OrderRepository>, App
     public Order getByUserLoginAndOrderId(String login, int id) {
         Order result = getRepository().findByIdAndUser_Login(id, login);
         result.setOrderItems(result.getOrderItems().stream().distinct().collect(Collectors.toList()));
-        result.getDeliveryType().getOrders().clear();
-        result.getPaymentMethod().getOrders().clear();
-        result.getDeliveryAdress().getOrders().clear();
-        result.getDeliveryAdress().getUsers().clear();
-        result.getUser().setUserRole(null);
-        result.getUser().getDeliveryAdresses().clear();
+        if (result.getDeliveryType() != null && result.getDeliveryType().getOrders() != null)
+            result.getDeliveryType().getOrders().clear();
+        if (result.getPaymentMethod() != null && result.getPaymentMethod().getOrders() != null)
+            result.getPaymentMethod().getOrders().clear();
+        if (result.getDeliveryAdress() != null && result.getDeliveryAdress().getOrders() != null)
+            result.getDeliveryAdress().getOrders().clear();
+        if (result.getDeliveryAdress() != null && result.getDeliveryAdress().getUsers() != null)
+            result.getDeliveryAdress().getUsers().clear();
+        if (result.getUser() != null && result.getUser().getDeliveryAdresses() != null)
+            result.getUser().getDeliveryAdresses().clear();
+
         result.getOrderItems().forEach(p -> {
-            p.getProduct().getOrderItems().clear();
-            p.getProduct().setImages(p.getProduct().getImages().stream().distinct().collect(Collectors.toList()));
+            if (p.getProduct() != null && p.getProduct().getOrderItems() != null)
+                p.getProduct().getOrderItems().clear();
+            if (p.getProduct() != null && p.getProduct().getImages() != null)
+                p.getProduct().setImages(p.getProduct().getImages().stream().distinct().collect(Collectors.toList()));
         });
         return result;
     }
