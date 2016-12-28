@@ -56,7 +56,7 @@
             <div class="gallery">
                 <a ng-repeat="image in product.images track by $index" ng-click="showPic(image.id)">
                     <img ng-src="{{image.imageSrc}}" width="100" height="100" />
-                    <i class="fa fa-minus-circle removePic" aria-hidden="true" ng-show="deleteImages" ng-click="delPic(image.id)"></i>
+                    <i class="fa fa-minus-circle removePic" aria-hidden="true" ng-show="deleteImages"></i>
                 </a>
             </div>
         </div>

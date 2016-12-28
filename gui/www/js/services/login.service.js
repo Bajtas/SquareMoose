@@ -29,11 +29,6 @@
     };
 
     this.login = function (credentials, modal) {
-        var credentials = {
-            login: 'admin',
-            password: '123'
-        }; // TO DELETE 
-
         if (credentials !== 'undefined') {
             var getRoleUrl = this.serviceUrl + credentials.login + '/role';
             if (credentials.login !== 'undefined' && credentials.password !== 'undefined') {

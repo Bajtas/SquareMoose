@@ -56,7 +56,7 @@
 
             <ion-radio ng-model="form.choosenDeliveryType" ng-repeat="deliveryType in deliveryTypes" ng-value="deliveryType.id" name="choosenDeliveryType" ng-disabled="true">
                 <a class="item item-avatar" href="#">
-                    <img ng-src="{{deliveryType.image}}">
+                    <img ng-src="{{deliveryType.imageSrc}}">
                     <h2>{{deliveryType.name}}</h2>
                     <p>Price: {{deliveryType.price | number : 2}} $</p>
                     <p>Est. Delivery time: {{deliveryType.time}}</p>
@@ -75,7 +75,7 @@
             <label class="item">
                 <button ng-click="backToShop()" class="button icon-center ion-log-in button-block button-assertive"> Back to shop</button>
             </label>
-            <label class="item">
+            <label class="item" ng-show="isLoggedIn">
                 <button ng-click="showMyOrders" class="button icon-center ion-bag button-block button-royal"> Show my orders</button>
             </label>
         </ion-list>

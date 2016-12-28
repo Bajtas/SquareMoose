@@ -39,6 +39,7 @@ angular.module('starter.controllers', [])
         $scope.cartModal.show();
         $scope.cartItemsAmount = cartService.cartItemsAmount;
         $scope.totalPrice = cartService.totalPrice;
+        $scope.$broadcast('showcartClick', null);
     };
 
     $scope.hideCart = function () {
@@ -67,6 +68,7 @@ angular.module('starter.controllers', [])
     };
 
     $scope.filterAndSort = function () {
+        $location.path('app/productslist');
         $scope.$broadcast('filterAndSort', $scope.optionsData);
         $scope.sortOptionsModal.hide();
     };

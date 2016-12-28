@@ -270,6 +270,7 @@ public class UserService implements ApplicationListener<ContextRefreshedEvent> {
         return Response.status(Response.Status.BAD_REQUEST).entity("Username has been not specified!").build();
     }
 
+    @Transactional
     public boolean isUserAllowed(String username, String password, Set<String> rolesSet) {
         boolean result = false;
 

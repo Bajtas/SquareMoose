@@ -13,9 +13,9 @@
                 <p>{{item.product.description}}</p>
                 <p>Amount: {{item.amount}}</p>
                 <p class="icon ion-ios-pricetags"> Total: {{(item.price*item.amount) | number: 2}} {{priceCurrency}}</p>
-                <ion-option-button class="button-positive" ng-click="share(item)">
+                <!--<ion-option-button class="button-positive" ng-click="share(item)">
                     Share
-                </ion-option-button>
+                </ion-option-button>-->
                 <ion-option-button class="button-info" ng-click="editAmount = true">
                     Edit
                 </ion-option-button>

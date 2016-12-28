@@ -8,8 +8,12 @@
     $scope.totalPrice = cartService.totalPrice; // Total price taken from CartService
     $scope.toFixed = 
 
-    $scope.$on('modal.shown', function () {
+    $scope.$on('showcartClick', function (notUsed, args) {
         $scope.productslist = cartService.cartProducts;
+        if (cartService.cartProducts.length === 0) {
+            $location.path('app/order');
+            cartService.hide();
+        }
         $scope.cartItemsAmount = cartService.cartItemsAmount;
         $scope.totalPrice = cartService.totalPrice;
     });
@@ -17,10 +21,15 @@
     $scope.refresh = function () {
         $scope.cartItemsAmount = cartService.cartItemsAmount;
         $scope.totalPrice = cartService.totalPrice;
+
+        if (cartService.cartProducts.length === 0) {
+            $location.path('app/order');
+            cartService.hide();
+        }
     };
 
     $scope.updateTotalCost = function (index) {
-        cartService.totalPrice = $scope.productslist[index].amount * $scope.productslist[index].product.price;
+        cartService.recalculateTotalPrice($scope.productslist);
     };
 
     $scope.countItems = function (index) {

@@ -96,7 +96,12 @@
 
     $scope.$on('$ionicView.enter', function (event) {
         $scope.currentPath = $location.path();
-        $ionicHistory.clearHistory();
+        if (localStorage.getItem('optionsData') !== null && localStorage.getItem('optionsData') !== undefined) {
+            $scope.$broadcast('filterAndSort', JSON.parse(localStorage.getItem('optionsData')));
+            localStorage.removeItem('optionsData');
+        }
+        else
+            $ionicHistory.clearHistory();
     });
 
     $scope.$on('filterAndSort', function (event, optionsData) {

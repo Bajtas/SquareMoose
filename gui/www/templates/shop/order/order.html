@@ -98,7 +98,7 @@
                 <div class="list radio-group" ng-repeat="deliveryType in deliveryTypes">
                     <ion-radio ng-model="form.choosenDeliveryType" ng-value="deliveryType.id" name="choosenDeliveryType" required>
                         <a class="item item-avatar" href="#">
-                            <img ng-src="{{deliveryType.image}}">
+                            <img ng-src="{{deliveryType.imageSrc}}">
                             <h2>{{deliveryType.name}}</h2>
                             <p>Price: {{deliveryType.price}} $</p>
                             <p>Est. Delivery time: {{deliveryType.time}}</p>

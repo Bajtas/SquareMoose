@@ -5,7 +5,7 @@
     // private
     var _cartItemsAmount = 0;
     var _totalPrice = 0;
-    var _cartProducts = {};
+    var _cartProducts = [];
     var _productsList = [];
     var _cartModal = {};
 

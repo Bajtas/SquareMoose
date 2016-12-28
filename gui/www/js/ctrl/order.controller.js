@@ -12,7 +12,7 @@
     $scope.form = {};
     // End of fields
 
-    $scope.$on('$ionicView.loaded', function (event) {
+    $scope.$on('$ionicView.enter', function (event) {
         if ($rootScope.isLoggedIn === true) {
             $scope.isLoggedIn = true;
             $scope.productsInCart = $rootScope.products;
@@ -24,6 +24,11 @@
                 email: ""
             };
         }
+
+        if ($rootScope.isLoggedIn && $scope.user.deliveryAdresses.length > 0)
+            $scope.isLoggedIn = true;
+        else
+            $scope.isLoggedIn = false;
 
         $http.get($rootScope.apiUrl + 'DeliveryTypeService/deliverytypes').then(function success(response) {
             $scope.deliveryTypes = JSOG.decode(response.data);
@@ -119,7 +124,9 @@
         $scope.user.userRole = null;
 
         if (!$scope.isLoggedIn)
-            $scope.user = { email: $scope.form.user.email };
+            $scope.user = {
+                email: $scope.form.user.email
+            };
 
         $scope.order = {
             'orderItems': orderItems,
