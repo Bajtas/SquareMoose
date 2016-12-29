@@ -53,6 +53,8 @@ public class MailConfig {
         mailProperties.put("mail.smtp.debug", debug);
         mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         mailProperties.put("mail.smtp.socketFactory.fallback", fallback);
+        mailProperties.put("mail.smtp.allow8bitmime", "true");
+        mailProperties.put("mail.smtps.allow8bitmime", "true");
 
         mailSender.setJavaMailProperties(mailProperties);
         mailSender.setHost(host);
