@@ -7,12 +7,10 @@
         <span us-spinner="{radius:30, width:8, length: 16}"></span>
     </div>
     <div class="col_12" ng-hide="error || saveInProgress">
-        <h5>Product details:</h5>
+        <h5>Delivery type details:</h5>
         <div class="separator"></div>
         <div class="col_4">
             <img class="caption" title="This is the image caption" ng-src="{{mainImage}}" />
-            <h6>Added on: {{deliveryType.addedOn | date:'MM/dd/yyyy @ h:mma'}}</h6>
-            <h6>Last modification on: {{deliveryType.lmod | date:'MM/dd/yyyy @ h:mma'}}</h6>
             <h6>Id: {{deliveryType.id}}</h6>
         </div>
         <div class="col_8">
@@ -23,6 +21,9 @@
             <form class="vertical">
                 <label for="name">Dlivery type name:</label>
                 <input id="name" type="text" ng-model="deliveryType.name">
+
+                <label for="name">Est. delivery time:</label>
+                <input id="time" type="text" ng-model="deliveryType.time">
 
                 <div class="col_2">
                     <label for="price">Price:</label>
