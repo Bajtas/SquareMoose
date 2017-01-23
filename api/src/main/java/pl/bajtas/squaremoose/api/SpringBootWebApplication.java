@@ -24,7 +24,8 @@ public class SpringBootWebApplication extends SpringBootServletInitializer {
         LOG.info(startingInfo);
         try {
             new SpringBootWebApplication()
-                    .configure(new SpringApplicationBuilder(SpringBootWebApplication.class).bannerMode(Banner.Mode.OFF))
+                    .configure(new SpringApplicationBuilder(SpringBootWebApplication.class)
+                    .bannerMode(Banner.Mode.OFF))
                     .run(args);
         } catch (Exception e) {
             LOG.error("Critical error occured: ", e);

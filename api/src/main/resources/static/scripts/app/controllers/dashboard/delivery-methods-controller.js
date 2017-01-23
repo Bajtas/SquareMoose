@@ -17,10 +17,9 @@ angular.module('SquareMooseControllers')
         name: 'Price',
         value: 'price'
     }, {
-               name: 'Est. time',
-               value: 'time'
-           }
-    ];
+        name: 'Est. time',
+        value: 'time'
+    }];
 
     $scope.sortDirections = [{
         name: 'Ascending',
