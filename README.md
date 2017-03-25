@@ -1,12 +1,13 @@
 # SquareMoose
-Graduation project on Politechnika Rzeszowska
+SquareMoose is multiplatform app created with Cordova and designated to be mobile app to enhance web sale system.
+This was my graduation project on Politechnika Rzeszowska University of Technology.
 
 This project has been created for engineer thesis, it has been done by using:
 - Cordova (Mobile app)
 - SpringBoot and Jersey
 - AngularJS and Ionic
 
-This project can be split into 3 parts:
+Whole project can be split into 3 parts:
 - Mobile app
 - Web app
 - Server app
@@ -22,3 +23,6 @@ Created with SpringBoot and Jersey. Full API was designed to be RESTful, data se
 
 # Database
 Used database system is PostgreSQL. Script to create DB is inside /sql directory.
+
+# Docs
+More informations can be read here:
