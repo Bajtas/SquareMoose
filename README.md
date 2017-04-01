@@ -1,28 +1,16 @@
-# SquareMoose
+SquareMoose 1.0
+==================
+Stable version released on: 23-02-2017
+
+![Alt text](/docs/img_1.jpg?raw=true "How GUI looks")
+
+(C) Copyright 2016 Bartłomiej Żuber <bajtas@gmail.com>
+
 SquareMoose is multiplatform app created with Cordova and designated to be mobile app to enhance web sale system.
 This was my graduation project on Politechnika Rzeszowska University of Technology.
 
-This project has been created for engineer thesis, it has been done by using:
-- Cordova (Mobile app)
-- SpringBoot and Jersey
-- AngularJS and Ionic
+![alt text](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSSsnTNn7HmcHidzl_zH3_w6cHArujZ3MF5rXHaLA6eMvjHAB7O "Line separator")
 
-Whole project can be split into 3 parts:
-- Mobile app
-- Web app
-- Server app
+Polish documentation: [Czytaj tutaj!](docs/POLISH_README.md)
 
-# Mobile app
-Was created based on Cordova engine. AngularJS was used for dynamic updates of view, Ionic helped with design of GUI.
-
-# Web app
-Web app is connected with server app and is using AngularJS and HTMLKickStart for views.
-
-# Server app
-Created with SpringBoot and Jersey. Full API was designed to be RESTful, data sent and received are in JSON format.
-
-# Database
-Used database system is PostgreSQL. Script to create DB is inside /sql directory.
-
-# Docs
-More informations can be read here:
+English documentation: [Read more words!](docs/ENGLISH_README.md)
