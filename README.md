@@ -2,7 +2,7 @@ SquareMoose 1.0
 ==================
 Stable version released on: 23-02-2017
 
-![Alt text](/docs/img_1.jpg?raw=true "How GUI looks")
+![Alt text](/docs/images/img_1.jpg?raw=true "How GUI looks")
 
 (C) Copyright 2016 Bartłomiej Żuber <bajtas@gmail.com>
 
