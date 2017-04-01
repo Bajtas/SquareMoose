@@ -4,7 +4,7 @@ Stable version released on: 23-02-2017
 
 ![Alt text](/docs/images/img_1.jpg?raw=true "How GUI looks")
 
-(C) Copyright 2016 Bartłomiej Żuber <bajtas@gmail.com>
+(C) Copyright 2017 Bartłomiej Żuber <bajtas@gmail.com>
 
 SquareMoose is multiplatform app created with Cordova and designated to be mobile app to enhance web sale system.
 This was my graduation project on Politechnika Rzeszowska University of Technology.
