@@ -21,7 +21,8 @@ import java.util.List;
 
 @Controller
 @Path("/CategoryService")
-public class CategoryController {
+@Produces(MediaType.APPLICATION_JSON)
+public class CategoryResource {
 
     @Autowired
     private CategoryService categoryService; // Category service bean for connection between controller and service layers
@@ -37,7 +38,6 @@ public class CategoryController {
     * Returns list of all categories
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/categories")
     @PermitAll
     public Iterable<Category> getAll() {
@@ -45,7 +45,6 @@ public class CategoryController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/categories/page/{number}")
     @PermitAll
     public Page<Category> getPage(@PathParam("number") Integer page,
@@ -61,7 +60,6 @@ public class CategoryController {
     * Returns one Category related to this Id
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/{id}")
     @PermitAll
     public Category getById(@NotNull @PathParam("id") Integer id) {
@@ -74,7 +72,6 @@ public class CategoryController {
     * Returns one Category related to this Name
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/name/{name}")
     public Iterable<Category> getByName(@NotNull @PathParam("name") String name) {
         return getService().getByNameContainsIgnoreCase(name);
@@ -139,7 +136,6 @@ public class CategoryController {
     * If all parameters are null, method will Excepction
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/category/stats")
     @PermitAll
     public List<CategoryStats> getCategoryStats(@QueryParam("byId") boolean byId, @QueryParam("byName") boolean byName) throws Exception {
@@ -154,7 +150,6 @@ public class CategoryController {
     * If all parameters are null, method will Excepction
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/categories/usages")
     @PermitAll
     public List<StatsUsages> getAllCategoriesUsages() throws Exception {

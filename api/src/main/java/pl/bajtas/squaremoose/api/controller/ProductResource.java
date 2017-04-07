@@ -16,7 +16,8 @@ import java.util.List;
 
 @Controller
 @Path("/ProductService")
-public class ProductController {
+@Produces(MediaType.APPLICATION_JSON)
+public class ProductResource {
 
     @Autowired
     ProductService productService; // Product service bean for connection between controller and service layers
@@ -24,7 +25,6 @@ public class ProductController {
     // Search by Product properties
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/products")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Iterable<Product> getAll() {
@@ -32,7 +32,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/page/{number}")
     @PermitAll
     public Page<Product> getPage(@PathParam("number") Integer page,
@@ -43,7 +42,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/{id}")
     @PermitAll
     public Product getById(@NotNull @PathParam("id") Integer id) {
@@ -51,7 +49,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/name/{name}")
     @PermitAll
     public List<Product> getByNameContainsIgnoreCase(@NotNull @PathParam("name") String name) {
@@ -59,7 +56,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/description/{description}")
     @PermitAll
     public List<Product> getByDescriptionContainsIgnoreCase(@NotNull @PathParam("description") String description) {
@@ -67,7 +63,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/product/price")
     @PermitAll
     public List<Product> getByNamePriceBetweenOrGreaterOrLess(@QueryParam("price1") Double price1, @QueryParam("price2") Double price2) throws Exception {
@@ -75,7 +70,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/search/page/{page}")
     @PermitAll
     public Page<Product> getByAllProperties(
@@ -95,7 +89,6 @@ public class ProductController {
 
     /* Find Product by Category properties */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/category")
     @PermitAll
     public List<Product> getByCategoryIdOrName(
@@ -105,7 +98,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/categorized")
     @PermitAll
     public Iterable<Product> getAllWithCategoryNotNull() {
@@ -113,7 +105,6 @@ public class ProductController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/products/uncategorized")
     @PermitAll
     public Iterable<Product> getAllWithCategoryNull() {

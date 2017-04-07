@@ -17,7 +17,8 @@ import java.util.List;
  */
 @Controller
 @Path("/UserRoleService")
-public class UserRoleController {
+@Produces(MediaType.APPLICATION_JSON)
+public class UserRoleResource {
     @Autowired
     UserRoleService userRoleService; // UserRole service bean for connection between controller and service layers
     // Search by UserRole properties
@@ -28,7 +29,6 @@ public class UserRoleController {
     * Returns list of all roles defined in system
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/roles")
     @PermitAll
     public Iterable<UserRole> getAll() {
@@ -41,7 +41,6 @@ public class UserRoleController {
     * Returns one Role assigned to this Id
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/roles/id/{id}")
     public UserRole getById(@NotNull @PathParam("id") Integer id) {
         return userRoleService.getById(id);
@@ -53,7 +52,6 @@ public class UserRoleController {
     * Returns one Role assigned to this Name
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/roles/name/{name}")
     public UserRole getById(@NotNull @PathParam("name") String name) {
         return userRoleService.getByName(name);
@@ -65,7 +63,6 @@ public class UserRoleController {
     * Returns one Role assigned to this Name
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/roles/search")
     public List<UserRole> getByAllProperties(@QueryParam("id") Integer id,
                                              @QueryParam("name") String name,

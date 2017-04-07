@@ -20,7 +20,8 @@ import java.util.List;
  */
 @Controller
 @Path("/PaymentMethodService")
-public class PaymentMethodController {
+@Produces(MediaType.APPLICATION_JSON)
+public class PaymentMethodResource {
 
     @Autowired
     PaymentMethodService paymentMethodService;
@@ -30,7 +31,6 @@ public class PaymentMethodController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/methods")
     @PermitAll
     public Iterable<PaymentMethod> getAll() {
@@ -38,7 +38,6 @@ public class PaymentMethodController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/methods/page/{number}")
     @PermitAll
     public Page<PaymentMethod> getPage(@PathParam("number") Integer page,
@@ -49,7 +48,6 @@ public class PaymentMethodController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/method/{id}")
     public PaymentMethod getById(@NotNull @PathParam("id") Integer id) {
         return getService().getById(id);
@@ -82,7 +80,6 @@ public class PaymentMethodController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/method/usage/stats")
     @RolesAllowed("Admin")
     public List<StatsUsages> usageStats() {

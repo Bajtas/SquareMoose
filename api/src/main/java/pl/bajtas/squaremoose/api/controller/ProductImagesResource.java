@@ -25,7 +25,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  */
 @Controller
 @Path("/ProductImagesService")
-public class ProductImagesController {
+@Produces(MediaType.APPLICATION_JSON)
+public class ProductImagesResource {
 
     @Autowired
     ProductImagesService productImagesService; // ProductImages service bean for connection between controller and service layers
@@ -40,7 +41,6 @@ public class ProductImagesController {
     * */
     //endregion
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/images")
     public Iterable<ProductImage> getAll() {
         return productImagesService.getAll();
@@ -54,7 +54,6 @@ public class ProductImagesController {
     * */
     //endregion
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/images/id/{id}")
     public ProductImage getById(@NotNull @PathParam("id") int id) {
         return productImagesService.getById(id);
@@ -68,7 +67,6 @@ public class ProductImagesController {
     * */
     //endregion
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/images/src/{src}")
     public ProductImage getByImageSrc(@NotNull @PathParam("src") String src) {
         return productImagesService.getByImageSrc(src);
@@ -84,7 +82,6 @@ public class ProductImagesController {
     * */
     //endregion
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/images/search")
     public List<ProductImage> getByAllProperties(
             @QueryParam("productId") Integer productId,

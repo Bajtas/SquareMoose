@@ -15,12 +15,12 @@ import javax.ws.rs.core.Response;
  */
 @Controller
 @Path("/OrderStateHistoryService")
-public class OrderStateHistoryController {
+@Produces(MediaType.APPLICATION_JSON)
+public class OrderStateHistoryResource {
     @Autowired
     OrderStateHistoryService orderStateHistoryService; // Product service bean for connection between controller and service layers
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/histories")
     public Iterable<OrderStateHistory> getAll() {
         return orderStateHistoryService.getAll();

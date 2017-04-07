@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @Path("/OrderItemService")
-public class OrderItemController {
+public class OrderItemResource {
 
     @Autowired
     private OrderItemService orderItemService;

@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
  */
 @Controller
 @Path("/MailService")
-public class MailController {
+public class MailResource {
     @Autowired private MailService mailService;
 
     private MailService getService() {

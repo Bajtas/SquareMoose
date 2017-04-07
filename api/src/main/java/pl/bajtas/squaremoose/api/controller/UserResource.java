@@ -23,7 +23,8 @@ import java.util.List;
  */
 @Controller
 @Path("/UserService")
-public class UserController {
+@Produces(MediaType.APPLICATION_JSON)
+public class UserResource {
 
     @Autowired
     UserService userService; // Product service bean for connection between controller and service layers
@@ -41,7 +42,6 @@ public class UserController {
     * Returns list of users
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/users")
     @PermitAll
     public Iterable<User> getAll() {
@@ -54,14 +54,12 @@ public class UserController {
     * Returns users related to Role Name or nothing
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/users/role/{name}")
     public List<User> getByAllWithRoleName(@NotNull @PathParam("name") String name) {
         return getService().getAllWithRoleName(name);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/{login}/role")
     @PermitAll
     public UserRole getByRoleAssignedToUser(@NotNull @PathParam("login") String login) {
@@ -78,7 +76,6 @@ public class UserController {
     * Returns list of all users on this page
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/users/page/{number}")
     @PermitAll
     public Page<User> getPage(@PathParam("number") Integer page,
@@ -94,7 +91,6 @@ public class UserController {
     * Returns user related to id or nothing
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/id/{id}")
     @RolesAllowed("Admin")
     public User getById(@NotNull @PathParam("id") int id) {
@@ -102,7 +98,6 @@ public class UserController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/login/{login}")
     //@RolesAllowed("User")
     @PermitAll
@@ -120,7 +115,6 @@ public class UserController {
     * Returns user related to this search properties or nothing
     * */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/users/search")
     public List<User> getByAllProperties(
             @QueryParam("login") String login,

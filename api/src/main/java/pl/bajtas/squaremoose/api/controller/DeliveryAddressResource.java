@@ -19,7 +19,8 @@ import java.util.List;
  */
 @Controller
 @Path("/DeliveryAdressService")
-public class DeliveryAdressController {
+@Produces(MediaType.APPLICATION_JSON)
+public class DeliveryAddressResource {
     @Autowired
     private DeliveryAdressService deliveryAdressService; // Product service bean for connection between controller and service layers
 
@@ -30,7 +31,6 @@ public class DeliveryAdressController {
     // Search by DeliveryAdress properties
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadresses")
     @Transactional
     public Iterable<DeliveryAdress> getAll() {
@@ -38,7 +38,6 @@ public class DeliveryAdressController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadresses/page/{number}")
     @Transactional
     public Page<DeliveryAdress> getPage(@PathParam("number") Integer page,
@@ -49,7 +48,6 @@ public class DeliveryAdressController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/{id}")
     @Transactional
     public DeliveryAdress getById(@NotNull @PathParam("id") Integer id) {
@@ -57,7 +55,6 @@ public class DeliveryAdressController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/name/{name}")
     @Transactional
     public List<DeliveryAdress> getByNameContainsIgnoreCase(@NotNull @PathParam("name") String name) {
@@ -65,35 +62,30 @@ public class DeliveryAdressController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/surname/{surname}")
     public List<DeliveryAdress> getBySurnameContainsIgnoreCase(@NotNull @PathParam("surname") String surname) {
         return getService().getBySurnameContainsIgnoreCase(surname);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/adress/{adress}")
     public List<DeliveryAdress> getByAdressContainsIgnoreCase(@NotNull @PathParam("adress") String adress) {
         return getService().getByAdressContainsIgnoreCase(adress);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/town/{town}")
     public List<DeliveryAdress> getByTownContainsIgnoreCase(@NotNull @PathParam("town") String town) {
         return getService().getByTownContainsIgnoreCase(town);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/zipcode/{zipcode}")
     public List<DeliveryAdress> getByZipCodeContainsIgnoreCase(@NotNull @PathParam("zipcode") String zipcode) {
         return getService().getByZipCodeContainsIgnoreCase(zipcode);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/phone/{phone}")
     public List<DeliveryAdress> getByContactPhoneContainsIgnoreCase(@NotNull @PathParam("phone") String phone) {
         return getService().getByContactPhoneContainsIgnoreCase(phone);
@@ -104,7 +96,6 @@ public class DeliveryAdressController {
     /* Find DeliveryAdress by Order properties */
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/ordered/page/{number}")
     public Page<DeliveryAdress> getByAdressWithOrderNotNull(@PathParam("number") Integer page,
                                                             @QueryParam("size") Integer size,
@@ -114,7 +105,6 @@ public class DeliveryAdressController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/unordered/page/{number}")
     public Page<DeliveryAdress> getByAdressWithOrderNull(@PathParam("number") Integer page,
                                                          @QueryParam("size") Integer size,
@@ -124,21 +114,18 @@ public class DeliveryAdressController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/order/{id}")
     public List<DeliveryAdress> getByOrderId(@NotNull @PathParam("id") int id) {
         return getService().getByOrderId(id);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/user/{id}")
     public List<DeliveryAdress> getByUserId(@NotNull @PathParam("id") int id) {
         return getService().getByUserId(id);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/user/login/{login}")
     @PermitAll
     @Transactional
@@ -147,7 +134,6 @@ public class DeliveryAdressController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryadress/user/email/{email}")
     public List<DeliveryAdress> getByUserEmail(@NotNull @PathParam("email") String email) {
         return getService().getByUserEmail(email);

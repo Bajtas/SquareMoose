@@ -17,7 +17,8 @@ import java.util.List;
  */
 @Controller
 @Path("/ActualOrderStateService")
-public class ActualOrderStateController {
+@Produces(MediaType.APPLICATION_JSON)
+public class ActualOrderStateResource {
     @Autowired
     private ActualOrderStateService actualOrderStateService; // ActualOrderStateService service bean for connection between controller and service layers
 
@@ -27,14 +28,12 @@ public class ActualOrderStateController {
 
     // Search by ActualOrderStateService properties
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates")
     public Iterable<ActualOrderState> getAll() {
         return getService().getAll();
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates/page/{number}")
     public Page<ActualOrderState> getPage(@PathParam("number") Integer page,
                                           @QueryParam("size") Integer size,
@@ -44,21 +43,18 @@ public class ActualOrderStateController {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstate/{id}")
     public ActualOrderState getById(@NotNull @PathParam("id") Integer id) {
         return getService().getById(id);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates/name/{name}")
     public List<ActualOrderState> getByNameContainsIgnoreCase(@NotNull @PathParam("name") String name) {
         return getService().getByNameContainsIgnoreCase(name);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstates/description/{description}")
     public List<ActualOrderState> getByDescriptionContainsIgnoreCase(@NotNull @PathParam("description") String description) {
         return getService().getByDescriptionContainsIgnoreCase(description);
@@ -67,7 +63,6 @@ public class ActualOrderStateController {
 
     /* Find by Order properties */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/actualstate/order/{id}")
     public ActualOrderState getByOrderId(@NotNull @PathParam("id") int id) {
         return getService().getByOrderId(id);
