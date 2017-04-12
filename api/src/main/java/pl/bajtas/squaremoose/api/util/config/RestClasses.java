@@ -13,19 +13,19 @@ public class RestClasses {
     private static final Logger LOG = Logger.getLogger(RestClasses.class);
 
     /* Controllers to register for Jersey */
-    private static final String productController = "ProductController";
-    private static final String categoryController = "CategoryController";
-    private static final String productImagesController = "ProductImagesController";
-    private static final String orderItemController = "OrderItemController";
-    private static final String orderController = "OrderController";
-    private static final String paymentMethodController = "PaymentMethodController";
-    private static final String actualOrderStateController = "ActualOrderStateController";
-    private static final String orderStateHistoryController = "OrderStateHistoryController";
-    private static final String deliveryAdressController = "DeliveryAdressController";
-    private static final String userController = "UserController";
-    private static final String userRoleController = "UserRoleController";
-    private static final String deliveryTypeController = "DeliveryTypeController";
-    private static final String mailController = "MailController";
+    private static final String productController = "ProductResource";
+    private static final String categoryController = "CategoryResource";
+    private static final String productImagesController = "ProductImagesResource";
+    private static final String orderItemController = "OrderItemResource";
+    private static final String orderController = "OrderResource";
+    private static final String paymentMethodController = "PaymentMethodResource";
+    private static final String actualOrderStateController = "ActualOrderStateResource";
+    private static final String orderStateHistoryController = "OrderStateHistoryResource";
+    private static final String deliveryAdressController = "DeliveryAddressResource";
+    private static final String userController = "UserResource";
+    private static final String userRoleController = "UserRoleResource";
+    private static final String deliveryTypeController = "DeliveryTypeResource";
+    private static final String mailController = "MailResource";
 
     private static String classToRegisterInfo = "";
 
